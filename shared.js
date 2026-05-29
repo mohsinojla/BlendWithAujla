@@ -174,25 +174,6 @@ const SEARCH_DATA = [
   {key:'Procedural',desc:'Generated mathematically rather than painted — infinitely scalable textures',cat:'Glossary',page:'glossary.html'},
 ];
 
-// ===== COPY KBD BUTTONS =====
-document.querySelectorAll('.sc-row').forEach(row => {
-  const kbd = row.querySelector('kbd');
-  if (!kbd) return;
-  const btn = document.createElement('button');
-  btn.className = 'copy-kbd-btn';
-  btn.title = 'Copy shortcut';
-  btn.textContent = '⎘';
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    const text = kbd.textContent.trim();
-    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
-      .catch(() => { const t=document.createElement('textarea'); t.value=text; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); });
-    btn.textContent = '✓';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = '⎘'; btn.classList.remove('copied'); }, 1600);
-  });
-  row.appendChild(btn);
-});
 
 const searchInput = document.getElementById('searchInput');
 const searchDrop  = document.getElementById('searchResults');

@@ -57,8 +57,6 @@
 </div>
 
 <main class="container">
-<div class="tips-main-layout">
-<div><!-- main content column -->
 
   <section class="section" id="tips-tips">
     <div class="sec-title">⚡ 24 Pro Tips</div>
@@ -276,41 +274,9 @@
     </div>
   </section>
 
-</div><!-- end main content column -->
-
-<!-- STICKY TOC -->
-<aside>
-  <div class="tips-toc-float">
-    <h4>On this page</h4>
-    <ul>
-      <li><a href="#tips-tips"   class="toc-link">⚡ 24 Pro Tips</a></li>
-      <li><a href="#tips-addons" class="toc-link">🔌 Addons &amp; Assets</a></li>
-      <li><a href="#tips-fixes"  class="toc-link">🐛 Problem Fixes</a></li>
-    </ul>
-  </div>
-</aside>
-
-</div><!-- end tips-main-layout -->
 </main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="index.html">Home</a><a href="shortcuts.html">Shortcuts</a><a href="https://blender.org" target="_blank">Blender.org</a><a href="https://blenderkit.com" target="_blank">BlenderKit</a><a href="https://polyhaven.com" target="_blank">Poly Haven</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script src="shared.js"></script>
-<script>
-// TOC scroll-spy
-const tocLinks = document.querySelectorAll('.toc-link');
-const tocSections = ['tips-tips','tips-addons','tips-fixes'].map(id => document.getElementById(id)).filter(Boolean);
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      tocLinks.forEach(a => a.classList.remove('toc-active'));
-      const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
-      if (active) active.classList.add('toc-active');
-    }
-  });
-}, { rootMargin:'-20% 0px -70% 0px' });
-tocSections.forEach(s => observer.observe(s));
-// Set first as default
-if (tocLinks[0]) tocLinks[0].classList.add('toc-active');
-</script>
 </body>
 </html>
