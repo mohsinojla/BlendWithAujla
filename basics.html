@@ -67,56 +67,59 @@
   <section class="section">
     <div class="sec-title">🖥️ Interactive Interface Map</div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">👆 Click any area of the Blender UI below to learn what it does.</p>
-    <div class="grid-2">
-      <div class="reveal">
-        <div class="ui-map-wrap">
-          <div class="ui-map">
-            <!-- Top bar -->
-            <div class="ui-topbar ui-area" data-area="topbar" onclick="selectArea(this)"
-              style="display:flex;align-items:center;gap:.6rem;padding:0 1rem;font-size:.72rem;font-weight:700;cursor:pointer;">
-              <span style="color:var(--accent)">File</span>
-              <span style="color:var(--text3)">Edit</span>
-              <span style="color:var(--text3)">Render</span>
-              <span style="color:var(--text3)">Window</span>
-              <span style="margin-left:auto;background:rgba(230,126,34,.2);padding:.1rem .5rem;border-radius:4px;color:var(--accent)">Layout</span>
-              <span style="color:var(--text3)">Modeling</span>
-              <span style="color:var(--text3)">Sculpting</span>
-              <span style="color:var(--text3)">Shading</span>
+    <!-- UI Map — full width -->
+    <div class="reveal" style="margin-bottom:1.5rem">
+      <div class="ui-map-wrap">
+        <div class="ui-map">
+          <!-- Top bar -->
+          <div class="ui-topbar ui-area" data-area="topbar" onclick="selectArea(this)"
+            style="display:flex;align-items:center;gap:.6rem;padding:0 1rem;font-size:.72rem;font-weight:700;cursor:pointer;">
+            <span style="color:var(--accent)">File</span>
+            <span style="color:var(--text3)">Edit</span>
+            <span style="color:var(--text3)">Render</span>
+            <span style="color:var(--text3)">Window</span>
+            <span style="margin-left:auto;background:rgba(230,126,34,.2);padding:.1rem .5rem;border-radius:4px;color:var(--accent)">Layout</span>
+            <span style="color:var(--text3)">Modeling</span>
+            <span style="color:var(--text3)">Sculpting</span>
+            <span style="color:var(--text3)">Shading</span>
+          </div>
+          <!-- Middle row: Viewport (left, full height) | Outliner + Props (right, stacked) -->
+          <div class="ui-middle">
+            <!-- Viewport first so it auto-places col 1 -->
+            <div class="ui-viewport ui-area" data-area="viewport" onclick="selectArea(this)">
+              <div class="ui-area-icon" style="font-size:2rem">🎯</div>
+              <div style="font-size:1rem;font-weight:800;color:#e8a060">3D Viewport</div>
+              <div style="font-size:.72rem;color:var(--text3);margin-top:.2rem">Main workspace</div>
             </div>
-            <!-- Middle row -->
-            <div class="ui-middle">
-              <!-- Outliner -->
-              <div class="ui-outliner ui-area" data-area="outliner" onclick="selectArea(this)">
-                <div class="ui-area-icon">📋</div>
-                <div style="font-size:.75rem;font-weight:700;color:#bbcc66">Outliner</div>
-                <div class="ui-area-label">Scene / Collections</div>
-              </div>
-              <!-- Viewport -->
-              <div class="ui-viewport ui-area" data-area="viewport" onclick="selectArea(this)">
-                <div class="ui-area-icon">🎯</div>
-                <div style="font-size:.85rem;font-weight:800;color:#e8a060">3D Viewport</div>
-                <div style="font-size:.7rem;color:var(--text3)">Main workspace</div>
-              </div>
-              <!-- Properties -->
-              <div class="ui-props ui-area" data-area="props" onclick="selectArea(this)">
-                <div class="ui-area-icon">⚙️</div>
-                <div style="font-size:.75rem;font-weight:700;color:#88aacc">Properties</div>
-                <div class="ui-area-label">Settings / Modifiers</div>
-              </div>
+            <!-- Outliner -->
+            <div class="ui-outliner ui-area" data-area="outliner" onclick="selectArea(this)">
+              <div class="ui-area-icon">📋</div>
+              <div style="font-size:.78rem;font-weight:700;color:#bbcc66">Outliner</div>
+              <div class="ui-area-label">Scene / Collections</div>
             </div>
-            <!-- Timeline -->
-            <div class="ui-timeline ui-area" data-area="timeline" onclick="selectArea(this)"
-              style="display:flex;align-items:center;justify-content:center;gap:.75rem;cursor:pointer;">
-              <span style="color:#aabb88;font-size:.75rem;font-weight:700">⏱ Timeline</span>
-              <span style="font-size:.65rem;color:var(--text3)">Keyframes · Playback · Animation range</span>
+            <!-- Properties -->
+            <div class="ui-props ui-area" data-area="props" onclick="selectArea(this)">
+              <div class="ui-area-icon">⚙️</div>
+              <div style="font-size:.78rem;font-weight:700;color:#88aacc">Properties</div>
+              <div class="ui-area-label">Settings / Modifiers</div>
             </div>
           </div>
-          <div class="ui-info-panel" id="uiInfoPanel">
-            <strong>Click any area above to learn about it →</strong>
-            Blender's interface is made of panels. Each one can be changed to any editor type by clicking the icon in the top-left corner of that area.
+          <!-- Timeline -->
+          <div class="ui-timeline ui-area" data-area="timeline" onclick="selectArea(this)"
+            style="display:flex;align-items:center;justify-content:center;gap:.75rem;cursor:pointer;">
+            <span style="color:#aabb88;font-size:.75rem;font-weight:700">⏱ Timeline</span>
+            <span style="font-size:.65rem;color:var(--text3)">Keyframes · Playback · Animation range</span>
           </div>
         </div>
+        <div class="ui-info-panel" id="uiInfoPanel">
+          <strong>Click any area above to learn about it →</strong>
+          Blender's interface is made of panels. Each one can be changed to any editor type by clicking the icon in the top-left corner of that area.
+        </div>
       </div>
+    </div>
+
+    <!-- Interface shortcuts card — full width below map -->
+    <div class="grid-2">
       <div class="reveal stagger-2">
         <div class="card" style="height:100%">
           <h3 style="margin-bottom:.75rem;font-size:1rem">Interface Shortcuts</h3>
