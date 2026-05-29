@@ -386,8 +386,8 @@ hr { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
 }
 .ui-map {
   display:grid;
-  grid-template-rows: 36px 1fr 42px;
-  height:360px; gap:2px; background:var(--border);
+  grid-template-rows: 36px 1fr 62px;
+  height:380px; gap:2px; background:var(--border);
 }
 .ui-topbar {
   grid-column:1/-1; background:#1a1620;
