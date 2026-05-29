@@ -396,10 +396,7 @@ hr { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
 }
 .ui-topbar:hover { filter:brightness(1.3); }
 .ui-middle {
-  display:grid;
-  grid-template-columns: 1fr 34%;
-  grid-template-rows: 1fr 1fr;
-  gap:2px;
+  display:grid; grid-template-columns:200px 1fr 220px; gap:2px;
 }
 .ui-outliner, .ui-viewport, .ui-props, .ui-timeline {
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -407,10 +404,9 @@ hr { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
   transition:filter var(--transition), transform var(--transition);
   gap:.3rem; user-select:none; text-align:center; padding:.5rem;
 }
-/* Blender-accurate layout: Viewport left (full height), Outliner top-right, Props bottom-right */
-.ui-viewport  { grid-column:1; grid-row:1/span 2; background:#1c1c22; color:#e8a060; font-size:.9rem; }
-.ui-outliner  { grid-column:2; grid-row:1; background:#161820; color:#6688aa; }
-.ui-props     { grid-column:2; grid-row:2; background:#181820; color:#88aacc; }
+.ui-outliner  { background:#161820; color:#6688aa; }
+.ui-viewport  { background:#1c1c22; color:#e8a060; font-size:.9rem; }
+.ui-props     { background:#181820; color:#88aacc; }
 .ui-timeline  { grid-column:1/-1; background:#131318; color:#aabb88; font-size:.76rem; }
 .ui-outliner:hover, .ui-viewport:hover, .ui-props:hover, .ui-timeline:hover { filter:brightness(1.4); }
 .ui-area.active { outline:2px solid var(--accent); outline-offset:-2px; filter:brightness(1.5); }
