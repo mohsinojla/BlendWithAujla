@@ -175,6 +175,9 @@ const SEARCH_DATA = [
 ];
 
 
+// Pages live in /pages/ subfolder; detect context so search links resolve correctly
+const _pfx = window.location.pathname.includes('/pages/') ? '' : 'pages/';
+
 const searchInput = document.getElementById('searchInput');
 const searchDrop  = document.getElementById('searchResults');
 if (searchInput && searchDrop) {
@@ -186,7 +189,7 @@ if (searchInput && searchDrop) {
     ).slice(0,10);
     if (!hits.length) { searchDrop.innerHTML='<div class="search-result"><span class="sr-desc">No results found</span></div>'; }
     else searchDrop.innerHTML = hits.map(d =>
-      `<div class="search-result" onclick="location.href='${d.page}'">
+      `<div class="search-result" onclick="location.href='${_pfx}${d.page}'">
         <kbd class="sr-key">${d.key}</kbd>
         <span class="sr-desc">${d.desc}</span>
         <span class="sr-cat">${d.cat}</span>

@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rendering — Blend with Aujla</title>
-<link rel="stylesheet" href="shared.css">
-<link rel="icon" href="logo.ico">
+<link rel="stylesheet" href="../shared.css">
+<link rel="icon" href="../logo.ico">
 </head>
 <body>
 <nav id="navbar">
-  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <a class="nav-brand" href="../index.html"><img src="../logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
   <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
   <ul class="nav-pages">
-    <li><a href="index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li><li><a href="glossary.html">📖 Glossary</a></li>
+    <li><a href="../index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li><li><a href="glossary.html">📖 Glossary</a></li>
   </ul>
   <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
 </nav>
@@ -89,27 +89,14 @@
   <section class="section">
     <div class="sec-title">🎞️ Draft vs Production — Visual Comparison</div>
     <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">Drag the handle to compare Draft (32 samples, no denoising) vs Production (512 samples, denoised, proper lighting).</p>
-    <div class="rc-wrap card" id="renderCompare" style="padding:0;overflow:hidden">
-      <!-- DRAFT (back layer) -->
-      <div class="rc-scene rc-draft">
-        <div class="rc-sphere"></div>
-        <div class="rc-shadow"></div>
-        <div class="rc-floor"></div>
-        <div class="rc-grain"></div>
-        <!-- fireflies -->
-        <div class="rc-firefly" style="width:3px;height:3px;top:22%;left:38%;animation-delay:.3s"></div>
-        <div class="rc-firefly" style="width:2px;height:2px;top:40%;left:62%;animation-delay:.9s"></div>
-        <div class="rc-firefly" style="width:3px;height:3px;top:55%;left:28%;animation-delay:1.4s"></div>
-        <div class="rc-firefly" style="width:2px;height:2px;top:32%;left:74%;animation-delay:.2s"></div>
-        <div class="rc-firefly" style="width:3px;height:3px;top:68%;left:55%;animation-delay:.7s"></div>
+    <div class="rc-wrap" id="renderCompare">
+      <!-- DRAFT image (back layer, always visible) -->
+      <img src="../Images/draft.png" class="rc-img" alt="Draft render — 32 samples, noisy">
+      <!-- PRODUCTION image (clipped top layer) -->
+      <div id="rcProd" style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);overflow:hidden">
+        <img src="../Images/production.png" class="rc-img" alt="Production render — 512 samples, denoised">
       </div>
-      <!-- PRODUCTION (clipped top layer) -->
-      <div class="rc-prod rc-scene" id="rcProd">
-        <div class="rc-sphere"></div>
-        <div class="rc-shadow"></div>
-        <div class="rc-floor"></div>
-      </div>
-      <!-- Divider -->
+      <!-- Divider handle -->
       <div class="rc-divider" id="rcDivider">
         <div class="rc-handle-btn">⟺</div>
       </div>
@@ -242,7 +229,7 @@
 </main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="animation.html">← Animation</a><a href="tips.html">Pro Tips →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-<script src="shared.js"></script>
+<script src="../shared.js"></script>
 <script>
 const QUALITY_PRESETS = [
   {

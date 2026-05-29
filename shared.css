@@ -658,8 +658,13 @@ hr { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
 .rc-wrap {
   position:relative; border-radius:var(--radius-lg);
   overflow:hidden; user-select:none; touch-action:none;
-  cursor:ew-resize; height:340px;
-  border:1px solid var(--border);
+  cursor:ew-resize; border:1px solid var(--border);
+  background:var(--bg2); line-height:0;
+}
+.rc-img {
+  width:100%; height:auto; display:block;
+  object-fit:cover; pointer-events:none;
+  max-height:480px;
 }
 .rc-scene {
   position:absolute; inset:0;
