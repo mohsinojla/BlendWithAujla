@@ -33,7 +33,7 @@ body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var
 ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
 
 /* ===== PAGE TRANSITION ===== */
-.page-enter { animation: pageIn .4s cubic-bezier(.4,0,.2,1) forwards; }
+.page-enter { animation: pageIn .4s cubic-bezier(.4,0,.2,1); }
 @keyframes pageIn {
   from { opacity:0; transform:translateY(14px); }
   to   { opacity:1; transform:translateY(0); }
@@ -615,14 +615,13 @@ hr { border:none; border-top:1px solid var(--border); margin:1.5rem 0; }
 .key-cap.nav-key { background:rgba(39,174,96,.1); border-color:rgba(39,174,96,.3); color:#68c888; }
 .key-cap.active { transform:translateY(2px); border-bottom-width:1px; }
 .kbd-tooltip {
-  position:fixed; left:0; top:0;
+  position:fixed; left:0; top:0; display:none;
   background:var(--card); border:1px solid var(--accent);
-  border-radius:var(--radius); padding:.55rem 1rem;
-  font-size:.83rem; color:var(--text); z-index:9999;
-  box-shadow:0 4px 20px rgba(0,0,0,.7); pointer-events:none;
-  opacity:0; transition:opacity .15s; max-width:320px;
-  white-space:normal; line-height:1.55;
-  transform:translateY(-110%);
+  border-radius:var(--radius); padding:.6rem 1rem;
+  font-size:.84rem; color:var(--text); z-index:99999;
+  box-shadow:0 6px 28px rgba(0,0,0,.65); pointer-events:none;
+  opacity:0; transition:opacity .15s ease; max-width:300px;
+  white-space:normal; line-height:1.6; font-weight:500;
 }
 .kbd-tooltip.show { opacity:1; }
 .kbd-legend {

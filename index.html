@@ -373,28 +373,42 @@
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script src="shared.js"></script>
 <script>
-// Interactive keyboard tooltip — positioned near the hovered key
+// Interactive keyboard tooltip — positioned above the hovered key
 const tooltip = document.getElementById('kbdTooltip');
 let tooltipTimer;
 document.querySelectorAll('.key-cap[data-tip]').forEach(key => {
-  key.addEventListener('mouseenter', e => {
+  key.addEventListener('mouseenter', () => {
     const tip = key.dataset.tip;
     if (!tip || tip.trim() === '') return;
     clearTimeout(tooltipTimer);
     key.classList.add('active');
     tooltip.textContent = tip;
-    tooltip.classList.add('show');
-    // Position above the key
+    // Measure tooltip dimensions before placing (visibility:hidden keeps it in layout)
+    tooltip.classList.remove('show');
+    tooltip.style.display = 'block';
+    tooltip.style.visibility = 'hidden';
+    tooltip.style.opacity = '';       // clear any inline opacity so CSS controls it
+    const tw = tooltip.offsetWidth  || 280;
+    const th = tooltip.offsetHeight || 44;
+    // Calculate position above the key (or below if too close to top)
     const rect = key.getBoundingClientRect();
-    let left = rect.left + rect.width / 2 - 140; // center on key
+    let left = rect.left + rect.width / 2 - tw / 2;
     if (left < 8) left = 8;
-    if (left + 320 > window.innerWidth) left = window.innerWidth - 328;
-    tooltip.style.left = left + 'px';
-    tooltip.style.top  = (rect.top - 8) + 'px'; // transform handles the rest
+    if (left + tw > window.innerWidth - 8) left = window.innerWidth - tw - 8;
+    const topPos = rect.top - th - 10;
+    tooltip.style.left      = left + 'px';
+    tooltip.style.top       = (topPos < 8 ? rect.bottom + 8 : topPos) + 'px';
+    tooltip.style.transform = 'none';
+    tooltip.style.visibility = '';
+    tooltip.classList.add('show');
   });
   key.addEventListener('mouseleave', () => {
     key.classList.remove('active');
-    tooltipTimer = setTimeout(() => tooltip.classList.remove('show'), 250);
+    tooltipTimer = setTimeout(() => {
+      tooltip.classList.remove('show');
+      tooltip.style.display = '';
+      tooltip.style.transform = '';
+    }, 200);
   });
 });
 </script>
