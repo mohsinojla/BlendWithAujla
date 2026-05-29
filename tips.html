@@ -42,7 +42,7 @@
   <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
   <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
   <ul class="nav-pages">
-    <li><a href="index.html">🏠 Home</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+    <li><a href="index.html">🏠 Home</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li><li><a href="glossary.html">📖 Glossary</a></li>
   </ul>
   <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
 </nav>
@@ -57,8 +57,10 @@
 </div>
 
 <main class="container">
+<div class="tips-main-layout">
+<div><!-- main content column -->
 
-  <section class="section">
+  <section class="section" id="tips-tips">
     <div class="sec-title">⚡ 24 Pro Tips</div>
     <div class="grid-auto">
       <div class="tip-card reveal"><div class="tip-num">01</div><h3>F9 — The Most Underused Key</h3><p>After any operation, press <kbd>F9</kbd> to get a popup to adjust the last action's settings. Added 16 loop cuts but want 8? F9. Bevel with wrong segments? F9. Works for almost every operation.</p></div>
@@ -88,7 +90,7 @@
     </div>
   </section>
 
-  <section class="section" id="addons">
+  <section class="section" id="tips-addons">
     <div class="sec-title">🔌 Must-Have Addons & Asset Sources</div>
     <div class="grid-2">
       <div>
@@ -151,7 +153,7 @@
     </div>
   </section>
 
-  <section class="section" id="fixes">
+  <section class="section" id="tips-fixes">
     <div class="sec-title">🐛 Common Problems &amp; Fixes</div>
     <div class="acc">
       <div class="acc-item reveal">
@@ -274,9 +276,41 @@
     </div>
   </section>
 
+</div><!-- end main content column -->
+
+<!-- STICKY TOC -->
+<aside>
+  <div class="tips-toc-float">
+    <h4>On this page</h4>
+    <ul>
+      <li><a href="#tips-tips"   class="toc-link">⚡ 24 Pro Tips</a></li>
+      <li><a href="#tips-addons" class="toc-link">🔌 Addons &amp; Assets</a></li>
+      <li><a href="#tips-fixes"  class="toc-link">🐛 Problem Fixes</a></li>
+    </ul>
+  </div>
+</aside>
+
+</div><!-- end tips-main-layout -->
 </main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="index.html">Home</a><a href="shortcuts.html">Shortcuts</a><a href="https://blender.org" target="_blank">Blender.org</a><a href="https://blenderkit.com" target="_blank">BlenderKit</a><a href="https://polyhaven.com" target="_blank">Poly Haven</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <script src="shared.js"></script>
+<script>
+// TOC scroll-spy
+const tocLinks = document.querySelectorAll('.toc-link');
+const tocSections = ['tips-tips','tips-addons','tips-fixes'].map(id => document.getElementById(id)).filter(Boolean);
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('toc-active'));
+      const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('toc-active');
+    }
+  });
+}, { rootMargin:'-20% 0px -70% 0px' });
+tocSections.forEach(s => observer.observe(s));
+// Set first as default
+if (tocLinks[0]) tocLinks[0].classList.add('toc-active');
+</script>
 </body>
 </html>

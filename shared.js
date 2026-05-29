@@ -141,7 +141,58 @@ const SEARCH_DATA = [
   {key:'Shift+A',desc:'Add node (in Node Editor)',cat:'Nodes',page:'materials.html'},
   {key:'Ctrl+Shift+T',desc:'Node Wrangler PBR setup',cat:'Nodes',page:'materials.html'},
   {key:'Ctrl+G',desc:'Group selected nodes',cat:'Nodes',page:'materials.html'},
+  // Tips page
+  {key:'F9',desc:'Adjust last operator — most underused key in Blender',cat:'Pro Tips',page:'tips.html'},
+  {key:'Alt+D',desc:'Linked duplicate — all copies share the same mesh data',cat:'Pro Tips',page:'tips.html'},
+  {key:'O',desc:'Proportional editing — nearby verts follow the move',cat:'Pro Tips',page:'tips.html'},
+  {key:'Ctrl+T',desc:'Triangulate faces — fixes black face shading issues',cat:'Pro Tips',page:'tips.html'},
+  {key:'Shift+N',desc:'Recalculate normals — fixes dark/inverted faces',cat:'Pro Tips',page:'tips.html'},
+  // Modules
+  {key:'Basics',desc:'Navigation, interface map, object vs edit mode',cat:'Module',page:'basics.html'},
+  {key:'Modeling',desc:'Edit mode tools, modifiers, topology guide',cat:'Module',page:'modeling.html'},
+  {key:'Sculpting',desc:'Brushes, remesh, sculpt workflow',cat:'Module',page:'sculpting.html'},
+  {key:'Materials',desc:'Principled BSDF, shader nodes, PBR texturing',cat:'Module',page:'materials.html'},
+  {key:'Lighting',desc:'3-point lighting, HDRI, light types',cat:'Module',page:'lighting.html'},
+  {key:'Animation',desc:'Keyframes, timeline, graph editor, NLA',cat:'Module',page:'animation.html'},
+  {key:'Rendering',desc:'Cycles vs EEVEE, samples, denoising, output formats',cat:'Module',page:'rendering.html'},
+  // Glossary terms (searchable)
+  {key:'Topology',desc:'Arrangement of vertices, edges, faces in a mesh',cat:'Glossary',page:'glossary.html'},
+  {key:'N-gon',desc:'A face with more than 4 sides — can cause shading issues',cat:'Glossary',page:'glossary.html'},
+  {key:'UV Map',desc:'2D layout of a 3D surface for texture placement',cat:'Glossary',page:'glossary.html'},
+  {key:'PBR',desc:'Physically Based Rendering — realistic real-world materials',cat:'Glossary',page:'glossary.html'},
+  {key:'HDRI',desc:'High Dynamic Range Image used for environment lighting',cat:'Glossary',page:'glossary.html'},
+  {key:'Normal Map',desc:'Texture that fakes surface detail without adding geometry',cat:'Glossary',page:'glossary.html'},
+  {key:'Subsurface Scattering',desc:'Light passing through translucent surfaces like skin or wax',cat:'Glossary',page:'glossary.html'},
+  {key:'Cycles',desc:'Blender\'s ray-traced physically accurate render engine',cat:'Glossary',page:'glossary.html'},
+  {key:'EEVEE',desc:'Blender\'s real-time rasterized render engine — fast but approximate',cat:'Glossary',page:'glossary.html'},
+  {key:'Denoising',desc:'AI-based noise removal applied after rendering',cat:'Glossary',page:'glossary.html'},
+  {key:'Keyframe',desc:'A recorded value at a specific frame — Blender interpolates between them',cat:'Glossary',page:'glossary.html'},
+  {key:'Armature',desc:'A skeleton rig made of bones for animating characters',cat:'Glossary',page:'glossary.html'},
+  {key:'Modifier',desc:'Non-destructive operation on a mesh (SubDiv, Mirror, Boolean, etc.)',cat:'Glossary',page:'glossary.html'},
+  {key:'Edge Loop',desc:'A continuous ring of edges that wraps around a mesh',cat:'Glossary',page:'glossary.html'},
+  {key:'Firefly',desc:'Isolated bright pixel artifact caused by extreme light paths in Cycles',cat:'Glossary',page:'glossary.html'},
+  {key:'Procedural',desc:'Generated mathematically rather than painted — infinitely scalable textures',cat:'Glossary',page:'glossary.html'},
 ];
+
+// ===== COPY KBD BUTTONS =====
+document.querySelectorAll('.sc-row').forEach(row => {
+  const kbd = row.querySelector('kbd');
+  if (!kbd) return;
+  const btn = document.createElement('button');
+  btn.className = 'copy-kbd-btn';
+  btn.title = 'Copy shortcut';
+  btn.textContent = '⎘';
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const text = kbd.textContent.trim();
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+      .catch(() => { const t=document.createElement('textarea'); t.value=text; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); });
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘'; btn.classList.remove('copied'); }, 1600);
+  });
+  row.appendChild(btn);
+});
 
 const searchInput = document.getElementById('searchInput');
 const searchDrop  = document.getElementById('searchResults');

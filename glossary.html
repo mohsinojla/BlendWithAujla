@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glossary — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search shortcuts, terms…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html"><span class="pg-icon">🏠</span>Home</a></li>
+    <li><a href="basics.html"><span class="pg-icon">🌱</span>Basics</a></li>
+    <li><a href="shortcuts.html"><span class="pg-icon">⌨️</span>Shortcuts</a></li>
+    <li><a href="modeling.html"><span class="pg-icon">🔧</span>Modeling</a></li>
+    <li><a href="sculpting.html"><span class="pg-icon">🫧</span>Sculpting</a></li>
+    <li><a href="materials.html"><span class="pg-icon">🎨</span>Materials</a></li>
+    <li><a href="lighting.html"><span class="pg-icon">💡</span>Lighting</a></li>
+    <li><a href="animation.html"><span class="pg-icon">🎬</span>Animation</a></li>
+    <li><a href="rendering.html"><span class="pg-icon">📷</span>Rendering</a></li>
+    <li><a href="tips.html"><span class="pg-icon">⚡</span>Pro Tips</a></li>
+    <li><a href="glossary.html"><span class="pg-icon">📖</span>Glossary</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">📖 Reference</div>
+    <h1>Blender <span class="gradient-text">Glossary</span></h1>
+    <p>Every Blender term explained in plain English. Search, filter by category, and bookmark the ones you always forget.</p>
+  </div>
+</div>
+
+<main class="container">
+  <section class="section">
+
+    <div class="gloss-search-wrap">
+      <input class="gloss-search" id="glossSearch" type="text" placeholder="Search terms… e.g. topology, HDRI, keyframe" autocomplete="off">
+    </div>
+
+    <div class="gloss-filters" id="glossFilters">
+      <button class="gloss-filter on" data-cat="all">All</button>
+      <button class="gloss-filter" data-cat="General">⚙️ General</button>
+      <button class="gloss-filter" data-cat="Modeling">🔷 Modeling</button>
+      <button class="gloss-filter" data-cat="Materials">🎨 Materials</button>
+      <button class="gloss-filter" data-cat="Rendering">📷 Rendering</button>
+      <button class="gloss-filter" data-cat="Animation">🎬 Animation</button>
+    </div>
+
+    <div class="gloss-count" id="glossCount"></div>
+    <div class="gloss-grid" id="glossGrid"></div>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span>⬡</span> Blend with Aujla</div>
+    <div class="footer-links">
+      <a href="shortcuts.html">Shortcuts</a>
+      <a href="tips.html">Pro Tips</a>
+      <a href="https://docs.blender.org" target="_blank">Official Docs</a>
+    </div>
+    <div class="footer-copy">Blender 4.x · No ads · Free forever</div>
+  </div>
+</footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+const TERMS = [
+  // General
+  {term:'Origin',cat:'General',def:'The reference point of an object used for all transformations (move, rotate, scale). Shown as an orange dot. Reposition with Object → Set Origin.'},
+  {term:'Collection',cat:'General',def:'A folder-like container for organizing scene objects. Press M to assign objects. Collections can be hidden, excluded from render, or linked between files.'},
+  {term:'N Panel',cat:'General',def:'The side panel in the 3D viewport opened by pressing N. Contains Item (object properties), View, and Tool tabs. Addons often add their own tabs here.'},
+  {term:'Workspace',cat:'General',def:'A named layout of editors saved for a specific task — Layout, Modeling, Sculpting, Shading, Animation, Rendering. Switch via tabs at the top.'},
+  {term:'Modifier',cat:'General',def:'A non-destructive operation applied on top of a mesh. Examples: Subdivision Surface, Mirror, Boolean, Array. Applied in a stack — order matters.'},
+  {term:'Outliner',cat:'General',def:'The panel listing every object, collection, bone, and data-block in your scene as a tree. Use the eye/camera/lock icons to control visibility and renderability.'},
+  {term:'Properties Panel',cat:'General',def:'The vertical panel on the right side containing Render, Output, View Layer, Scene, World, Object, Modifier, Particle, Physics, Material, and Data settings.'},
+  {term:'Local View',cat:'General',def:'Isolation mode — press / to enter. Only the selected object(s) are shown; everything else is hidden. Press / again to exit. Ideal for focusing on one object.'},
+  {term:'F9',cat:'General',def:'Opens a popup to adjust the last operation\'s settings. Press after any action — loop cut, bevel, extrude — to tweak segment count, depth, etc. Massively underused.'},
+  {term:'Purge',cat:'General',def:'File → Clean Up → Purge All. Removes all unused data-blocks (meshes, materials, images) from the file. Keeps .blend files small and stable.'},
+  {term:'Driver',cat:'General',def:'A link between two properties. Right-click any value → Add Driver. E.g., a bone rotation controls a shape key value. Makes rigs fully automatic.'},
+  {term:'Asset Library',cat:'General',def:'A personal library of reusable objects, materials, and node groups. Mark any item as an asset, set a library path in Preferences, then drag assets into any scene.'},
+
+  // Modeling
+  {term:'Topology',cat:'Modeling',def:'The arrangement of vertices, edges, and faces that make up a mesh. Good topology uses mostly quads, flows with surface form, and deforms cleanly for animation.'},
+  {term:'N-gon',cat:'Modeling',def:'A face with more than 4 sides. Can cause shading issues, SubDiv artifacts, and export problems. Triangulate with Ctrl+T or manually reduce to quads.'},
+  {term:'Edge Loop',cat:'Modeling',def:'A continuous ring of edges that wraps around a mesh. Add with Ctrl+R, select with Alt+Click. Essential for controlling SubDiv smoothness and deformation.'},
+  {term:'Pole',cat:'Modeling',def:'A vertex where an unusual number of edges meet. A 4-pole (4 edges) is cleanest. 3-poles and 5-poles (needed at shape transitions) cause minor shading differences.'},
+  {term:'Manifold',cat:'Modeling',def:'A "watertight" mesh with no holes, no internal faces, and no edges shared by more than 2 faces. Required for boolean operations, 3D printing, and correct physics.'},
+  {term:'Boolean',cat:'Modeling',def:'An operation combining two meshes by union, difference, or intersection. Use the Boolean modifier. Set Solver to "Exact" for complex meshes. Apply scale first (Ctrl+A).'},
+  {term:'Subdivision Surface',cat:'Modeling',def:'A modifier (SubDiv) that smooths a mesh by adding geometry. Low-poly cage + SubDiv = smooth organic shapes. Control sharpness with edge creases (Shift+E).'},
+  {term:'Bevel',cat:'Modeling',def:'Rounds sharp edges by adding new geometry. Ctrl+B in Edit Mode. Scroll to add segments. Higher segments = smoother bevel. Essential for realistic hard-surface models.'},
+  {term:'Extrude',cat:'Modeling',def:'Creates new geometry by extending selected faces, edges, or vertices. Press E in Edit Mode. Alt+E for more options. The most fundamental modeling operation.'},
+  {term:'Loop Cut',cat:'Modeling',def:'Adds a new edge loop across a mesh surface. Press Ctrl+R, hover over the mesh, scroll to add more cuts, click to place, right-click to center. Adds topology detail.'},
+  {term:'Remesh',cat:'Modeling',def:'Rebuilds a mesh with uniform polygon density. Voxel Remesh (Ctrl+R in Sculpt Mode) creates a clean base for sculpting. QuadRemesher addon for production retopology.'},
+  {term:'Solidify',cat:'Modeling',def:'A modifier that gives a thin surface real thickness. Essential for cloth, paper, and glass objects. Adjust Thickness in the modifier settings.'},
+  {term:'Retopology',cat:'Modeling',def:'The process of creating clean quad-based topology over a high-poly sculpt. Tools: LoopTools addon, RetopoFlow addon, Shrinkwrap modifier snapping.'},
+  {term:'Mirror Modifier',cat:'Modeling',def:'Mirrors mesh across an axis. Model one half and get the other for free. Enable Clipping to merge vertices at the center seam. Apply Scale before using (Ctrl+A).'},
+
+  // Materials
+  {term:'Shader',cat:'Materials',def:'A program that determines how a surface responds to light. In Blender, materials are built from shader nodes. The Principled BSDF covers most real-world materials.'},
+  {term:'PBR',cat:'Materials',def:'Physically Based Rendering. A material system that uses real-world measured properties (roughness, metallic, base color) so materials look correct under any lighting.'},
+  {term:'Principled BSDF',cat:'Materials',def:'Blender\'s all-in-one physically accurate material shader. Covers diffuse, specular, metallic, glass, subsurface scattering, sheen, and more in a single node.'},
+  {term:'UV Map',cat:'Materials',def:'A 2D layout of a 3D mesh surface used to position textures. Unwrap with U in Edit Mode. Use Smart UV Project for hard-surface, Unwrap for organic shapes.'},
+  {term:'Roughness',cat:'Materials',def:'Controls how mirror-like (0 = perfect mirror) or matte (1 = completely rough) a surface appears. Most real surfaces range from 0.2 (polished) to 0.8 (matte).'},
+  {term:'Metallic',cat:'Materials',def:'Controls PBR metallic appearance. 0 = dielectric (plastic, stone, skin). 1 = conductor (gold, steel, chrome). Never use in-between values for realistic results.'},
+  {term:'Normal Map',cat:'Materials',def:'A blue-purple texture that fakes surface bumps and detail without adding geometry. Set to Non-Color space. Connect through a Normal Map node to the BSDF.'},
+  {term:'HDRI',cat:'Materials',def:'High Dynamic Range Image used for environment lighting. Provides realistic ambient light and reflections. Find free HDRIs at Poly Haven. Set in World Properties → Surface.'},
+  {term:'Emission',cat:'Materials',def:'Makes a surface glow and emit light. In Cycles it actually illuminates the scene. In EEVEE enable Bloom for visible glow. Great for screens, neon, fire.'},
+  {term:'Subsurface Scattering',cat:'Materials',def:'Light penetrates and scatters inside translucent materials like skin, wax, marble, and leaves. In Principled BSDF, increase Subsurface Weight and set Subsurface Radius color.'},
+  {term:'Procedural Texture',cat:'Materials',def:'A texture generated by math nodes (Noise, Voronoi, Wave, Musgrave) rather than painted. Infinitely scalable, never pixelated, fully parametric and adjustable.'},
+  {term:'Node Wrangler',cat:'Materials',def:'Built-in Blender addon for faster node editing. Enable in Preferences → Add-ons. Ctrl+Shift+T auto-connects PBR textures to Principled BSDF. Must have for materials work.'},
+
+  // Rendering
+  {term:'Cycles',cat:'Rendering',def:'Blender\'s physically accurate ray-traced render engine. Slow but photorealistic. Uses samples to calculate light bouncing. Enable GPU rendering for 10–50× speed boost.'},
+  {term:'EEVEE',cat:'Rendering',def:'Blender\'s real-time rasterized render engine. Fast but approximate. Good for stylized work, architectural visualization with proper setup, and quick previews.'},
+  {term:'Sample',cat:'Rendering',def:'One complete light-path tracing calculation. More samples = less noise but slower renders. Typical values: 64–128 (preview), 256–512 (production), 1024+ (archviz).'},
+  {term:'Denoising',cat:'Rendering',def:'AI-based noise removal using OIDN (CPU/GPU universal) or OptiX (NVIDIA only). Allows using fewer samples — 128 denoised often looks cleaner than 2048 undenoised.'},
+  {term:'Firefly',cat:'Rendering',def:'An isolated extremely bright pixel artifact caused by rare intense light paths. Fix: enable Clamping (Indirect = 8–10) in Light Paths. Disable Caustics if not needed.'},
+  {term:'Caustics',cat:'Rendering',def:'The bright focused light patterns created when light passes through or reflects off curved transparent/glossy surfaces (e.g., glass casting a bright pattern on a table).'},
+  {term:'Render Pass',cat:'Rendering',def:'A separately rendered image layer — shadows, reflections, depth, AO, etc. Enable in View Layer → Passes. Save as EXR for compositing in Blender, Nuke, or After Effects.'},
+  {term:'Light Bounces',cat:'Rendering',def:'How many times a ray of light reflects before being terminated. Higher bounces = more realistic global illumination but slower renders. Most scenes look fine at 4–8 total bounces.'},
+  {term:'Adaptive Sampling',cat:'Rendering',def:'Automatically allocates more samples to complex noisy areas and fewer to smooth areas. Threshold 0.01 = high quality. Saves significant render time on most scenes.'},
+  {term:'Color Management',cat:'Rendering',def:'Controls how colors are displayed and encoded. Render Properties → Color Management. Use "Filmic" or "AgX" view transform for realistic exposure. Never use "Raw" for final renders.'},
+
+  // Animation
+  {term:'Keyframe',cat:'Animation',def:'A recorded property value at a specific frame. Blender interpolates between keyframes automatically. Press I to insert. Delete with Alt+I. Move in the Timeline or Dope Sheet.'},
+  {term:'NLA Editor',cat:'Animation',def:'Non-Linear Animation editor. Stacks and blends multiple animation clips (Actions) on one rig. Ideal for mixing walk, run, jump animations non-destructively.'},
+  {term:'Graph Editor',cat:'Animation',def:'Shows animation as editable curves over time. Control easing with bezier handles. Flat handles = linear, rounded = ease in/out. Essential for polished, natural motion.'},
+  {term:'Armature',cat:'Animation',def:'A skeleton rig made of bones. In Pose Mode, bones are keyframed to animate characters. Parent a mesh to an armature with Ctrl+P → With Automatic Weights.'},
+  {term:'IK',cat:'Animation',def:'Inverse Kinematics. Moving the end of a bone chain (e.g., foot) automatically positions the rest (knee, hip). More intuitive than FK for limbs. Set up with IK Constraint.'},
+  {term:'Shape Key',cat:'Animation',def:'A recorded mesh deformation — e.g. a smile. Multiple shape keys blend together for facial animation. Driven by bones or sliders. Essential for character expressions.'},
+  {term:'Constraint',cat:'Animation',def:'A rule applied to an object or bone. Copy Location, Look At, Floor, IK, Follow Path. Keeps relationships between objects without manual keyframing. Found in Bone/Object Properties.'},
+  {term:'Dope Sheet',cat:'Animation',def:'A timeline showing all keyframes as diamonds. Drag to retime animation. Box select to grab groups of keys. Easier for big-picture timing than the Graph Editor.'},
+];
+
+let activeCat = 'all';
+let searchQ = '';
+
+function renderGloss() {
+  const grid = document.getElementById('glossGrid');
+  const countEl = document.getElementById('glossCount');
+  const filtered = TERMS.filter(t => {
+    const catMatch = activeCat === 'all' || t.cat === activeCat;
+    const q = searchQ.toLowerCase();
+    const textMatch = !q || t.term.toLowerCase().includes(q) || t.def.toLowerCase().includes(q) || t.cat.toLowerCase().includes(q);
+    return catMatch && textMatch;
+  }).sort((a,b) => a.term.localeCompare(b.term));
+
+  countEl.textContent = filtered.length + ' term' + (filtered.length !== 1 ? 's' : '');
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="gloss-empty">No terms match your search. Try a different word.</div>';
+    return;
+  }
+
+  const catClass = { General:'gc-general', Modeling:'gc-modeling', Materials:'gc-materials', Rendering:'gc-rendering', Animation:'gc-animation' };
+  grid.innerHTML = filtered.map(t => `
+    <div class="gloss-card reveal">
+      <div class="gloss-card-head">
+        <span class="gloss-term">${highlight(t.term, searchQ)}</span>
+        <span class="gloss-cat-badge ${catClass[t.cat]||''}">${t.cat}</span>
+      </div>
+      <div class="gloss-def">${highlight(t.def, searchQ)}</div>
+    </div>
+  `).join('');
+  // Re-attach reveal observer
+  document.querySelectorAll('.gloss-card.reveal:not(.visible)').forEach(el => revealObs && revealObs.observe(el));
+}
+
+function highlight(text, q) {
+  if (!q || q.length < 2) return text;
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(re, '<mark style="background:rgba(230,126,34,.25);color:inherit;border-radius:2px">$1</mark>');
+}
+
+// Filters
+document.getElementById('glossFilters').addEventListener('click', e => {
+  if (!e.target.dataset.cat) return;
+  activeCat = e.target.dataset.cat;
+  document.querySelectorAll('.gloss-filter').forEach(b => b.classList.toggle('on', b.dataset.cat === activeCat));
+  renderGloss();
+});
+
+// Search
+document.getElementById('glossSearch').addEventListener('input', e => {
+  searchQ = e.target.value.trim();
+  renderGloss();
+});
+
+renderGloss();
+</script>
+</body>
+</html>
