@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blend with Aujla — Complete Blender 4.x Guide</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+<style>
+/* ===== HOME STYLES ===== */
+#hero {
+  min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  align-items:center; text-align:center; padding:6rem 2rem 4rem;
+  background:radial-gradient(ellipse at 50% 40%,rgba(230,126,34,.09) 0%,transparent 65%),
+             radial-gradient(ellipse at 80% 80%,rgba(52,152,219,.05) 0%,transparent 50%),var(--bg);
+  position:relative; overflow:hidden;
+}
+#hero::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 56px,rgba(255,255,255,.013) 56px,rgba(255,255,255,.013) 57px),
+             repeating-linear-gradient(90deg,transparent,transparent 56px,rgba(255,255,255,.013) 56px,rgba(255,255,255,.013) 57px);
+}
+.hero-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.3rem .95rem; border-radius:20px;
+  background:rgba(230,126,34,.12); border:1px solid rgba(230,126,34,.25);
+  color:var(--accent); font-size:.75rem; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; margin-bottom:1.5rem;
+  animation:fadeUp .6s ease .1s both;
+}
+#hero h1 {
+  font-size:clamp(2.8rem,8vw,5.5rem); font-weight:900; line-height:1.05;
+  letter-spacing:-.04em; margin-bottom:1.25rem;
+  animation:fadeUp .6s ease .2s both;
+}
+#hero p {
+  font-size:1.1rem; color:var(--text2); max-width:580px;
+  margin:0 auto 2.5rem; line-height:1.75;
+  animation:fadeUp .6s ease .3s both;
+}
+.hero-btns { display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center; margin-bottom:3.5rem; animation:fadeUp .6s ease .4s both; }
+.btn { display:inline-flex; align-items:center; gap:.4rem; padding:.7rem 1.5rem; border-radius:9px; font-size:.9rem; font-weight:700; text-decoration:none; transition:all var(--transition); }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { background:var(--accent3); transform:translateY(-2px); box-shadow:0 8px 24px rgba(230,126,34,.4); }
+.btn-ghost { background:transparent; color:var(--text); border:1px solid var(--border); }
+.btn-ghost:hover { border-color:var(--accent); color:var(--accent); background:rgba(230,126,34,.05); transform:translateY(-2px); }
+.hero-stats { display:flex; gap:3rem; flex-wrap:wrap; justify-content:center; animation:fadeUp .6s ease .5s both; }
+.stat-item { text-align:center; }
+.stat-num { font-size:2.4rem; font-weight:900; color:var(--accent); line-height:1; display:block; }
+.stat-label { font-size:.78rem; color:var(--text2); margin-top:.15rem; }
+
+/* cube */
+.cube-wrap { position:absolute; right:8%; top:50%; transform:translateY(-50%); perspective:600px; width:200px; height:200px; opacity:.3; pointer-events:none; }
+@media(max-width:900px){.cube-wrap{display:none}}
+.cube { width:160px; height:160px; position:relative; transform-style:preserve-3d; animation:spin 18s linear infinite; margin:20px; }
+@keyframes spin { to { transform:rotateX(15deg) rotateY(360deg); } }
+.face { position:absolute; width:160px; height:160px; display:flex; align-items:center; justify-content:center; font-size:.95rem; font-weight:700; letter-spacing:.05em; color:var(--accent); border:1.5px solid rgba(230,126,34,.4); background:rgba(230,126,34,.05); }
+.front  { transform:translateZ(80px); }
+.back   { transform:rotateY(180deg) translateZ(80px); }
+.left   { transform:rotateY(-90deg) translateZ(80px); }
+.right  { transform:rotateY(90deg)  translateZ(80px); }
+.top    { transform:rotateX(90deg)  translateZ(80px); }
+.bottom { transform:rotateX(-90deg) translateZ(80px); }
+
+/* floating shapes */
+.hero-float { position:absolute; pointer-events:none; opacity:.06; animation:floatY 6s ease-in-out infinite; }
+.hf1 { left:5%; top:20%; font-size:5rem; animation-delay:0s; }
+.hf2 { left:12%; bottom:25%; font-size:3rem; animation-delay:2s; }
+.hf3 { right:3%; bottom:30%; font-size:4rem; animation-delay:1s; }
+
+/* modules grid */
+.modules-section { padding:4rem 2rem; background:var(--bg2); }
+.modules-section h2 { text-align:center; font-size:2rem; font-weight:900; letter-spacing:-.02em; margin-bottom:.5rem; }
+.modules-section p.sub { text-align:center; color:var(--text2); margin-bottom:2.5rem; }
+.modules-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; max-width:1360px; margin:0 auto; }
+.mod-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:1.5rem;
+  text-decoration:none; color:var(--text);
+  display:flex; flex-direction:column; gap:.5rem;
+  position:relative; overflow:hidden;
+  transition:border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.mod-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transform:scaleX(0); transform-origin:left; transition:transform .3s ease; }
+.mod-card:hover::before { transform:scaleX(1); }
+.mod-card:hover { border-color:rgba(230,126,34,.3); transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+.mod-icon { font-size:1.8rem; }
+.mod-num { font-size:.68rem; font-weight:800; color:var(--text3); text-transform:uppercase; letter-spacing:.08em; }
+.mod-title { font-size:1rem; font-weight:800; }
+.mod-desc { font-size:.82rem; color:var(--text2); line-height:1.5; }
+.mod-arrow { margin-top:auto; font-size:.8rem; color:var(--accent); font-weight:700; }
+
+/* quick picks */
+.qp-section { padding:4rem 2rem; max-width:1360px; margin:0 auto; }
+.qp-section h2 { font-size:1.6rem; font-weight:900; margin-bottom:.4rem; }
+.qp-section p { color:var(--text2); margin-bottom:2rem; }
+.qp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:.75rem; }
+.qp-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:1rem;
+  text-decoration:none; color:var(--text);
+  display:flex; align-items:center; gap:.75rem;
+  transition:all var(--transition);
+}
+.qp-card:hover { border-color:var(--accent); background:rgba(230,126,34,.04); transform:translateY(-2px); }
+.qp-card .qp-icon { font-size:1.3rem; }
+.qp-card span { font-size:.85rem; font-weight:600; }
+
+/* interactive keyboard section */
+.kbi-section { padding:4rem 2rem; max-width:1360px; margin:0 auto; }
+.kbi-section h2 { font-size:1.6rem; font-weight:900; margin-bottom:.4rem; }
+.kbi-section > p { color:var(--text2); margin-bottom:1.5rem; }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search">
+    <input type="text" id="searchInput" placeholder="Search shortcuts, tips…" autocomplete="off">
+    <div id="searchResults" class="search-dropdown"></div>
+  </div>
+  <ul class="nav-pages">
+    <li><a href="index.html"><span class="pg-icon">🏠</span>Home</a></li>
+    <li><a href="basics.html"><span class="pg-icon">🌱</span>Basics</a></li>
+    <li><a href="shortcuts.html"><span class="pg-icon">⌨️</span>Shortcuts</a></li>
+    <li><a href="modeling.html"><span class="pg-icon">🔧</span>Modeling</a></li>
+    <li><a href="sculpting.html"><span class="pg-icon">🫧</span>Sculpting</a></li>
+    <li><a href="materials.html"><span class="pg-icon">🎨</span>Materials</a></li>
+    <li><a href="lighting.html"><span class="pg-icon">💡</span>Lighting</a></li>
+    <li><a href="animation.html"><span class="pg-icon">🎬</span>Animation</a></li>
+    <li><a href="rendering.html"><span class="pg-icon">📷</span>Rendering</a></li>
+    <li><a href="tips.html"><span class="pg-icon">⚡</span>Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-float hf1">⬡</div>
+  <div class="hero-float hf2">◈</div>
+  <div class="hero-float hf3">◇</div>
+  <div class="cube-wrap">
+    <div class="cube">
+      <div class="face front">Edit</div>
+      <div class="face back">Render</div>
+      <div class="face left">Model</div>
+      <div class="face right">Sculpt</div>
+      <div class="face top">Shade</div>
+      <div class="face bottom">Anim</div>
+    </div>
+  </div>
+  <div class="hero-badge">✦ Blender 4.x · Made by Aujla</div>
+  <h1>Blend <span class="gradient-text">with Aujla</span><br>Zero to Pro</h1>
+  <p>Every shortcut, workflow, tip and technique — organized so you find it in seconds. Perfect for beginners remembering the basics, and pros discovering new tricks.</p>
+  <div class="hero-btns">
+    <a href="basics.html" class="btn btn-primary">Start Learning →</a>
+    <a href="shortcuts.html" class="btn btn-ghost">⌨️ All Shortcuts</a>
+    <a href="tips.html" class="btn btn-ghost">⚡ Pro Tips</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><span class="stat-num counter" data-target="200" data-suffix="+">0</span><span class="stat-label">Shortcuts</span></div>
+    <div class="stat-item"><span class="stat-num counter" data-target="10">0</span><span class="stat-label">Modules</span></div>
+    <div class="stat-item"><span class="stat-num counter" data-target="24">0</span><span class="stat-label">Pro Tips</span></div>
+    <div class="stat-item"><span class="stat-num">∞</span><span class="stat-label">Free Forever</span></div>
+  </div>
+</section>
+
+<!-- MODULES GRID -->
+<section class="modules-section">
+  <h2>Choose a Module</h2>
+  <p class="sub">Each page is focused — no endless scrolling.</p>
+  <div class="modules-grid">
+    <a class="mod-card reveal stagger-1" href="basics.html">
+      <div class="mod-icon">🌱</div>
+      <div class="mod-num">Module 01</div>
+      <div class="mod-title">The Absolute Basics</div>
+      <div class="mod-desc">Install, setup, navigation, object modes, and the G/R/S transform trio.</div>
+      <div class="mod-arrow">Start here →</div>
+    </a>
+    <a class="mod-card reveal stagger-2" href="shortcuts.html">
+      <div class="mod-icon">⌨️</div>
+      <div class="mod-num">Module 02</div>
+      <div class="mod-title">Shortcuts Reference</div>
+      <div class="mod-desc">200+ shortcuts by mode. Universal, Object, Edit, Sculpt, Animation, Render, Nodes.</div>
+      <div class="mod-arrow">Browse shortcuts →</div>
+    </a>
+    <a class="mod-card reveal stagger-3" href="modeling.html">
+      <div class="mod-icon">🔧</div>
+      <div class="mod-num">Module 03</div>
+      <div class="mod-title">Modeling</div>
+      <div class="mod-desc">Box modeling, hard surface, retopology, subdivision, modifiers, precision techniques.</div>
+      <div class="mod-arrow">Start modeling →</div>
+    </a>
+    <a class="mod-card reveal stagger-4" href="sculpting.html">
+      <div class="mod-icon">🫧</div>
+      <div class="mod-num">Module 04</div>
+      <div class="mod-title">Sculpting</div>
+      <div class="mod-desc">Every brush, Dyntopo vs Multires vs Remesh, masking, face sets, and full workflows.</div>
+      <div class="mod-arrow">Start sculpting →</div>
+    </a>
+    <a class="mod-card reveal stagger-5" href="materials.html">
+      <div class="mod-icon">🎨</div>
+      <div class="mod-num">Module 05</div>
+      <div class="mod-title">Materials & Shading</div>
+      <div class="mod-desc">Node-based PBR, Principled BSDF all inputs, procedural textures, Node Wrangler tricks.</div>
+      <div class="mod-arrow">Learn shading →</div>
+    </a>
+    <a class="mod-card reveal stagger-6" href="lighting.html">
+      <div class="mod-icon">💡</div>
+      <div class="mod-num">Module 06</div>
+      <div class="mod-title">Lighting</div>
+      <div class="mod-desc">All light types, 3-point setup, HDRI, Cycles vs EEVEE, volumetrics, color theory.</div>
+      <div class="mod-arrow">Light your scene →</div>
+    </a>
+    <a class="mod-card reveal stagger-1" href="animation.html">
+      <div class="mod-icon">🎬</div>
+      <div class="mod-num">Module 07</div>
+      <div class="mod-title">Animation</div>
+      <div class="mod-desc">Keyframing, graph editor, rigging, shape keys, NLA editor, physics sims, 12 principles.</div>
+      <div class="mod-arrow">Start animating →</div>
+    </a>
+    <a class="mod-card reveal stagger-2" href="rendering.html">
+      <div class="mod-icon">📷</div>
+      <div class="mod-num">Module 08</div>
+      <div class="mod-title">Rendering</div>
+      <div class="mod-desc">Cycles & EEVEE settings, denoising, output, compositor, camera, speed optimization.</div>
+      <div class="mod-arrow">Render it →</div>
+    </a>
+    <a class="mod-card reveal stagger-3" href="tips.html">
+      <div class="mod-icon">⚡</div>
+      <div class="mod-num">Module 09</div>
+      <div class="mod-title">Pro Tips & Hidden Gems</div>
+      <div class="mod-desc">24 tips pros use daily. F9, drivers, asset libraries, Python tricks, and common fixes.</div>
+      <div class="mod-arrow">Level up →</div>
+    </a>
+  </div>
+</section>
+
+<!-- INTERACTIVE KEYBOARD -->
+<section class="kbi-section">
+  <h2>🎹 Interactive Shortcut Keyboard</h2>
+  <p>Hover over the highlighted keys to see what they do in Blender. Colored by mode.</p>
+
+  <div class="kbd-layout reveal">
+    <div class="kbd-row">
+      <div class="key-cap wide-1" data-tip="Escape: Cancel operation / close menu">Esc</div>
+      <div class="key-cap blender-key" data-tip="F1: Open File (not a shortcut but F-keys matter)">F1</div>
+      <div class="key-cap blender-key" data-tip="F2: Rename selected object">F2</div>
+      <div class="key-cap blender-key" data-tip="F3: Search for any Blender command">F3</div>
+      <div class="key-cap" data-tip="F4: File context menu">F4</div>
+      <div class="key-cap" data-tip="F5–F8: No default binding">F5</div>
+      <div class="key-cap" data-tip="">F6</div>
+      <div class="key-cap" data-tip="">F7</div>
+      <div class="key-cap" data-tip="">F8</div>
+      <div class="key-cap blender-key" data-tip="F9: Adjust last operator — tweak your last action!">F9</div>
+      <div class="key-cap" data-tip="">F10</div>
+      <div class="key-cap blender-key" data-tip="F11: Show last render result">F11</div>
+      <div class="key-cap blender-key" data-tip="F12: Render current frame">F12</div>
+    </div>
+    <div class="kbd-row">
+      <div class="key-cap" data-tip="">` ~</div>
+      <div class="key-cap nav-key" data-tip="1: Vertex select mode (Edit Mode)">1</div>
+      <div class="key-cap nav-key" data-tip="2: Edge select mode (Edit Mode)">2</div>
+      <div class="key-cap nav-key" data-tip="3: Face select mode (Edit Mode)">3</div>
+      <div class="key-cap" data-tip="">4</div>
+      <div class="key-cap" data-tip="">5</div>
+      <div class="key-cap" data-tip="">6</div>
+      <div class="key-cap" data-tip="">7</div>
+      <div class="key-cap" data-tip="">8</div>
+      <div class="key-cap" data-tip="">9</div>
+      <div class="key-cap" data-tip="">0</div>
+      <div class="key-cap" data-tip="">-</div>
+      <div class="key-cap" data-tip="">=</div>
+      <div class="key-cap wide-2" data-tip="">⌫ Back</div>
+    </div>
+    <div class="kbd-row">
+      <div class="key-cap wide-2" data-tip="Tab: Switch between Object Mode and Edit Mode">Tab ⇥</div>
+      <div class="key-cap blender-key" data-tip="Q: Quick Favorites menu — your personal shortcut menu">Q</div>
+      <div class="key-cap blender-key" data-tip="W: Select tool (or toggle bevel weight in Edit Mode)">W</div>
+      <div class="key-cap edit-key" data-tip="E: Extrude selection (Edit Mode)">E</div>
+      <div class="key-cap blender-key" data-tip="R: Rotate (press R then X/Y/Z to constrain axis)">R</div>
+      <div class="key-cap blender-key" data-tip="T: Toggle left toolbar in any editor">T</div>
+      <div class="key-cap blender-key" data-tip="Y: Separate selection (Edit Mode)">Y</div>
+      <div class="key-cap edit-key" data-tip="U: UV Unwrap menu (Edit Mode)">U</div>
+      <div class="key-cap edit-key" data-tip="I: Inset faces (Edit Mode) / Insert Keyframe (3D Viewport)">I</div>
+      <div class="key-cap blender-key" data-tip="O: Toggle Proportional Editing — affects nearby vertices too">O</div>
+      <div class="key-cap" data-tip="">P</div>
+      <div class="key-cap" data-tip="">[ {</div>
+      <div class="key-cap" data-tip="">] }</div>
+      <div class="key-cap wide-1" data-tip="">\ |</div>
+    </div>
+    <div class="kbd-row">
+      <div class="key-cap wide-2" data-tip="">⇪ Caps</div>
+      <div class="key-cap blender-key" data-tip="A: Select ALL objects/vertices. Alt+A to deselect all">A</div>
+      <div class="key-cap blender-key" data-tip="S: Scale object or selection">S</div>
+      <div class="key-cap edit-key" data-tip="D: (Shift+D) Duplicate selection. (Alt+D) Linked duplicate">D</div>
+      <div class="key-cap blender-key" data-tip="F: Fill (Edit Mode: create face/edge). Sculpt: resize brush">F</div>
+      <div class="key-cap blender-key" data-tip="G: Grab/Move — G X/Y/Z to constrain. G G = edge slide">G</div>
+      <div class="key-cap blender-key" data-tip="H: Hide selected. Alt+H to unhide all hidden objects">H</div>
+      <div class="key-cap" data-tip="">J</div>
+      <div class="key-cap edit-key" data-tip="K: Knife Tool — cut geometry along any path (Edit Mode)">K</div>
+      <div class="key-cap blender-key" data-tip="L: Select Linked under cursor. Ctrl+L = Select all linked">L</div>
+      <div class="key-cap" data-tip="">; :</div>
+      <div class="key-cap" data-tip="">' "</div>
+      <div class="key-cap wide-3" data-tip="">↵ Enter</div>
+    </div>
+    <div class="kbd-row">
+      <div class="key-cap wide-3" data-tip="">⇧ Shift</div>
+      <div class="key-cap blender-key" data-tip="Z: Shading pie menu (Solid/Wireframe/Rendered/Material)">Z</div>
+      <div class="key-cap edit-key" data-tip="X: Delete menu (Edit Mode). Object Mode: delete object">X</div>
+      <div class="key-cap blender-key" data-tip="C: Circle Select — hold to paint-select, scroll to resize">C</div>
+      <div class="key-cap blender-key" data-tip="V: Vertex slide. Or: open view pie menu (with ~)">V</div>
+      <div class="key-cap blender-key" data-tip="B: Box Select — drag a rectangle to select multiple">B</div>
+      <div class="key-cap" data-tip="">N</div>
+      <div class="key-cap blender-key" data-tip="M: Move to collection (Object Mode). Sculpt: Mask brush">M</div>
+      <div class="key-cap" data-tip="">, &lt;</div>
+      <div class="key-cap" data-tip="">. &gt;</div>
+      <div class="key-cap blender-key" data-tip="/ key: Toggle Local View — isolate selected object(s)">/  ?</div>
+      <div class="key-cap wide-4" data-tip="">⇧ Shift</div>
+    </div>
+    <div class="kbd-row">
+      <div class="key-cap wide-1" data-tip="">Ctrl</div>
+      <div class="key-cap wide-1" data-tip="">❖ Win</div>
+      <div class="key-cap wide-1" data-tip="">Alt</div>
+      <div class="key-cap spacebar" data-tip="Space: Play/Pause animation. Shift+Space also works">Space</div>
+      <div class="key-cap wide-1" data-tip="">Alt</div>
+      <div class="key-cap wide-1" data-tip="">Fn</div>
+      <div class="key-cap wide-1" data-tip="">Ctrl</div>
+    </div>
+    <div class="kbd-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(230,126,34,.5)"></div><span style="font-size:.74rem;color:var(--text2)">Universal / Object Mode</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(52,152,219,.5)"></div><span style="font-size:.74rem;color:var(--text2)">Edit Mode</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(39,174,96,.5)"></div><span style="font-size:.74rem;color:var(--text2)">Navigation / Select</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(155,89,182,.5)"></div><span style="font-size:.74rem;color:var(--text2)">Sculpt</span></div>
+    </div>
+  </div>
+  <div class="kbd-tooltip" id="kbdTooltip"></div>
+</section>
+
+<!-- QUICK PICKS -->
+<section class="qp-section">
+  <h2>Quick Picks</h2>
+  <p>Jump straight to what you need most</p>
+  <div class="qp-grid">
+    <a class="qp-card" href="shortcuts.html#sc-universal"><span class="qp-icon">🌐</span><span>Universal Shortcuts</span></a>
+    <a class="qp-card" href="shortcuts.html#sc-edit"><span class="qp-icon">✏️</span><span>Edit Mode Keys</span></a>
+    <a class="qp-card" href="shortcuts.html#sc-object"><span class="qp-icon">📦</span><span>Object Mode Keys</span></a>
+    <a class="qp-card" href="shortcuts.html#sc-sculpt"><span class="qp-icon">🫧</span><span>Sculpt Brushes</span></a>
+    <a class="qp-card" href="modeling.html"><span class="qp-icon">🔩</span><span>All Modifiers</span></a>
+    <a class="qp-card" href="materials.html"><span class="qp-icon">🎨</span><span>Principled BSDF</span></a>
+    <a class="qp-card" href="lighting.html"><span class="qp-icon">🌅</span><span>3-Point Lighting</span></a>
+    <a class="qp-card" href="rendering.html"><span class="qp-icon">⚙️</span><span>Cycles Settings</span></a>
+    <a class="qp-card" href="tips.html"><span class="qp-icon">🐛</span><span>Problem Fixes</span></a>
+    <a class="qp-card" href="tips.html"><span class="qp-icon">🔌</span><span>Best Addons</span></a>
+    <a class="qp-card" href="animation.html"><span class="qp-icon">🦴</span><span>Rigging Basics</span></a>
+    <a class="qp-card" href="shortcuts.html#sc-nodes"><span class="qp-icon">🔗</span><span>Node Shortcuts</span></a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span>⬡</span> Blend with Aujla</div>
+    <div class="footer-links">
+      <a href="https://blender.org" target="_blank">Blender.org</a>
+      <a href="https://docs.blender.org" target="_blank">Manual</a>
+      <a href="https://polyhaven.com" target="_blank">Poly Haven</a>
+      <a href="https://blenderartists.org" target="_blank">Community</a>
+    </div>
+    <div class="footer-copy">Blender 4.x · No ads · Free forever</div>
+  </div>
+</footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+// Interactive keyboard tooltip — positioned near the hovered key
+const tooltip = document.getElementById('kbdTooltip');
+let tooltipTimer;
+document.querySelectorAll('.key-cap[data-tip]').forEach(key => {
+  key.addEventListener('mouseenter', e => {
+    const tip = key.dataset.tip;
+    if (!tip || tip.trim() === '') return;
+    clearTimeout(tooltipTimer);
+    key.classList.add('active');
+    tooltip.textContent = tip;
+    tooltip.classList.add('show');
+    // Position above the key
+    const rect = key.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - 140; // center on key
+    if (left < 8) left = 8;
+    if (left + 320 > window.innerWidth) left = window.innerWidth - 328;
+    tooltip.style.left = left + 'px';
+    tooltip.style.top  = (rect.top - 8) + 'px'; // transform handles the rest
+  });
+  key.addEventListener('mouseleave', () => {
+    key.classList.remove('active');
+    tooltipTimer = setTimeout(() => tooltip.classList.remove('show'), 250);
+  });
+});
+</script>
+</body>
+</html>

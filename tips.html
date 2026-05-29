@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pro Tips — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+<style>
+.tip-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:1.5rem;
+  position:relative; overflow:hidden;
+  transition:border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.tip-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transform:scaleX(0); transform-origin:left; transition:transform .35s ease; }
+.tip-card:hover::before { transform:scaleX(1); }
+.tip-card:hover { border-color:rgba(230,126,34,.3); transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,.4); }
+.tip-num { font-size:3.5rem; font-weight:900; color:rgba(230,126,34,.1); position:absolute; top:.25rem; right:1rem; line-height:1; pointer-events:none; }
+.tip-card h3 { font-size:.95rem; font-weight:800; margin-bottom:.5rem; }
+.tip-card p { font-size:.84rem; color:var(--text2); line-height:1.65; }
+
+.addon-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:.85rem 1rem;
+  transition:all var(--transition);
+}
+.addon-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.addon-card strong { display:block; font-size:.87rem; margin-bottom:.2rem; }
+.addon-card p { font-size:.78rem; color:var(--text2); line-height:1.4; }
+.addon-card .addon-type { font-size:.65rem; font-weight:700; padding:.08rem .4rem; border-radius:4px; margin-bottom:.3rem; display:inline-block; }
+.built-in    { background:rgba(39,174,96,.15);  color:var(--green); }
+.third-party { background:rgba(52,152,219,.15); color:var(--blue); }
+.free-ext    { background:rgba(155,89,182,.15); color:var(--purple); }
+
+.filter-row { display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+.ftag { padding:.28rem .7rem; border-radius:20px; cursor:pointer; font-size:.78rem; font-weight:600; transition:all var(--transition); background:var(--card); border:1px solid var(--border); color:var(--text2); }
+.ftag:hover, .ftag.on { background:rgba(230,126,34,.12); border-color:var(--accent); color:var(--accent); }
+</style>
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠 Home</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">⚡ Module 09</div>
+    <h1>Pro Tips &amp; <span class="gradient-text">Hidden Gems</span></h1>
+    <p>Things that took years to discover. Now you know them from day one.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="sec-title">⚡ 24 Pro Tips</div>
+    <div class="grid-auto">
+      <div class="tip-card reveal"><div class="tip-num">01</div><h3>F9 — The Most Underused Key</h3><p>After any operation, press <kbd>F9</kbd> to get a popup to adjust the last action's settings. Added 16 loop cuts but want 8? F9. Bevel with wrong segments? F9. Works for almost every operation.</p></div>
+      <div class="tip-card reveal stagger-2"><div class="tip-num">02</div><h3>Right-Click Menus Hold Power</h3><p>Right-click in viewport, on properties, on any UI element — context menus appear. "Set Origin," "Mark Sharp," "Add Driver," "Subdivide" are often only accessible this way.</p></div>
+      <div class="tip-card reveal stagger-3"><div class="tip-num">03</div><h3>Type Numbers While Transforming</h3><p>After G/R/S, type an axis then a number: <kbd>G Z 2</kbd> moves exactly 2 units up. <kbd>R Z 45</kbd> rotates exactly 45°. No need to touch the N panel for precise moves.</p></div>
+      <div class="tip-card reveal stagger-4"><div class="tip-num">04</div><h3>Alt+D Instead of Shift+D</h3><p><kbd>Alt+D</kbd> creates a linked duplicate — same mesh data. Edit one and all linked copies update. Perfect for bolts, tiles, repeated props. Saves enormous memory too.</p></div>
+      <div class="tip-card reveal stagger-5"><div class="tip-num">05</div><h3>Proportional Editing (O Key)</h3><p>In Edit Mode press <kbd>O</kbd>. Move one vertex and nearby geometry follows with smooth falloff. Scroll wheel controls the radius. Use Connected mode for isolated mesh sections.</p></div>
+      <div class="tip-card reveal stagger-6"><div class="tip-num">06</div><h3>Quick Favorites — Build Your Q Menu</h3><p>Right-click any tool or menu item → Add to Quick Favorites. Press <kbd>Q</kbd> for instant access. Build a custom per-project menu with your 8 most-used tools.</p></div>
+      <div class="tip-card reveal"><div class="tip-num">07</div><h3>Drivers = Automatic Relationships</h3><p>Right-click any property → Add Driver. Link a material's color to an object's X position. Control shape keys with bone rotation. Manual animation becomes fully automatic.</p></div>
+      <div class="tip-card reveal stagger-2"><div class="tip-num">08</div><h3>Asset Library — Your Own Library</h3><p>Preferences → File Paths → Asset Libraries. Mark objects/materials/node groups as assets. Drag them into any project. Build a growing personal library of reusable content.</p></div>
+      <div class="tip-card reveal stagger-3"><div class="tip-num">09</div><h3>Link vs Append Between Files</h3><p>File → Link: brings in read-only references — source changes propagate automatically. File → Append: makes a local copy. Link is ideal for team work and master material libraries.</p></div>
+      <div class="tip-card reveal stagger-4"><div class="tip-num">10</div><h3>Hold Alt to Edit All Selected</h3><p>Select multiple objects, then hold <kbd>Alt</kbd> when changing a property — the change applies to all selected objects. Works for material values, modifier settings, and most properties.</p></div>
+      <div class="tip-card reveal stagger-5"><div class="tip-num">11</div><h3>Backface Culling for Normals</h3><p>Viewport shading dropdown → Backface Culling. Inside-out normals show as dark patches instantly. Fix with <kbd>Shift+N</kbd> (Recalculate Normals). Fastest way to diagnose normal issues.</p></div>
+      <div class="tip-card reveal stagger-6"><div class="tip-num">12</div><h3>Cavity in Solid Viewport</h3><p>Shading dropdown → enable Cavity. Adds AO in solid mode — you see mesh detail, creases and edges clearly while modeling and sculpting without switching to rendered view.</p></div>
+      <div class="tip-card reveal"><div class="tip-num">13</div><h3>Face Orientation Overlay</h3><p>Overlays → Face Orientation. Blue = normals pointing out (correct). Red = normals pointing in (flipped). Visual diagnosis before adding any modifiers or materials.</p></div>
+      <div class="tip-card reveal stagger-2"><div class="tip-num">14</div><h3>Info Editor = Python Tutor</h3><p>The Info Editor logs the Python code for every operation you do manually. Watch it while working to learn scripting. Copy commands for batch automation scripts.</p></div>
+      <div class="tip-card reveal stagger-3"><div class="tip-num">15</div><h3>Reference Images as Empty</h3><p>Add → Image → Reference. Places an image in 3D space. Set "In Front" to always see it. Essential for matching concept art, blueprints, or real-world reference photos.</p></div>
+      <div class="tip-card reveal stagger-4"><div class="tip-num">16</div><h3>Matcaps for Sculpting</h3><p>Solid mode shading → switch to MatCap. Pre-baked lighting shaders show surface detail clearly — perfect while sculpting. Clay, wax, and metal matcaps are built in.</p></div>
+      <div class="tip-card reveal stagger-5"><div class="tip-num">17</div><h3>Collections = Scene Organization</h3><p>Press <kbd>M</kbd> to assign objects to collections. Link entire collections between files. Hide/show all with one click. Exclude collections from render per View Layer. Game-changer for big scenes.</p></div>
+      <div class="tip-card reveal stagger-6"><div class="tip-num">18</div><h3>Render from Command Line</h3><p>Open terminal: <code>blender -b file.blend -f 1</code> renders frame 1. <code>-a</code> renders full animation. Start overnight renders without the UI, while using your PC for other things.</p></div>
+      <div class="tip-card reveal"><div class="tip-num">19</div><h3>Purge Orphan Data</h3><p>File → Clean Up → Purge All. Removes unused meshes, materials, images, and node groups. Keeps file size small and prevents mysterious crashes from bloated .blend files.</p></div>
+      <div class="tip-card reveal stagger-2"><div class="tip-num">20</div><h3>Geometry Nodes for Procedural</h3><p>Geometry Nodes modifier — build procedural geometry with a node tree. Scatter objects on surfaces, generate arrays, create patterns. Fully parametric, non-destructive, always adjustable.</p></div>
+      <div class="tip-card reveal stagger-3"><div class="tip-num">21</div><h3>Bake Textures for Speed</h3><p>Procedural shaders look great but slow Cycles down. Bake to image: Properties → Render → Bake. The baked texture renders instantly and exports cleanly to any game engine.</p></div>
+      <div class="tip-card reveal stagger-4"><div class="tip-num">22</div><h3>Custom Properties for Rigs</h3><p>Object Properties → Custom Properties → Add. Shows up as a keyframable slider in the N panel. Perfect for IK/FK blend, rig control values, and production parameters.</p></div>
+      <div class="tip-card reveal stagger-5"><div class="tip-num">23</div><h3>Render Passes for Compositing</h3><p>View Layer → Passes: enable AO, Shadow, Diffuse, Z-depth. Each renders as a separate image layer. In the compositor, mix them independently for complete control over the final image.</p></div>
+      <div class="tip-card reveal stagger-6"><div class="tip-num">24</div><h3>Ctrl+T to Fix Black Faces</h3><p>If faces appear black even with correct normals, select all in Edit Mode and press <kbd>Ctrl+T</kbd> (Triangulate). N-gons and complex quads sometimes confuse shading — triangulation solves it instantly. Tip by Aujla.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="addons">
+    <div class="sec-title">🔌 Must-Have Addons & Asset Sources</div>
+    <div class="grid-2">
+      <div>
+        <h3 style="font-size:.85rem;font-weight:700;color:var(--green);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.06em">Built-in (Enable in Preferences → Add-ons)</h3>
+        <div class="grid-auto-sm">
+          <div class="addon-card reveal"><span class="addon-type built-in">Built-in</span><strong>Node Wrangler</strong><p>Ctrl+Shift+T PBR setup, node preview, better node workflow. Must have for materials.</p></div>
+          <div class="addon-card reveal stagger-2"><span class="addon-type built-in">Built-in</span><strong>LoopTools</strong><p>Circle, relax, space, bridge — clean topology tools. Lives in Edit Mode right-click menu.</p></div>
+          <div class="addon-card reveal stagger-3"><span class="addon-type built-in">Built-in</span><strong>Rigify</strong><p>One-click professional character rigs with full IK/FK controls. For character animation.</p></div>
+          <div class="addon-card reveal stagger-4"><span class="addon-type built-in">Built-in</span><strong>Bool Tool</strong><p>Easier boolean operations. Ctrl+Numpad+/- for fast cuts and boolean modifiers.</p></div>
+          <div class="addon-card reveal stagger-5"><span class="addon-type built-in">Built-in</span><strong>Extra Objects</strong><p>More mesh primitives — gear, diamond, torus knot, round cube, honeycomb, etc.</p></div>
+          <div class="addon-card reveal stagger-6"><span class="addon-type built-in">Built-in</span><strong>A.N.T. Landscape</strong><p>Procedural terrain with noise-based displacement. Great for environment backgrounds.</p></div>
+          <div class="addon-card reveal"><span class="addon-type built-in">Built-in</span><strong>Archimesh</strong><p>Architectural elements: rooms, walls, windows, doors, stairs with full parameters.</p></div>
+          <div class="addon-card reveal stagger-2"><span class="addon-type built-in">Built-in</span><strong>Sapling Tree Gen</strong><p>Parametric procedural tree generator. Adjust branches, leaves, trunk shape easily.</p></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:.85rem;font-weight:700;color:var(--blue);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.06em">Third-Party (Purchase or Free)</h3>
+        <div class="grid-auto-sm">
+          <div class="addon-card reveal"><span class="addon-type third-party">Paid</span><strong>Hard Ops + BoxCutter</strong><p>The hard surface modeling powerhouse combo. Industry standard for mech/sci-fi work.</p></div>
+          <div class="addon-card reveal stagger-2"><span class="addon-type third-party">Paid</span><strong>Quad Remesher</strong><p>Best automatic retopology tool. One click, clean quads, follows normals and curves.</p></div>
+          <div class="addon-card reveal stagger-3"><span class="addon-type third-party">Paid</span><strong>Auto-Rig Pro</strong><p>Professional character rigging with IK/FK, fingers, face rig, and retargeting support.</p></div>
+          <div class="addon-card reveal stagger-4"><span class="addon-type third-party">Paid</span><strong>Geo-Scatter</strong><p>Scatter objects on surfaces. Forests, grass, rocks, crowds — fully art-directed.</p></div>
+          <div class="addon-card reveal stagger-5"><span class="addon-type third-party">Free</span><strong>RetopoFlow</strong><p>Professional retopology tools with contours, patches, and polystrips for clean topology.</p></div>
+          <div class="addon-card reveal stagger-6"><span class="addon-type third-party">Paid</span><strong>Simply Cloth</strong><p>More intuitive cloth simulation controls with presets and interactive feedback.</p></div>
+          <div class="addon-card reveal"><span class="addon-type third-party">Free</span><strong>HDRI Sun Aligner</strong><p>Automatically aligns the sun lamp direction to match the HDRI background image.</p></div>
+          <div class="addon-card reveal stagger-2"><span class="addon-type third-party">Free</span><strong>VX Fracture</strong><p>Break objects into pieces for destruction simulations and effects.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BlenderKit + Sketchfab -->
+    <div class="sec-title" style="margin-top:2.5rem">🌐 Free Asset Libraries</div>
+    <div class="grid-3" style="gap:1rem">
+      <div class="card reveal" style="border-top:3px solid var(--accent)">
+        <h3 style="font-size:1rem;margin-bottom:.5rem">🟠 BlenderKit <span class="tag tag-new">Free + Paid</span></h3>
+        <p style="font-size:.83rem;color:var(--text2);margin-bottom:.75rem">Directly inside Blender — no browser needed. Search and drag-drop thousands of free materials, HDRIs, models, and brushes without leaving your scene.</p>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Install</span><span>Preferences → Add-ons → search "BlenderKit" → Enable</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Access</span><span>N Panel → BlenderKit tab in the 3D viewport</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Free tier</span><span>Thousands of assets, no account required</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Website</span><span><a href="https://www.blenderkit.com" target="_blank" style="color:var(--accent)">blenderkit.com</a></span></div>
+        <div class="tip-box">Best for: materials, HDRIs, and models you want to use immediately without texture setup.</div>
+      </div>
+      <div class="card reveal stagger-2" style="border-top:3px solid var(--blue)">
+        <h3 style="font-size:1rem;margin-bottom:.5rem">🔵 Sketchfab <span class="tag tag-new">Free + Paid</span></h3>
+        <p style="font-size:.83rem;color:var(--text2);margin-bottom:.75rem">The world's largest 3D model marketplace. Download free and paid models, view them in 3D before downloading. Many are game-ready with textures included.</p>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Website</span><span><a href="https://sketchfab.com" target="_blank" style="color:var(--blue)">sketchfab.com</a></span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Formats</span><span>FBX, OBJ, glTF, USDZ — all import into Blender</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Free filter</span><span>Use "License: Free Download" filter when searching</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:100px">Import</span><span>File → Import → FBX/OBJ/glTF in Blender</span></div>
+        <div class="info-box">Best for: finding reference models, downloading hero assets, and learning from others' work.</div>
+      </div>
+      <div class="card reveal stagger-3" style="border-top:3px solid var(--green)">
+        <h3 style="font-size:1rem;margin-bottom:.5rem">🟢 More Free Resources</h3>
+        <div class="sc-row"><span style="font-weight:700;color:var(--text)">Poly Haven</span><span style="font-size:.79rem;color:var(--text2)">100% free 4K HDRIs, textures, and 3D models — <a href="https://polyhaven.com" target="_blank" style="color:var(--green)">polyhaven.com</a></span></div>
+        <div class="sc-row"><span style="font-weight:700;color:var(--text)">AmbientCG</span><span style="font-size:.79rem;color:var(--text2)">Free CC0 PBR materials with all texture maps — <a href="https://ambientcg.com" target="_blank" style="color:var(--green)">ambientcg.com</a></span></div>
+        <div class="sc-row"><span style="font-weight:700;color:var(--text)">Quixel Bridge</span><span style="font-size:.79rem;color:var(--text2)">Free for Unreal projects; many assets usable in Blender via export</span></div>
+        <div class="sc-row"><span style="font-weight:700;color:var(--text)">BlendSwap</span><span style="font-size:.79rem;color:var(--text2)">Community-shared .blend files — <a href="https://blendswap.com" target="_blank" style="color:var(--green)">blendswap.com</a></span></div>
+        <div class="sc-row"><span style="font-weight:700;color:var(--text)">Blender Market</span><span style="font-size:.79rem;color:var(--text2)">Premium addons and assets — <a href="https://blendermarket.com" target="_blank" style="color:var(--green)">blendermarket.com</a></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="fixes">
+    <div class="sec-title">🐛 Common Problems &amp; Fixes</div>
+    <div class="acc">
+      <div class="acc-item reveal">
+        <div class="acc-head" onclick="toggleAcc(this)">Object looks dark or completely black in render <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>Check <strong>Face Orientation</strong>: Overlays → Face Orientation → blue = correct, red = flipped normals. Fix: select all in Edit Mode → <kbd>Shift+N</kbd></li>
+            <li><strong>Triangulate faces:</strong> Select all in Edit Mode → <kbd>Ctrl+T</kbd>. N-gons and complex quads can cause black shading even when normals look correct. This fix by Aujla solves it instantly.</li>
+            <li>No lights in the scene — add a Sun light or Area light</li>
+            <li>Material missing or Roughness = 1 with Emission = 0 and no lights</li>
+            <li>Object is inside another object blocking all light</li>
+            <li>Light power too low — increase energy or add more lights</li>
+            <li>Check Render Engine — some materials only work in Cycles or EEVEE</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal stagger-2">
+        <div class="acc-head" onclick="toggleAcc(this)">Render has lots of noise and fireflies <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>Increase sample count in Render Properties (try 128–512)</li>
+            <li>Enable <strong>Denoising</strong> — OptiX (Nvidia GPU) or Open Image Denoise (universal)</li>
+            <li>Light Paths → Clamping → set <strong>Indirect = 10</strong> (kills most fireflies)</li>
+            <li>Disable Caustics unless you specifically need them (Render → Light Paths)</li>
+            <li>Fireflies from tiny bright emissive objects — increase their size or reduce energy</li>
+            <li>Enable <strong>Adaptive Sampling</strong> — auto-stops noisy areas earlier</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal stagger-3">
+        <div class="acc-head" onclick="toggleAcc(this)">Object disappears in the viewport <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>Press <kbd>Alt+H</kbd> to unhide all hidden objects</li>
+            <li>Check the Outliner — click the 👁 eye icon if it's disabled on the object or collection</li>
+            <li>Camera Clip End too short — Camera Properties → Clip End → increase to 10000</li>
+            <li>Press <kbd>/</kbd> to exit Local View if you're stuck in isolation mode</li>
+            <li>Object may be on a View Layer that's disabled (top header → View Layer dropdown)</li>
+            <li>Check if object is in a hidden collection — expand Outliner to see</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal stagger-4">
+        <div class="acc-head" onclick="toggleAcc(this)">Modifier not working as expected <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li><strong>Apply Scale first:</strong> <kbd>Ctrl+A</kbd> → Scale — critical for Mirror, Cloth, Boolean, Array modifiers</li>
+            <li>Modifier order matters — drag to reorder in the stack. SubDiv usually goes last.</li>
+            <li>Mirror: origin must be at center of mesh. Use Object → Set Origin → Origin to Geometry first</li>
+            <li>Boolean: change Solver to <strong>"Exact"</strong> for complex mesh intersections</li>
+            <li>SubDiv artifacts: mesh has ngons or non-manifold edges — clean topology first</li>
+            <li>Array modifier: Apply the object's rotation if it's spinning incorrectly</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal stagger-5">
+        <div class="acc-head" onclick="toggleAcc(this)">Blender is slow or running out of memory <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>Enable GPU rendering: Preferences → System → CUDA / OptiX / Metal / HIP</li>
+            <li>Use <kbd>Alt+D</kbd> (linked duplicate) instead of <kbd>Shift+D</kbd> (real copy) for repeated objects</li>
+            <li>File → Clean Up → <strong>Purge All</strong> to remove orphan data and shrink file size</li>
+            <li>Lower Subdivision Surface viewport levels while working — increase only for final render</li>
+            <li>Render Properties → <strong>Simplify</strong> → set max SubDiv separately for viewport and render</li>
+            <li>Reduce texture sizes — 2K for most objects, 4K only for hero/closeup assets</li>
+            <li>Use <strong>BlenderKit</strong> assets carefully — unload unused assets from File → External Data</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal stagger-6">
+        <div class="acc-head" onclick="toggleAcc(this)">Animation stutters or doesn't play smoothly <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>Timeline → Playback menu → Sync → enable <strong>"Frame Dropping"</strong> or "AV-sync"</li>
+            <li>Physics sim not baked — Physics Properties → Cache → <strong>Bake All Dynamics</strong></li>
+            <li>Viewport shading too high — switch to Solid mode for playback preview</li>
+            <li>Too many particles — reduce count or enable cache in particle settings</li>
+            <li>Too many modifiers — use <strong>Simplify</strong> in Render Properties to reduce viewport complexity</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal">
+        <div class="acc-head" onclick="toggleAcc(this)">Material looks wrong or doesn't match reference <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>Color Management: check you're using <strong>"Filmic"</strong> or <strong>"AgX"</strong> — not "Raw" (too washed or saturated)</li>
+            <li>In EEVEE: enable <strong>Screen Space Reflections</strong> and <strong>Ambient Occlusion</strong> for realism</li>
+            <li>Roughness values: 0 = mirror, 1 = completely matte. Most real surfaces are 0.3–0.7</li>
+            <li>Never use pure white (1,1,1) or pure black (0,0,0) — use 0.9 white and 0.02 black</li>
+            <li>Emission in EEVEE: enable <strong>Bloom</strong> in Post Processing → Render Properties for glow</li>
+            <li>Texture Color Space: Base Color = sRGB. Roughness/Normal/Metallic = <strong>Non-Color</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal stagger-2">
+        <div class="acc-head" onclick="toggleAcc(this)">UV unwrap looks stretched or wrong <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li>Apply all transforms first: <kbd>Ctrl+A</kbd> → All Transforms in Object Mode</li>
+            <li>Add Seams: in Edit Mode, select edges where you want UV cuts → <kbd>Ctrl+E</kbd> → Mark Seam</li>
+            <li>Unwrap: select all faces (<kbd>A</kbd>) → <kbd>U</kbd> → <strong>Unwrap</strong></li>
+            <li>Check <strong>Stretch overlay</strong> in UV Editor → Overlays → Stretch to see problem areas</li>
+            <li>Use <strong>Smart UV Project</strong> (<kbd>U</kbd> menu) for quick results on hard-surface objects</li>
+            <li>Pack Islands: UV Editor → UV → Pack Islands for efficient texture space usage</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item reveal stagger-3">
+        <div class="acc-head" onclick="toggleAcc(this)">Importing models from Sketchfab — common issues <span class="acc-arrow">›</span></div>
+        <div class="acc-body">
+          <ul>
+            <li><strong>Scale is wrong:</strong> Select imported objects → <kbd>Ctrl+A</kbd> → All Transforms, then resize</li>
+            <li><strong>Materials look flat:</strong> Sketchfab models use glTF materials — set Render Engine to <strong>EEVEE</strong> or manually reconnect PBR textures to Principled BSDF in Cycles</li>
+            <li><strong>Textures missing:</strong> File → External Data → Find Missing Files → locate the texture folder</li>
+            <li><strong>Too many objects:</strong> Select all → <kbd>Ctrl+J</kbd> to join, or organize into Collections</li>
+            <li><strong>Best format to download:</strong> glTF (.glb) preserves materials and textures in one file and imports cleanly into Blender via File → Import → glTF</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="index.html">Home</a><a href="shortcuts.html">Shortcuts</a><a href="https://blender.org" target="_blank">Blender.org</a><a href="https://blenderkit.com" target="_blank">BlenderKit</a><a href="https://polyhaven.com" target="_blank">Poly Haven</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+</body>
+</html>

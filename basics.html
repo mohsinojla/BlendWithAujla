@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Basics — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+<style>
+.transform-trio { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+.transform-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem; text-align:center; transition:all var(--transition); }
+.transform-card:hover { border-color:var(--accent); transform:translateY(-3px); }
+.transform-key { width:52px; height:52px; background:linear-gradient(135deg,var(--accent),var(--accent3)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:900; color:#fff; margin:0 auto .75rem; }
+.transform-card h3 { font-size:1rem; font-weight:800; margin-bottom:.35rem; }
+.transform-card p { font-size:.82rem; color:var(--text2); line-height:1.5; }
+@media(max-width:600px) { .transform-trio { grid-template-columns:1fr; } }
+.mode-grid { display:flex; flex-direction:column; gap:.45rem; }
+</style>
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">🌱 Module 01</div>
+    <h1>The Absolute <span class="gradient-text">Basics</span></h1>
+    <p>New to Blender, or coming back after a break? Start here. Everything you need to feel confident before diving into modeling or sculpting.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="grid-2">
+      <div class="card reveal">
+        <h3 style="margin-bottom:.75rem;font-size:1rem">Installing Blender 4.x</h3>
+        <ol class="steps">
+          <li>Download from <strong>blender.org</strong> — always use the latest stable version</li>
+          <li>Works on Windows, macOS, Linux — portable zip available (no install needed)</li>
+          <li>On first launch: go to <strong>Edit → Preferences</strong> to customize</li>
+          <li>Set keymap: Preferences → Keymap → <strong>"Blender"</strong> or "Industry Compatible" (Maya-style)</li>
+          <li>Enable <strong>Auto Save</strong>: Preferences → Save &amp; Load → every 2 min</li>
+          <li>Set <strong>Undo Steps</strong> to 64+: Preferences → System</li>
+          <li>Enable GPU: Preferences → System → CUDA / OptiX / Metal / HIP</li>
+        </ol>
+      </div>
+      <div class="card reveal stagger-2">
+        <h3 style="margin-bottom:.75rem;font-size:1rem">First Things to Configure</h3>
+        <div class="sc-row"><kbd>Edit → Preferences → Theme</kbd><span>Set visual theme — Blender Dark is default</span></div>
+        <div class="sc-row"><kbd>Output Properties</kbd><span>Resolution 1920×1080, FPS 24</span></div>
+        <div class="sc-row"><kbd>Render Properties → Engine</kbd><span>Cycles for photorealism, EEVEE for speed</span></div>
+        <div class="sc-row"><kbd>Preferences → Add-ons</kbd><span>Enable Node Wrangler, LoopTools, Rigify</span></div>
+        <div class="sc-row"><kbd>Scene Properties → Units</kbd><span>Metric + unit scale 0.01 for real-world cm</span></div>
+        <div class="tip-box"><strong>Save your preferences!</strong> Preferences → hamburger menu → Save Preferences. Otherwise they reset on next launch.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE UI MAP -->
+  <section class="section">
+    <div class="sec-title">🖥️ Interactive Interface Map</div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">👆 Click any area of the Blender UI below to learn what it does.</p>
+    <div class="grid-2">
+      <div class="reveal">
+        <div class="ui-map-wrap">
+          <div class="ui-map">
+            <!-- Top bar -->
+            <div class="ui-topbar ui-area" data-area="topbar" onclick="selectArea(this)"
+              style="display:flex;align-items:center;gap:.6rem;padding:0 1rem;font-size:.72rem;font-weight:700;cursor:pointer;">
+              <span style="color:var(--accent)">File</span>
+              <span style="color:var(--text3)">Edit</span>
+              <span style="color:var(--text3)">Render</span>
+              <span style="color:var(--text3)">Window</span>
+              <span style="margin-left:auto;background:rgba(230,126,34,.2);padding:.1rem .5rem;border-radius:4px;color:var(--accent)">Layout</span>
+              <span style="color:var(--text3)">Modeling</span>
+              <span style="color:var(--text3)">Sculpting</span>
+              <span style="color:var(--text3)">Shading</span>
+            </div>
+            <!-- Middle row -->
+            <div class="ui-middle">
+              <!-- Outliner -->
+              <div class="ui-outliner ui-area" data-area="outliner" onclick="selectArea(this)">
+                <div class="ui-area-icon">📋</div>
+                <div style="font-size:.75rem;font-weight:700;color:#bbcc66">Outliner</div>
+                <div class="ui-area-label">Scene / Collections</div>
+              </div>
+              <!-- Viewport -->
+              <div class="ui-viewport ui-area" data-area="viewport" onclick="selectArea(this)">
+                <div class="ui-area-icon">🎯</div>
+                <div style="font-size:.85rem;font-weight:800;color:#e8a060">3D Viewport</div>
+                <div style="font-size:.7rem;color:var(--text3)">Main workspace</div>
+              </div>
+              <!-- Properties -->
+              <div class="ui-props ui-area" data-area="props" onclick="selectArea(this)">
+                <div class="ui-area-icon">⚙️</div>
+                <div style="font-size:.75rem;font-weight:700;color:#88aacc">Properties</div>
+                <div class="ui-area-label">Settings / Modifiers</div>
+              </div>
+            </div>
+            <!-- Timeline -->
+            <div class="ui-timeline ui-area" data-area="timeline" onclick="selectArea(this)"
+              style="display:flex;align-items:center;justify-content:center;gap:.75rem;cursor:pointer;">
+              <span style="color:#aabb88;font-size:.75rem;font-weight:700">⏱ Timeline</span>
+              <span style="font-size:.65rem;color:var(--text3)">Keyframes · Playback · Animation range</span>
+            </div>
+          </div>
+          <div class="ui-info-panel" id="uiInfoPanel">
+            <strong>Click any area above to learn about it →</strong>
+            Blender's interface is made of panels. Each one can be changed to any editor type by clicking the icon in the top-left corner of that area.
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="card" style="height:100%">
+          <h3 style="margin-bottom:.75rem;font-size:1rem">Interface Shortcuts</h3>
+          <div class="sc-row"><kbd>T</kbd><span>Show/hide left toolbar</span></div>
+          <div class="sc-row"><kbd>N</kbd><span>Show/hide right sidebar (Item, View, Tool)</span></div>
+          <div class="sc-row"><kbd>Ctrl+Space</kbd><span>Maximize any editor area to fullscreen</span></div>
+          <div class="sc-row"><kbd>Drag corner ▲</kbd><span>Split an area into two panels</span></div>
+          <div class="sc-row"><kbd>Right-click edge</kbd><span>Split or Join areas via context menu</span></div>
+          <div class="sc-row"><kbd>Top-left icon</kbd><span>Click to change editor type for any area</span></div>
+          <div class="sc-row"><kbd>Q</kbd><span>Quick Favorites — your personal shortcut menu</span></div>
+          <div class="sc-row"><kbd>F3</kbd><span>Search — find any operator or menu item</span></div>
+          <div class="sc-row"><kbd>F9</kbd><span>Last Operator — tweak settings of last action</span></div>
+          <div class="info-box"><strong>Workspaces</strong> at the top (Layout, Modeling, Sculpting, Shading…) switch between pre-arranged editor layouts. You can customize and save your own.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🗺️ Viewport Navigation</div>
+    <div class="grid-auto">
+      <div class="card reveal">
+        <div class="sc-cat">Mouse Navigation</div>
+        <div class="sc-row"><kbd>Middle Mouse Drag</kbd><span>Orbit/rotate around the scene</span></div>
+        <div class="sc-row"><kbd>Shift+MMB</kbd><span>Pan (move) the view</span></div>
+        <div class="sc-row"><kbd>Scroll Wheel</kbd><span>Zoom in / out</span></div>
+        <div class="sc-row"><kbd>Ctrl+MMB drag</kbd><span>Smooth zoom</span></div>
+      </div>
+      <div class="card reveal stagger-2">
+        <div class="sc-cat">Numpad Views</div>
+        <div class="sc-row"><kbd>Numpad 0</kbd><span>Camera view</span></div>
+        <div class="sc-row"><kbd>Numpad 1</kbd><span>Front view</span></div>
+        <div class="sc-row"><kbd>Numpad 3</kbd><span>Right view</span></div>
+        <div class="sc-row"><kbd>Numpad 7</kbd><span>Top view</span></div>
+        <div class="sc-row"><kbd>Numpad 5</kbd><span>Toggle Ortho ↔ Perspective</span></div>
+        <div class="sc-row"><kbd>Numpad .</kbd><span>Frame selected object</span></div>
+      </div>
+      <div class="card reveal stagger-3">
+        <div class="sc-cat">Power Tips</div>
+        <div class="sc-row"><kbd>/</kbd><span>Local View — isolates selected object</span></div>
+        <div class="sc-row"><kbd>Shift+`</kbd><span>Fly/walk mode — WASD like a game</span></div>
+        <div class="sc-row"><kbd>Ctrl+Alt+Numpad 0</kbd><span>Align camera to current view</span></div>
+        <div class="tip-box"><strong>No numpad?</strong> Preferences → Input → Emulate Numpad. Top row 1–0 become view shortcuts.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🎮 Object Modes — Click to Explore</div>
+    <div class="grid-2">
+      <div class="reveal">
+        <div class="mode-grid">
+          <div class="mode-pill orange" style="cursor:pointer" onclick="showModeInfo('object')">
+            <span>Object Mode <span style="font-size:.68rem;color:var(--text3);font-weight:400">(click)</span></span>
+            <small>Default. Move, rotate, scale whole objects.</small>
+          </div>
+          <div class="mode-pill blue" style="cursor:pointer" onclick="showModeInfo('edit')">
+            <span>Edit Mode <span style="font-size:.68rem;color:var(--text3);font-weight:400">(click)</span></span>
+            <small>Enter mesh editing. Move vertices, edges, faces.</small>
+          </div>
+          <div class="mode-pill green" style="cursor:pointer" onclick="showModeInfo('sculpt')">
+            <span>Sculpt Mode <span style="font-size:.68rem;color:var(--text3);font-weight:400">(click)</span></span>
+            <small>Digital clay. Push, pull, smooth organic forms.</small>
+          </div>
+          <div class="mode-pill purple" style="cursor:pointer" onclick="showModeInfo('pose')">
+            <span>Pose Mode <span style="font-size:.68rem;color:var(--text3);font-weight:400">(click)</span></span>
+            <small>Animate armatures. Move bones to pose characters.</small>
+          </div>
+          <div class="mode-pill red" style="cursor:pointer" onclick="showModeInfo('weight')">
+            <span>Weight Paint <span style="font-size:.68rem;color:var(--text3);font-weight:400">(click)</span></span>
+            <small>Paint how much each bone influences the mesh.</small>
+          </div>
+          <div class="mode-pill yellow" style="cursor:pointer" onclick="showModeInfo('vertex')">
+            <span>Vertex Paint <span style="font-size:.68rem;color:var(--text3);font-weight:400">(click)</span></span>
+            <small>Paint colors directly on vertices.</small>
+          </div>
+        </div>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="card" id="modeInfoCard" style="height:100%;min-height:200px">
+          <h3 style="margin-bottom:.6rem;font-size:1rem;color:var(--accent)" id="modeInfoTitle">👆 Click a mode to learn more</h3>
+          <p style="font-size:.84rem;color:var(--text2)" id="modeInfoDesc">Each mode in Blender gives you a completely different set of tools. Most beginners spend 80% of their time in Object Mode and Edit Mode. Click any mode to see its key shortcuts and use cases.</p>
+          <div id="modeInfoShortcuts" style="margin-top:.8rem"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">📐 The 3 Core Transforms — G, R, S</div>
+    <div class="transform-trio">
+      <div class="transform-card reveal">
+        <div class="transform-key">G</div>
+        <h3>Grab / Move</h3>
+        <p><kbd>G Z 2</kbd> = move 2 units up<br><kbd>G X -1</kbd> = move 1 unit left<br><kbd>G Shift+Z</kbd> = move on X+Y plane only</p>
+      </div>
+      <div class="transform-card reveal stagger-2">
+        <div class="transform-key">R</div>
+        <h3>Rotate</h3>
+        <p><kbd>R Z 45</kbd> = 45° on Z axis<br><kbd>R X 90</kbd> = 90° on X axis<br><kbd>R R</kbd> = trackball (free) rotation</p>
+      </div>
+      <div class="transform-card reveal stagger-3">
+        <div class="transform-key">S</div>
+        <h3>Scale</h3>
+        <p><kbd>S 2</kbd> = double in all axes<br><kbd>S Z 0.5</kbd> = half height only<br><kbd>S Shift+Z</kbd> = scale X+Y only</p>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:1rem"><strong>The Pattern:</strong> Press G/R/S → optionally press X/Y/Z to constrain axis → optionally type a number → Enter to confirm. Right-click or Escape to cancel. <strong>Ctrl</strong> while moving = snap to grid increments.</div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">➡️ What to Learn Next</div>
+    <div class="grid-auto-sm">
+      <a class="card lift" href="shortcuts.html" style="text-decoration:none;display:block">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">⌨️</div>
+        <strong>All Shortcuts</strong>
+        <p style="font-size:.8rem;color:var(--text2);margin-top:.25rem">200+ shortcuts for every mode</p>
+      </a>
+      <a class="card lift" href="modeling.html" style="text-decoration:none;display:block">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">🔧</div>
+        <strong>Modeling</strong>
+        <p style="font-size:.8rem;color:var(--text2);margin-top:.25rem">Build 3D shapes and objects</p>
+      </a>
+      <a class="card lift" href="sculpting.html" style="text-decoration:none;display:block">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">🫧</div>
+        <strong>Sculpting</strong>
+        <p style="font-size:.8rem;color:var(--text2);margin-top:.25rem">Organic shapes with digital clay</p>
+      </a>
+      <a class="card lift" href="materials.html" style="text-decoration:none;display:block">
+        <div style="font-size:1.5rem;margin-bottom:.4rem">🎨</div>
+        <strong>Materials</strong>
+        <p style="font-size:.8rem;color:var(--text2);margin-top:.25rem">Add color, texture, and surface detail</p>
+      </a>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="index.html">← Home</a><a href="shortcuts.html">Shortcuts →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+// Interactive UI Map
+const UI_INFO = {
+  topbar: {
+    title:'🔝 Top Bar — Workspaces & Menus',
+    text:'The Top Bar contains the main menus (File, Edit, Render, Window, Help) and Workspace tabs. Workspace tabs switch between pre-arranged editor layouts: Layout, Modeling, Sculpting, Shading, Animation, Rendering, Geometry Nodes. Click the + to add a custom workspace. The right side shows the scene/layer selector.'
+  },
+  outliner: {
+    title:'📋 Outliner — Scene Hierarchy',
+    text:'The Outliner shows every object, collection, modifier, and data in your scene as a tree. Click the 👁 eye to show/hide in viewport. Click the 📷 camera icon to include/exclude from render. Click 🔒 to lock. Right-click objects to rename, duplicate, or link. Collections work like folders — great for organizing complex scenes.'
+  },
+  viewport: {
+    title:'🎯 3D Viewport — Your Main Canvas',
+    text:'The 3D Viewport is where you do everything. Middle Mouse = orbit. Shift+MMB = pan. Scroll = zoom. Press Z for shading options. Press Tab to toggle Edit Mode. The Header bar at the top switches modes, shading, overlays, and X-ray. The Toolbar (T) holds active tools. The Sidebar (N) shows item properties.'
+  },
+  props: {
+    title:'⚙️ Properties Panel — All Settings',
+    text:'The Properties panel (right side, vertical icon bar) holds all settings for the selected object and scene. Icons from top: Render, Output, View Layer, Scene, World, Object, Object Data, Modifiers, Particles, Physics, Constraints, Object Data Properties, Material. Click each icon to switch. Most important: Modifier Properties (wrench icon) and Material Properties (sphere icon).'
+  },
+  timeline: {
+    title:'⏱ Timeline — Animation Control',
+    text:'The Timeline at the bottom controls animation playback. The blue playhead shows the current frame. Drag it to scrub. Press Space to play/pause. Set Start/End frame on the left/right. Diamond shapes are keyframes — drag them to shift in time. Right-click to change the editor type to Dope Sheet, Graph Editor, or NLA Editor for more animation control.'
+  }
+};
+function selectArea(el) {
+  document.querySelectorAll('.ui-area').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  const info = UI_INFO[el.dataset.area];
+  if (info) {
+    document.getElementById('uiInfoPanel').innerHTML = `<strong>${info.title}</strong>${info.text}`;
+  }
+}
+
+// Mode info cards
+const MODE_INFO = {
+  object: {
+    title:'📦 Object Mode',
+    desc:'Default mode when Blender opens. Select, move, rotate, scale whole objects. Add new objects with Shift+A. This is your "big picture" mode.',
+    shortcuts:[['Tab','Enter Edit Mode'],['Shift+A','Add new object'],['Ctrl+J','Join objects'],['Ctrl+A','Apply transforms'],['M','Move to collection']]
+  },
+  edit: {
+    title:'✏️ Edit Mode',
+    desc:'Work on the geometry of a mesh — vertices, edges, and faces. This is where you actually model. Use 1/2/3 to switch between vertex/edge/face select.',
+    shortcuts:[['1','Vertex select'],['2','Edge select'],['3','Face select'],['E','Extrude'],['Ctrl+R','Loop cut'],['K','Knife tool']]
+  },
+  sculpt: {
+    title:'🫧 Sculpt Mode',
+    desc:'Paint-like sculpting with brushes. Push, pull, smooth, and carve organic shapes like clay. Use Voxel Remesh (Ctrl+R) to get uniform topology.',
+    shortcuts:[['F','Resize brush'],['Shift','Smooth brush'],['Ctrl','Invert brush'],['Ctrl+R','Voxel remesh'],['M','Mask brush']]
+  },
+  pose: {
+    title:'🦴 Pose Mode',
+    desc:'Only available on Armature objects. Move bones to create poses and keyframe character animation. Individual bones can be selected and transformed.',
+    shortcuts:[['I','Insert keyframe'],['G','Move bone'],['R','Rotate bone'],['Alt+R','Clear rotation'],['Ctrl+C','Copy pose']]
+  },
+  weight: {
+    title:'🎨 Weight Paint Mode',
+    desc:'Paint vertex weights — how much influence each bone has on each vertex. Red = full influence, blue = none. Critical for clean character deformation.',
+    shortcuts:[['F','Resize brush'],['Shift+F','Change strength'],['Ctrl','Subtract'],['Alt+A','Normalize all'],['N','Properties panel']]
+  },
+  vertex: {
+    title:'🖌️ Vertex Paint Mode',
+    desc:'Paint colors directly onto mesh vertices. Useful for game assets, stylized looks, or creating mask data for shader nodes.',
+    shortcuts:[['F','Resize brush'],['Shift+F','Strength'],['S','Sample color'],['G','Blur brush'],['Alt+Click','Pick color']]
+  }
+};
+function showModeInfo(mode) {
+  const info = MODE_INFO[mode];
+  if (!info) return;
+  document.getElementById('modeInfoTitle').textContent = info.title;
+  document.getElementById('modeInfoDesc').textContent = info.desc;
+  const rows = info.shortcuts.map(([k,d]) => `<div class="sc-row"><kbd>${k}</kbd><span>${d}</span></div>`).join('');
+  document.getElementById('modeInfoShortcuts').innerHTML = `<div class="sc-cat">Key Shortcuts</div>${rows}`;
+}
+</script>
+</body>
+</html>

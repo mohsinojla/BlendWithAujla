@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Modeling — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠 Home</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">🔧 Module 03</div>
+    <h1>Modeling <span class="gradient-text">Complete Guide</span></h1>
+    <p>From primitive shapes to complex meshes. Workflows, tools, modifier reference, and best practices.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="notice orange"><span>⚡</span><div>Always <strong>Apply Transforms</strong> (<kbd>Ctrl+A</kbd> → All) before adding modifiers or physics. Unapplied scale causes countless strange bugs.</div></div>
+
+    <div class="sec-title">🎯 Core Modeling Workflows</div>
+    <div class="grid-auto">
+      <div class="card reveal">
+        <h3 style="font-size:.95rem;margin-bottom:.75rem">🎯 Box Modeling <span class="tag tag-beginner">Beginner</span></h3>
+        <ol class="steps">
+          <li>Start with a cube — <kbd>Shift+A</kbd> → Mesh → Cube</li>
+          <li>Enter Edit Mode (<kbd>Tab</kbd>), enable X-Ray (<kbd>Alt+Z</kbd>)</li>
+          <li>Select faces and Extrude (<kbd>E</kbd>) to build shape</li>
+          <li>Add Loop Cuts (<kbd>Ctrl+R</kbd>) for more detail</li>
+          <li>Bevel edges (<kbd>Ctrl+B</kbd>) for smooth corners</li>
+          <li>Add Subdivision Surface modifier for smooth final mesh</li>
+        </ol>
+      </div>
+      <div class="card reveal stagger-2">
+        <h3 style="font-size:.95rem;margin-bottom:.75rem">🌀 Subdivision Workflow <span class="tag tag-inter">Intermediate</span></h3>
+        <ol class="steps">
+          <li>Model with low-poly — add Subdivision Surface modifier</li>
+          <li>Viewport Levels = 2, Render Levels = 3</li>
+          <li>Use edge creases (<kbd>Shift+E</kbd>) to sharpen specific edges</li>
+          <li>Add support loops near corners to tighten edges</li>
+          <li>Enable "Optimal Display" to see clean wireframe</li>
+          <li>Apply modifier only when the mesh is completely finalized</li>
+        </ol>
+      </div>
+      <div class="card reveal stagger-3">
+        <h3 style="font-size:.95rem;margin-bottom:.75rem">⚙️ Hard Surface <span class="tag tag-pro">Pro</span></h3>
+        <ol class="steps">
+          <li>Block out all major shapes first — don't detail early</li>
+          <li>Use Boolean modifier for cuts, unions, differences</li>
+          <li>Add edge loops near booleans for clean shading</li>
+          <li>Bevel modifier with Limit Method = Weight</li>
+          <li>Set Bevel Weight on sharp edges with <kbd>Ctrl+E</kbd> → Bevel Weight</li>
+          <li>Add Weighted Normals modifier at the end of stack</li>
+          <li>Mark sharp edges: <kbd>Ctrl+E</kbd> → Mark Sharp</li>
+        </ol>
+      </div>
+      <div class="card reveal stagger-4">
+        <h3 style="font-size:.95rem;margin-bottom:.75rem">🔄 Retopology <span class="tag tag-inter">Intermediate</span></h3>
+        <ol class="steps">
+          <li>Have your high-poly sculpt or imported mesh ready</li>
+          <li>Add new empty mesh object on top of high-poly</li>
+          <li>Enable Snap to Face (<kbd>Shift+Tab</kbd> snap pie → Face)</li>
+          <li>Enable "Project Individual Elements" in snap options</li>
+          <li>Draw quads that follow the surface topology</li>
+          <li>Shrinkwrap modifier keeps new mesh welded to surface</li>
+          <li>Bake normals from high-poly to retopo mesh for texture</li>
+        </ol>
+      </div>
+      <div class="card reveal stagger-5">
+        <h3 style="font-size:.95rem;margin-bottom:.75rem">📐 Precision Modeling <span class="tag tag-inter">Intermediate</span></h3>
+        <ol class="steps">
+          <li>Set Scene Units: Scene Properties → Units → Metric</li>
+          <li>Type exact values after G/R/S: <kbd>G Z 1.5</kbd> = move 1.5m up</li>
+          <li>Set 3D cursor: <kbd>Shift+S</kbd> → Cursor to selected/grid</li>
+          <li>Set pivot to 3D Cursor, model radially</li>
+          <li>N panel → Item tab → type exact location/scale values</li>
+          <li>Hold <kbd>Ctrl</kbd> while moving to snap to grid</li>
+          <li>Ruler tool: <kbd>Shift+Space</kbd> → Measure</li>
+        </ol>
+      </div>
+      <div class="card reveal stagger-6">
+        <h3 style="font-size:.95rem;margin-bottom:.75rem">🔗 Modifier Stack Order <span class="tag tag-pro">Pro</span></h3>
+        <ol class="steps">
+          <li><strong>Mirror</strong> — always first for symmetrical objects</li>
+          <li><strong>Array</strong> — repeat before other deformations</li>
+          <li><strong>Solidify</strong> — add thickness early</li>
+          <li><strong>Bevel</strong> — round edges before subdividing</li>
+          <li><strong>Subdivision Surface</strong> — smooth at end</li>
+          <li><strong>Displace / Shrinkwrap</strong> — deform after shape is set</li>
+          <li><strong>Weighted Normals</strong> — always last in hard surface</li>
+        </ol>
+        <div class="tip-box"><strong>Never apply modifiers</strong> until the model is truly final. Keep the stack non-destructive as long as possible.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title" id="modifiers">🔩 Essential Modifiers Reference</div>
+    <div class="grid-2">
+      <table class="data-table reveal">
+        <thead><tr><th>Modifier</th><th>What It Does</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>Subdivision Surface</td><td>Smooth &amp; subdivide mesh</td><td>Characters, organic shapes</td></tr>
+          <tr><td>Mirror</td><td>Symmetrical modeling on any axis</td><td>Characters, vehicles, props</td></tr>
+          <tr><td>Solidify</td><td>Add thickness to thin surfaces</td><td>Walls, clothes, flat panels</td></tr>
+          <tr><td>Bevel</td><td>Round edges with segments</td><td>Hard surface, product viz</td></tr>
+          <tr><td>Boolean</td><td>Cut / union / difference between objects</td><td>Hard surface, architectural</td></tr>
+          <tr><td>Array</td><td>Repeat mesh in a pattern</td><td>Stairs, chains, tiles, fences</td></tr>
+          <tr><td>Curve</td><td>Deform mesh along a curve path</td><td>Roads, pipes, ropes, cables</td></tr>
+          <tr><td>Shrinkwrap</td><td>Snap mesh onto another mesh surface</td><td>Retopo, stickers, clothing</td></tr>
+          <tr><td>Armature</td><td>Deform mesh with bones</td><td>Characters, mechanical rigs</td></tr>
+          <tr><td>Displace</td><td>Move vertices via texture map</td><td>Terrain, organic bump detail</td></tr>
+        </tbody>
+      </table>
+      <table class="data-table reveal stagger-2">
+        <thead><tr><th>Modifier</th><th>What It Does</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>Decimate</td><td>Reduce polygon count automatically</td><td>Game LODs, print models</td></tr>
+          <tr><td>Remesh</td><td>Rebuild uniform topology</td><td>Post-sculpt cleanup</td></tr>
+          <tr><td>Weld</td><td>Merge overlapping vertices</td><td>Cleanup after mirroring</td></tr>
+          <tr><td>Triangulate</td><td>Convert all faces to triangles</td><td>Game engine export</td></tr>
+          <tr><td>Weighted Normal</td><td>Override face normal direction</td><td>Hard surface shading fix</td></tr>
+          <tr><td>Data Transfer</td><td>Copy normals/UVs from other mesh</td><td>Matching normals between objects</td></tr>
+          <tr><td>Geometry Nodes</td><td>Procedural node-based geometry</td><td>Scatter, arrays, procedural</td></tr>
+          <tr><td>Skin</td><td>Create skin mesh around vertices</td><td>Quick character blockout</td></tr>
+          <tr><td>Screw</td><td>Revolve a profile around an axis</td><td>Bottles, bowls, turned shapes</td></tr>
+          <tr><td>Cloth / Soft Body</td><td>Physics deformation simulation</td><td>Fabric, jelly, balloons</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">⌨️ Essential Modeling Shortcuts</div>
+    <div class="grid-auto">
+      <div class="card reveal">
+        <div class="sc-cat">Add &amp; Delete</div>
+        <div class="sc-row"><kbd>Shift+A</kbd><span>Add mesh, curve, light, camera, etc.</span></div>
+        <div class="sc-row"><kbd>X / Del</kbd><span>Delete with confirmation menu</span></div>
+        <div class="sc-row"><kbd>Ctrl+X</kbd><span>Dissolve (removes element, keeps mesh clean)</span></div>
+        <div class="sc-row"><kbd>F</kbd><span>Create face/edge from selected vertices</span></div>
+      </div>
+      <div class="card reveal stagger-2">
+        <div class="sc-cat">Cut &amp; Loop</div>
+        <div class="sc-row"><kbd>Ctrl+R</kbd><span>Loop Cut — scroll for count, click to place</span></div>
+        <div class="sc-row"><kbd>K</kbd><span>Knife — Enter confirm, C=45° snap, Z=through</span></div>
+        <div class="sc-row"><kbd>Ctrl+B</kbd><span>Bevel — scroll for segments, P=profile</span></div>
+        <div class="sc-row"><kbd>Ctrl+Shift+B</kbd><span>Bevel vertices</span></div>
+      </div>
+      <div class="card reveal stagger-3">
+        <div class="sc-cat">Extrude &amp; Inset</div>
+        <div class="sc-row"><kbd>E</kbd><span>Extrude — right-click cancels move, keeps verts</span></div>
+        <div class="sc-row"><kbd>Alt+E</kbd><span>Extrude menu: Along Normals, Individual, Manifold</span></div>
+        <div class="sc-row"><kbd>I</kbd><span>Inset faces — I again = offset, O = individual</span></div>
+        <div class="sc-row"><kbd>Alt+S</kbd><span>Shrink/fatten along normals</span></div>
+      </div>
+      <div class="card reveal stagger-4">
+        <div class="sc-cat">Slide &amp; Merge</div>
+        <div class="sc-row"><kbd>G G</kbd><span>Edge/vertex slide along connected edges</span></div>
+        <div class="sc-row"><kbd>M</kbd><span>Merge vertices (At Center, Cursor, Collapse...)</span></div>
+        <div class="sc-row"><kbd>J</kbd><span>Connect two vertices with an edge</span></div>
+        <div class="sc-row"><kbd>Alt+J</kbd><span>Convert triangles to quads</span></div>
+      </div>
+      <div class="card reveal stagger-5">
+        <div class="sc-cat">Normals &amp; UVs</div>
+        <div class="sc-row"><kbd>Shift+N</kbd><span>Recalculate normals (outside)</span></div>
+        <div class="sc-row"><kbd>Ctrl+Shift+N</kbd><span>Recalculate normals (inside)</span></div>
+        <div class="sc-row"><kbd>Alt+N</kbd><span>Normals menu (flip, set direction, etc.)</span></div>
+        <div class="sc-row"><kbd>U</kbd><span>UV Unwrap menu</span></div>
+        <div class="sc-row"><kbd>Ctrl+E → Mark Seam</kbd><span>Mark UV seam on edge</span></div>
+      </div>
+      <div class="card reveal stagger-6">
+        <div class="sc-cat">Proportional &amp; Crease</div>
+        <div class="sc-row"><kbd>O</kbd><span>Toggle proportional editing</span></div>
+        <div class="sc-row"><kbd>Scroll (with O active)</kbd><span>Resize falloff radius</span></div>
+        <div class="sc-row"><kbd>Shift+O</kbd><span>Change falloff type (sphere, smooth, etc.)</span></div>
+        <div class="sc-row"><kbd>Shift+E</kbd><span>Set crease — sharpens edge in SubDiv</span></div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Golden Rule:</strong> Work in quads (4-sided faces). Triangles in deforming areas cause shading artifacts. N-gons (5+ sides) are fine for flat hard surface areas that won't subdivide.</div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">💡 Modeling Pro Tips</div>
+    <div class="grid-auto">
+      <div class="card reveal"><h3 style="margin-bottom:.4rem;font-size:.95rem">Mirror First</h3><p style="font-size:.83rem;color:var(--text2)">Add Mirror modifier before doing any real modeling. Model only one half. Apply only at the very end. Always work in symmetry.</p></div>
+      <div class="card reveal stagger-2"><h3 style="margin-bottom:.4rem;font-size:.95rem">Boolean Cleanup</h3><p style="font-size:.83rem;color:var(--text2)">After a boolean cut, add edge loops near the cut edges. This prevents SubDiv from pinching. Use "Exact" solver for complex intersections.</p></div>
+      <div class="card reveal stagger-3"><h3 style="margin-bottom:.4rem;font-size:.95rem">Topology Density</h3><p style="font-size:.83rem;color:var(--text2)">Use denser topology only where detail exists. Flat areas can have very few polygons. Save polygons for curved and detailed regions.</p></div>
+      <div class="card reveal stagger-4"><h3 style="margin-bottom:.4rem;font-size:.95rem">Apply Scale Always</h3><p style="font-size:.83rem;color:var(--text2)"><kbd>Ctrl+A</kbd> → Scale before adding any modifier. Unapplied scale breaks Mirror, Cloth, Boolean, Array, and physics simulations.</p></div>
+      <div class="card reveal stagger-5"><h3 style="margin-bottom:.4rem;font-size:.95rem">Alt+D for Duplicates</h3><p style="font-size:.83rem;color:var(--text2)">Use <kbd>Alt+D</kbd> (linked duplicate) instead of <kbd>Shift+D</kbd> for repeated objects. Edit the mesh in one and all instances update.</p></div>
+      <div class="card reveal stagger-6"><h3 style="margin-bottom:.4rem;font-size:.95rem">Geometry Nodes</h3><p style="font-size:.83rem;color:var(--text2)">For scatter, arrays, and procedural patterns — use Geometry Nodes instead of manual placement. Fully parametric, instantly adjustable.</p></div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="index.html">Home</a><a href="sculpting.html">Next: Sculpting →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+</body>
+</html>

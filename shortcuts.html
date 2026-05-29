@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shortcuts — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+<style>
+.sc-layout { display:grid; grid-template-columns:220px 1fr; gap:0; min-height:calc(100vh - 58px); }
+.sc-sidebar {
+  position:sticky; top:58px; height:calc(100vh - 58px); overflow-y:auto;
+  background:var(--bg2); border-right:1px solid var(--border);
+  padding:1.5rem 1rem;
+}
+.sc-sidebar::-webkit-scrollbar { width:3px; }
+.sc-sidebar h3 { font-size:.7rem; font-weight:800; color:var(--text3); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.6rem; }
+.sc-sidebar ul { list-style:none; display:flex; flex-direction:column; gap:.15rem; margin-bottom:1.5rem; }
+.sc-sidebar a {
+  display:flex; align-items:center; gap:.5rem;
+  padding:.42rem .7rem; border-radius:8px; font-size:.84rem;
+  color:var(--text2); text-decoration:none;
+  transition:all var(--transition);
+}
+.sc-sidebar a:hover { background:var(--card); color:var(--text); }
+.sc-sidebar a.active { background:rgba(230,126,34,.12); color:var(--accent); font-weight:700; }
+.sc-sidebar a .si-count { margin-left:auto; font-size:.7rem; color:var(--text3); background:var(--card2); padding:.05rem .35rem; border-radius:4px; }
+
+.sc-content { padding:2rem; max-width:1100px; }
+.sc-panel { display:none; animation:fadeUp .35s ease; }
+.sc-panel.active { display:block; }
+
+.sc-group { margin-bottom:2.25rem; }
+.sc-group-title {
+  font-size:.72rem; font-weight:800; color:var(--accent);
+  text-transform:uppercase; letter-spacing:.1em;
+  margin-bottom:.65rem; padding-bottom:.3rem;
+  border-bottom:1px solid rgba(230,126,34,.2);
+}
+.sc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:.2rem; }
+
+/* filter bar */
+.filter-bar { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.75rem; }
+.filter-btn {
+  padding:.35rem .85rem; border-radius:20px; cursor:pointer;
+  background:var(--card); border:1px solid var(--border);
+  color:var(--text2); font-size:.8rem; font-weight:600;
+  transition:all var(--transition);
+}
+.filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+.filter-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+@media(max-width:700px) {
+  .sc-layout { grid-template-columns:1fr; }
+  .sc-sidebar { position:static; height:auto; }
+}
+</style>
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search shortcuts…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠 Home</a></li>
+    <li><a href="basics.html">🌱 Basics</a></li>
+    <li><a href="shortcuts.html">⌨️ Shortcuts</a></li>
+    <li><a href="modeling.html">🔧 Modeling</a></li>
+    <li><a href="sculpting.html">🫧 Sculpting</a></li>
+    <li><a href="materials.html">🎨 Materials</a></li>
+    <li><a href="lighting.html">💡 Lighting</a></li>
+    <li><a href="animation.html">🎬 Animation</a></li>
+    <li><a href="rendering.html">📷 Rendering</a></li>
+    <li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">⌨️ Module 02</div>
+    <h1>Shortcuts <span class="gradient-text">Reference</span></h1>
+    <p>Every shortcut organized by mode. Use the sidebar to jump to what you need. Search above finds anything instantly.</p>
+  </div>
+</div>
+
+<div class="sc-layout">
+  <!-- SIDEBAR -->
+  <nav class="sc-sidebar">
+    <h3>Navigation</h3>
+    <ul>
+      <li><a href="#" onclick="showPanel('universal');return false" id="nav-universal" class="active">🌐 Universal <span class="si-count">18</span></a></li>
+      <li><a href="#" onclick="showPanel('navigate');return false" id="nav-navigate">🗺️ Navigate <span class="si-count">12</span></a></li>
+    </ul>
+    <h3>Modes</h3>
+    <ul>
+      <li><a href="#" onclick="showPanel('object');return false" id="nav-object">📦 Object Mode <span class="si-count">22</span></a></li>
+      <li><a href="#" onclick="showPanel('edit');return false" id="nav-edit">✏️ Edit Mode <span class="si-count">35</span></a></li>
+      <li><a href="#" onclick="showPanel('sculpt');return false" id="nav-sculpt">🫧 Sculpt Mode <span class="si-count">16</span></a></li>
+      <li><a href="#" onclick="showPanel('pose');return false" id="nav-pose">🦴 Pose Mode <span class="si-count">10</span></a></li>
+    </ul>
+    <h3>Editors</h3>
+    <ul>
+      <li><a href="#" onclick="showPanel('animation');return false" id="nav-animation">🎬 Animation <span class="si-count">18</span></a></li>
+      <li><a href="#" onclick="showPanel('nodes');return false" id="nav-nodes">🔗 Nodes <span class="si-count">14</span></a></li>
+      <li><a href="#" onclick="showPanel('render');return false" id="nav-render">📷 Render <span class="si-count">8</span></a></li>
+    </ul>
+    <h3>Interface</h3>
+    <ul>
+      <li><a href="#" onclick="showPanel('interface');return false" id="nav-interface">🖥️ Interface <span class="si-count">14</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="sc-content">
+
+    <!-- UNIVERSAL -->
+    <div id="sc-universal" class="sc-panel active">
+      <div class="sc-group">
+        <div class="sc-group-title">File Operations</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Ctrl+N</kbd><span>New file</span></div>
+          <div class="sc-row"><kbd>Ctrl+O</kbd><span>Open file</span></div>
+          <div class="sc-row"><kbd>Ctrl+S</kbd><span>Save file</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+S</kbd><span>Save As</span></div>
+          <div class="sc-row"><kbd>Ctrl+Z</kbd><span>Undo</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+Z</kbd><span>Redo</span></div>
+          <div class="sc-row"><kbd>F3</kbd><span>Search commands/operators</span></div>
+          <div class="sc-row"><kbd>F4</kbd><span>File context menu</span></div>
+          <div class="sc-row"><kbd>F9</kbd><span>Adjust last operator (most useful key!)</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Selection (Works Everywhere)</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Left Click</kbd><span>Select</span></div>
+          <div class="sc-row"><kbd>Shift+Click</kbd><span>Add to selection</span></div>
+          <div class="sc-row"><kbd>A</kbd><span>Select all</span></div>
+          <div class="sc-row"><kbd>Alt+A</kbd><span>Deselect all</span></div>
+          <div class="sc-row"><kbd>Ctrl+I</kbd><span>Invert selection</span></div>
+          <div class="sc-row"><kbd>B</kbd><span>Box (drag) select</span></div>
+          <div class="sc-row"><kbd>C</kbd><span>Circle select</span></div>
+          <div class="sc-row"><kbd>Ctrl+LMB drag</kbd><span>Lasso select</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Visibility</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>H</kbd><span>Hide selected</span></div>
+          <div class="sc-row"><kbd>Shift+H</kbd><span>Hide everything except selected</span></div>
+          <div class="sc-row"><kbd>Alt+H</kbd><span>Unhide all</span></div>
+          <div class="sc-row"><kbd>/</kbd><span>Local view — isolate selected</span></div>
+          <div class="sc-row"><kbd>Z</kbd><span>Viewport shading pie menu</span></div>
+          <div class="sc-row"><kbd>Alt+Z</kbd><span>Toggle X-Ray mode</span></div>
+          <div class="sc-row"><kbd>Shift+Z</kbd><span>Toggle wireframe</span></div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>F9 is underrated.</strong> After any operation (loop cut, extrude, bevel) press <kbd>F9</kbd> to tweak the settings. Changed your mind about segment count? Just F9 it.</div>
+    </div>
+
+    <!-- NAVIGATE -->
+    <div id="sc-navigate" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Viewport Views</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Numpad 0</kbd><span>Camera view</span></div>
+          <div class="sc-row"><kbd>Numpad 1</kbd><span>Front view</span></div>
+          <div class="sc-row"><kbd>Ctrl+Numpad 1</kbd><span>Back view</span></div>
+          <div class="sc-row"><kbd>Numpad 3</kbd><span>Right side view</span></div>
+          <div class="sc-row"><kbd>Ctrl+Numpad 3</kbd><span>Left side view</span></div>
+          <div class="sc-row"><kbd>Numpad 7</kbd><span>Top view</span></div>
+          <div class="sc-row"><kbd>Ctrl+Numpad 7</kbd><span>Bottom view</span></div>
+          <div class="sc-row"><kbd>Numpad 5</kbd><span>Toggle orthographic / perspective</span></div>
+          <div class="sc-row"><kbd>Numpad .</kbd><span>Focus / frame selected</span></div>
+          <div class="sc-row"><kbd>Numpad Home</kbd><span>Frame all objects in scene</span></div>
+          <div class="sc-row"><kbd>~</kbd><span>Viewport pie menu (all views)</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Mouse Navigation</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Middle Mouse</kbd><span>Orbit / rotate view</span></div>
+          <div class="sc-row"><kbd>Shift+MMB</kbd><span>Pan view</span></div>
+          <div class="sc-row"><kbd>Ctrl+MMB</kbd><span>Zoom (drag)</span></div>
+          <div class="sc-row"><kbd>Scroll Wheel</kbd><span>Zoom in / out</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+Numpad 0</kbd><span>Align camera to current view</span></div>
+          <div class="sc-row"><kbd>Shift+` (backtick)</kbd><span>Walk/fly mode — WASD navigation</span></div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>No numpad?</strong> Enable "Emulate Numpad" in Preferences → Input. Top row 1-0 becomes numpad views.</div>
+    </div>
+
+    <!-- OBJECT MODE -->
+    <div id="sc-object" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Transform</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>G</kbd><span>Grab / Move</span></div>
+          <div class="sc-row"><kbd>R</kbd><span>Rotate</span></div>
+          <div class="sc-row"><kbd>S</kbd><span>Scale</span></div>
+          <div class="sc-row"><kbd>G → X/Y/Z</kbd><span>Move on specific axis</span></div>
+          <div class="sc-row"><kbd>G → Shift+Z</kbd><span>Move on X+Y plane (not Z)</span></div>
+          <div class="sc-row"><kbd>R → X → 45</kbd><span>Rotate 45° on X (type any number)</span></div>
+          <div class="sc-row"><kbd>S → 2</kbd><span>Scale to double size</span></div>
+          <div class="sc-row"><kbd>Ctrl (while moving)</kbd><span>Snap to grid increments</span></div>
+          <div class="sc-row"><kbd>Ctrl+A</kbd><span>Apply transforms menu</span></div>
+          <div class="sc-row"><kbd>Alt+G</kbd><span>Reset location to origin</span></div>
+          <div class="sc-row"><kbd>Alt+R</kbd><span>Reset rotation</span></div>
+          <div class="sc-row"><kbd>Alt+S</kbd><span>Reset scale</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Object Operations</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Shift+A</kbd><span>Add object (mesh, light, camera, etc.)</span></div>
+          <div class="sc-row"><kbd>X / Del</kbd><span>Delete selected</span></div>
+          <div class="sc-row"><kbd>Shift+D</kbd><span>Duplicate (independent copy)</span></div>
+          <div class="sc-row"><kbd>Alt+D</kbd><span>Duplicate linked — edits both</span></div>
+          <div class="sc-row"><kbd>Ctrl+J</kbd><span>Join selected objects into one</span></div>
+          <div class="sc-row"><kbd>Ctrl+P</kbd><span>Set parent</span></div>
+          <div class="sc-row"><kbd>Alt+P</kbd><span>Clear parent</span></div>
+          <div class="sc-row"><kbd>M</kbd><span>Move to collection</span></div>
+          <div class="sc-row"><kbd>Ctrl+G</kbd><span>Create new collection from selection</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Origin & Pivot</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Right-click → Set Origin</kbd><span>Set origin to geometry, cursor, etc.</span></div>
+          <div class="sc-row"><kbd>Shift+RMB</kbd><span>Set 3D cursor position</span></div>
+          <div class="sc-row"><kbd>Shift+S</kbd><span>3D cursor / snap pie menu</span></div>
+          <div class="sc-row"><kbd>. (period)</kbd><span>Pivot point pie menu</span></div>
+          <div class="sc-row"><kbd>, (comma)</kbd><span>Transform orientation pie</span></div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Alt+D is underused.</strong> Creates a linked duplicate that shares mesh data — edit one, all update. Perfect for repeated objects like bolts, tiles, leaves.</div>
+    </div>
+
+    <!-- EDIT MODE -->
+    <div id="sc-edit" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Select Mode</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>1</kbd><span>Vertex select mode</span></div>
+          <div class="sc-row"><kbd>2</kbd><span>Edge select mode</span></div>
+          <div class="sc-row"><kbd>3</kbd><span>Face select mode</span></div>
+          <div class="sc-row"><kbd>Shift+1/2/3</kbd><span>Add that mode to current (multi-mode)</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Selection</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Alt+Click edge</kbd><span>Select edge loop</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+Click</kbd><span>Select edge ring</span></div>
+          <div class="sc-row"><kbd>L</kbd><span>Select linked (hover over)</span></div>
+          <div class="sc-row"><kbd>Ctrl+L</kbd><span>Select all linked to selected</span></div>
+          <div class="sc-row"><kbd>Shift+G</kbd><span>Select similar (angle, material, etc.)</span></div>
+          <div class="sc-row"><kbd>Ctrl+Numpad+</kbd><span>Grow selection</span></div>
+          <div class="sc-row"><kbd>Ctrl+Numpad−</kbd><span>Shrink selection</span></div>
+          <div class="sc-row"><kbd>Ctrl+Click</kbd><span>Shortest path between two elements</span></div>
+          <div class="sc-row"><kbd>Shift+Alt+Click</kbd><span>Select edge loop and add to selection</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Mesh Editing</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>E</kbd><span>Extrude selection</span></div>
+          <div class="sc-row"><kbd>Alt+E</kbd><span>Extrude menu (normals, individual, manifold)</span></div>
+          <div class="sc-row"><kbd>I</kbd><span>Inset faces (I again = individual)</span></div>
+          <div class="sc-row"><kbd>Ctrl+B</kbd><span>Bevel edges (scroll = segments)</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+B</kbd><span>Bevel vertices</span></div>
+          <div class="sc-row"><kbd>K</kbd><span>Knife tool (Enter confirm, C = 45° snap)</span></div>
+          <div class="sc-row"><kbd>Ctrl+R</kbd><span>Loop cut (scroll = count, slide to position)</span></div>
+          <div class="sc-row"><kbd>G G</kbd><span>Edge / vertex slide</span></div>
+          <div class="sc-row"><kbd>F</kbd><span>Fill (create face or edge)</span></div>
+          <div class="sc-row"><kbd>Alt+F</kbd><span>Fill faces (smart fill)</span></div>
+          <div class="sc-row"><kbd>J</kbd><span>Connect vertices with edge</span></div>
+          <div class="sc-row"><kbd>M</kbd><span>Merge vertices menu</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Context Menus</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Ctrl+E</kbd><span>Edge menu (mark seam, sharp, crease...)</span></div>
+          <div class="sc-row"><kbd>Ctrl+F</kbd><span>Face menu (triangulate, solidify, shade smooth...)</span></div>
+          <div class="sc-row"><kbd>Ctrl+V</kbd><span>Vertex menu (smooth, remove doubles...)</span></div>
+          <div class="sc-row"><kbd>Right-click</kbd><span>Context menu for selected element</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Deform & Special</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Alt+S</kbd><span>Shrink/fatten (move along normals)</span></div>
+          <div class="sc-row"><kbd>Shift+Alt+S</kbd><span>Spherize selection (To Sphere)</span></div>
+          <div class="sc-row"><kbd>O</kbd><span>Proportional editing (scroll = radius)</span></div>
+          <div class="sc-row"><kbd>Shift+O</kbd><span>Change proportional falloff type</span></div>
+          <div class="sc-row"><kbd>P</kbd><span>Separate selection to new object</span></div>
+          <div class="sc-row"><kbd>Y</kbd><span>Split region (rip)</span></div>
+          <div class="sc-row"><kbd>V</kbd><span>Rip vertices</span></div>
+          <div class="sc-row"><kbd>Ctrl+X</kbd><span>Dissolve selected elements</span></div>
+          <div class="sc-row"><kbd>Shift+N</kbd><span>Recalculate normals (outside)</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+N</kbd><span>Recalculate normals (inside)</span></div>
+          <div class="sc-row"><kbd>Shift+E</kbd><span>Edge crease (sharpen SubDiv)</span></div>
+          <div class="sc-row"><kbd>U</kbd><span>UV Unwrap menu</span></div>
+          <div class="sc-row"><kbd>Ctrl+T</kbd><span>Triangulate selection</span></div>
+          <div class="sc-row"><kbd>Alt+J</kbd><span>Tris to Quads</span></div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Proportional Editing (O):</strong> Move one vertex and nearby geometry follows like a smooth wave. Scroll wheel while dragging controls the falloff radius. Great for organic shapes.</div>
+    </div>
+
+    <!-- SCULPT -->
+    <div id="sc-sculpt" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Brush Controls</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>F</kbd><span>Resize brush radius interactively</span></div>
+          <div class="sc-row"><kbd>Shift+F</kbd><span>Change brush strength</span></div>
+          <div class="sc-row"><kbd>[ / ]</kbd><span>Decrease / increase brush radius</span></div>
+          <div class="sc-row"><kbd>Ctrl (hold)</kbd><span>Invert brush (push in instead of out)</span></div>
+          <div class="sc-row"><kbd>Shift (hold)</kbd><span>Temporarily switch to Smooth brush</span></div>
+          <div class="sc-row"><kbd>Ctrl+F</kbd><span>Brush angle</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Quick Brush Access</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>X</kbd><span>Draw brush (push surface out)</span></div>
+          <div class="sc-row"><kbd>S</kbd><span>Smooth brush</span></div>
+          <div class="sc-row"><kbd>G</kbd><span>Grab brush (move surface region)</span></div>
+          <div class="sc-row"><kbd>I</kbd><span>Inflate brush</span></div>
+          <div class="sc-row"><kbd>C</kbd><span>Clay brush</span></div>
+          <div class="sc-row"><kbd>P</kbd><span>Pinch brush</span></div>
+          <div class="sc-row"><kbd>T</kbd><span>Flatten brush</span></div>
+          <div class="sc-row"><kbd>Shift+T</kbd><span>Scrape brush</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Topology & Mesh</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Ctrl+R</kbd><span>Voxel remesh (rebuilds topology)</span></div>
+          <div class="sc-row"><kbd>Shift+R</kbd><span>Set remesh voxel size interactively</span></div>
+          <div class="sc-row"><kbd>D</kbd><span>Toggle Dynamic Topology (Dyntopo)</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Masking & Face Sets</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>M</kbd><span>Mask brush (protect from sculpting)</span></div>
+          <div class="sc-row"><kbd>Alt+M</kbd><span>Clear mask</span></div>
+          <div class="sc-row"><kbd>Ctrl+I</kbd><span>Invert mask</span></div>
+          <div class="sc-row"><kbd>H / Shift+H</kbd><span>Hide / show face sets</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+LMB</kbd><span>Expand face set</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POSE MODE -->
+    <div id="sc-pose" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Pose Operations</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>G / R / S</kbd><span>Move, rotate, scale bone</span></div>
+          <div class="sc-row"><kbd>I</kbd><span>Insert keyframe for selected bones</span></div>
+          <div class="sc-row"><kbd>Ctrl+Tab</kbd><span>Switch between Object and Pose Mode</span></div>
+          <div class="sc-row"><kbd>Alt+R</kbd><span>Clear bone rotation</span></div>
+          <div class="sc-row"><kbd>Alt+G</kbd><span>Clear bone location</span></div>
+          <div class="sc-row"><kbd>Alt+S</kbd><span>Clear bone scale</span></div>
+          <div class="sc-row"><kbd>Ctrl+C</kbd><span>Copy pose</span></div>
+          <div class="sc-row"><kbd>Ctrl+V</kbd><span>Paste pose</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+V</kbd><span>Paste pose flipped (mirrored)</span></div>
+          <div class="sc-row"><kbd>W</kbd><span>Pose context menu</span></div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>IK vs FK:</strong> Use IK (Inverse Kinematics) constraint for arms and legs — move the hand/foot and the whole limb follows naturally.</div>
+    </div>
+
+    <!-- ANIMATION -->
+    <div id="sc-animation" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Playback</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Space</kbd><span>Play / Pause animation</span></div>
+          <div class="sc-row"><kbd>Shift+Space</kbd><span>Play (also works when hovered over a panel)</span></div>
+          <div class="sc-row"><kbd>Left Arrow</kbd><span>Step back one frame</span></div>
+          <div class="sc-row"><kbd>Right Arrow</kbd><span>Step forward one frame</span></div>
+          <div class="sc-row"><kbd>Up Arrow</kbd><span>Jump forward 10 frames</span></div>
+          <div class="sc-row"><kbd>Down Arrow</kbd><span>Jump backward 10 frames</span></div>
+          <div class="sc-row"><kbd>Shift+Left</kbd><span>Jump to first frame</span></div>
+          <div class="sc-row"><kbd>Shift+Right</kbd><span>Jump to last frame</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Keyframing</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>I</kbd><span>Insert keyframe (menu: Location, Rotation, Scale...)</span></div>
+          <div class="sc-row"><kbd>Alt+I</kbd><span>Delete keyframe at current frame</span></div>
+          <div class="sc-row"><kbd>Shift+I</kbd><span>Insert keyframe using keying set</span></div>
+          <div class="sc-row"><kbd>Hover over value + I</kbd><span>Keyframe that specific property</span></div>
+          <div class="sc-row"><kbd>Ctrl+D</kbd><span>Duplicate keyframe in Dope Sheet</span></div>
+          <div class="sc-row"><kbd>G (in Dope Sheet)</kbd><span>Move keyframes</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Graph Editor</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>T</kbd><span>Set interpolation mode (bezier, linear, etc.)</span></div>
+          <div class="sc-row"><kbd>V</kbd><span>Set handle type (auto, vector, aligned...)</span></div>
+          <div class="sc-row"><kbd>Home</kbd><span>Frame all curves</span></div>
+          <div class="sc-row"><kbd>Numpad .</kbd><span>Frame selected keyframe</span></div>
+          <div class="sc-row"><kbd>Ctrl+H</kbd><span>Toggle handle visibility</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NODES -->
+    <div id="sc-nodes" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Node Operations</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Shift+A</kbd><span>Add node menu</span></div>
+          <div class="sc-row"><kbd>X / Del</kbd><span>Delete node</span></div>
+          <div class="sc-row"><kbd>Ctrl+X</kbd><span>Delete node and reconnect links</span></div>
+          <div class="sc-row"><kbd>Shift+D</kbd><span>Duplicate node</span></div>
+          <div class="sc-row"><kbd>M</kbd><span>Mute / bypass node</span></div>
+          <div class="sc-row"><kbd>H</kbd><span>Hide node (compact view)</span></div>
+          <div class="sc-row"><kbd>Ctrl+H</kbd><span>Show / hide unused sockets</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Node Groups & Links</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Ctrl+G</kbd><span>Group selected nodes</span></div>
+          <div class="sc-row"><kbd>Alt+G / Ctrl+Alt+G</kbd><span>Ungroup nodes</span></div>
+          <div class="sc-row"><kbd>Tab</kbd><span>Enter / exit node group</span></div>
+          <div class="sc-row"><kbd>Ctrl+Click drag</kbd><span>Cut connections (lasso)</span></div>
+          <div class="sc-row"><kbd>Alt+Click link</kbd><span>Disconnect a single link</span></div>
+          <div class="sc-row"><kbd>F</kbd><span>Relink connections</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Node Wrangler (must enable addon)</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Ctrl+Shift+T</kbd><span>Auto-setup PBR textures on Principled BSDF</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+Click</kbd><span>Preview node output in viewport</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+D</kbd><span>Duplicate node and links</span></div>
+          <div class="sc-row"><kbd>Alt+Shift+S</kbd><span>Swap node inputs</span></div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Enable Node Wrangler!</strong> Preferences → Add-ons → search "Node Wrangler" → enable. The <kbd>Ctrl+Shift+T</kbd> shortcut alone saves minutes every session.</div>
+    </div>
+
+    <!-- RENDER -->
+    <div id="sc-render" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Render Controls</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>F12</kbd><span>Render still image</span></div>
+          <div class="sc-row"><kbd>Ctrl+F12</kbd><span>Render animation</span></div>
+          <div class="sc-row"><kbd>F11</kbd><span>Show last rendered image</span></div>
+          <div class="sc-row"><kbd>Ctrl+F11</kbd><span>Play rendered animation frames</span></div>
+          <div class="sc-row"><kbd>Esc</kbd><span>Cancel current render</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Camera</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Numpad 0</kbd><span>Enter camera view</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+Numpad 0</kbd><span>Set camera to current viewport</span></div>
+          <div class="sc-row"><kbd>Ctrl+B (in cam view)</kbd><span>Set render region crop</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+B</kbd><span>Clear render region</span></div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Render Region (<kbd>Ctrl+B</kbd>):</strong> Draw a crop box in camera view to render only that area. Perfect for testing a corner without waiting for the full render.</div>
+    </div>
+
+    <!-- INTERFACE -->
+    <div id="sc-interface" class="sc-panel">
+      <div class="sc-group">
+        <div class="sc-group-title">Panels & Areas</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>N</kbd><span>Toggle right sidebar (Item, View, Tool tabs)</span></div>
+          <div class="sc-row"><kbd>T</kbd><span>Toggle left toolbar</span></div>
+          <div class="sc-row"><kbd>Ctrl+Space</kbd><span>Maximize current area</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+Space</kbd><span>Fullscreen area (hides all borders)</span></div>
+          <div class="sc-row"><kbd>Q</kbd><span>Quick Favorites pie menu</span></div>
+          <div class="sc-row"><kbd>Shift+Space</kbd><span>Tool pie menu</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Area Management</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Drag from corner triangle</kbd><span>Split area into two</span></div>
+          <div class="sc-row"><kbd>Right-click on edge</kbd><span>Split or Join Area menu</span></div>
+          <div class="sc-row"><kbd>Click editor icon (top-left)</kbd><span>Change editor type for that area</span></div>
+        </div>
+      </div>
+      <div class="sc-group">
+        <div class="sc-group-title">Workflow</div>
+        <div class="sc-grid">
+          <div class="sc-row"><kbd>Ctrl+Alt+U</kbd><span>Open User Preferences</span></div>
+          <div class="sc-row"><kbd>Right-click any prop → Add Driver</kbd><span>Create a driver</span></div>
+          <div class="sc-row"><kbd>Right-click any item → Add to Quick Favorites</kbd><span>Adds to Q menu</span></div>
+          <div class="sc-row"><kbd>Alt+Click</kbd><span>Edit property on all selected objects</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+U</kbd><span>Preferences</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- sc-content -->
+</div><!-- sc-layout -->
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.sc-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sc-sidebar a').forEach(a => a.classList.remove('active'));
+  document.getElementById('sc-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  document.querySelector('.sc-content').scrollTop = 0;
+}
+// hash routing
+if (location.hash) {
+  const id = location.hash.replace('#sc-','');
+  const el = document.getElementById('nav-'+id);
+  if (el) showPanel(id);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!-- MODELING SECTION -->
+<section id="modeling">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Module 04</span>
+      <h2 class="section-title">Modeling</h2>
+      <p class="section-sub">From primitive shapes to complex meshes — the complete modeling toolkit.</p>
+    </div>
+
+    <div class="notice orange"><span class="notice-icon">⚡</span><div>Before modeling, always apply transforms (<kbd>Ctrl+A</kbd> → All) to avoid issues with scale, rotation affecting modifiers and physics.</div></div>
+
+    <h3 class="subsection-title">Core Modeling Workflows</h3>
+    <div class="workflow-grid">
+      <div class="workflow-card">
+        <h3>🎯 Box Modeling <span class="tag">Beginner</span></h3>
+        <ol class="step-list">
+          <li>Start with a cube (<kbd>Shift+A</kbd> → Mesh → Cube)</li>
+          <li>Enter Edit Mode (<kbd>Tab</kbd>)</li>
+          <li>Enable X-Ray (<kbd>Alt+Z</kbd>) to see through mesh</li>
+          <li>Select faces and Extrude (<kbd>E</kbd>) to build shape</li>
+          <li>Use Loop Cuts (<kbd>Ctrl+R</kbd>) to add edge loops</li>
+          <li>Bevel edges (<kbd>Ctrl+B</kbd>) for smooth corners</li>
+          <li>Add Subdivision Surface modifier for smooth result</li>
+        </ol>
+      </div>
+      <div class="workflow-card">
+        <h3>🔄 Retopology Workflow <span class="tag">Intermediate</span></h3>
+        <ol class="step-list">
+          <li>Import/create your high-poly mesh</li>
+          <li>Enable Snap to Face (<kbd>Shift+Tab</kbd> → Face)</li>
+          <li>Create new mesh object on top of high-poly</li>
+          <li>Enable "Snap" and "Project Individual Elements" in snap settings</li>
+          <li>Use LoopTools addon for clean loops (Ctrl+R on curved areas)</li>
+          <li>Shrinkwrap modifier keeps mesh on surface</li>
+          <li>Bake normal map from high-poly to low-poly</li>
+        </ol>
+      </div>
+      <div class="workflow-card">
+        <h3>⚙️ Hard Surface Modeling <span class="tag">Pro</span></h3>
+        <ol class="step-list">
+          <li>Block out major shapes first — don't detail early</li>
+          <li>Use Boolean modifier for cuts and unions</li>
+          <li>Add edge loops near booleans for clean shading</li>
+          <li>Use Bevel Weight on sharp edges (mean crease)</li>
+          <li>Bevel modifier with Limit Method = Weight</li>
+          <li>Weighted Normals modifier for correct shading</li>
+          <li>Mark sharp edges: <kbd>Ctrl+E</kbd> → Mark Sharp</li>
+        </ol>
+      </div>
+      <div class="workflow-card">
+        <h3>🌀 Subdivision Workflow <span class="tag">Intermediate</span></h3>
+        <ol class="step-list">
+          <li>Model with low poly, add Subdivision Surface modifier</li>
+          <li>Set Viewport = 2, Render = 3 (or higher)</li>
+          <li>Use edge creases (<kbd>Shift+E</kbd>) to sharpen edges</li>
+          <li>Add support loops near sharp corners</li>
+          <li>Enable "Optimal Display" to see clean wireframe</li>
+          <li>Apply modifier when mesh is finalized</li>
+        </ol>
+      </div>
+      <div class="workflow-card">
+        <h3>📐 Precision Modeling <span class="tag">Intermediate</span></h3>
+        <ol class="step-list">
+          <li>Enable ruler/protractor: <kbd>Shift+Space</kbd> → Measure</li>
+          <li>Type exact values after G/R/S (e.g. G Z 1.5)</li>
+          <li>Use 3D cursor as pivot point</li>
+          <li>Set 3D cursor: <kbd>Shift+RMB</kbd> or <kbd>Shift+S</kbd></li>
+          <li>Snap to grid: hold <kbd>Ctrl</kbd> while transforming</li>
+          <li>Use N panel → Item → exact position/scale values</li>
+          <li>Unit Scale in scene settings for real-world units</li>
+        </ol>
+      </div>
+      <div class="workflow-card">
+        <h3>🔗 Modifier Stack Best Practices <span class="tag">Pro</span></h3>
+        <ol class="step-list">
+          <li>Order matters: Mirror → Solidify → Bevel → SubDiv</li>
+          <li>Never apply modifiers until final — keep non-destructive</li>
+          <li>Use Array + Curve modifier for repeating along path</li>
+          <li>Boolean: use "Exact" solver for complex shapes</li>
+          <li>Data Transfer for copying normals between objects</li>
+          <li>Displace modifier with texture for organic detail</li>
+          <li>Geometry Nodes for procedural everything</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="subsection-title">Essential Modifiers Quick Reference</h3>
+    <div class="two-col">
+      <table class="cheat-table">
+        <thead><tr><th>Modifier</th><th>What it does</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>Subdivision Surface</td><td>Smooth and subdivide mesh</td><td>Organic shapes, characters</td></tr>
+          <tr><td>Mirror</td><td>Symmetrical modeling</td><td>Characters, vehicles, symmetric objects</td></tr>
+          <tr><td>Solidify</td><td>Adds thickness to surface</td><td>Thin objects, walls, clothes</td></tr>
+          <tr><td>Bevel</td><td>Rounds edges</td><td>Hard surface, chamfered edges</td></tr>
+          <tr><td>Boolean</td><td>Cut/add/subtract mesh</td><td>Hard surface, cutouts</td></tr>
+          <tr><td>Array</td><td>Repeat mesh in pattern</td><td>Stairs, chains, tiles</td></tr>
+          <tr><td>Curve</td><td>Deform mesh along curve</td><td>Roads, pipes, ropes</td></tr>
+          <tr><td>Shrinkwrap</td><td>Snap mesh to surface</td><td>Retopo, stickers, clothing</td></tr>
+          <tr><td>Armature</td><td>Deform with bones</td><td>Characters, mechanical rigs</td></tr>
+          <tr><td>Displace</td><td>Displace with texture</td><td>Terrain, organic bump</td></tr>
+          <tr><td>Decimate</td><td>Reduce polygon count</td><td>Game-ready meshes, LODs</td></tr>
+          <tr><td>Remesh</td><td>Reconstruct topology</td><td>After sculpting, cleanup</td></tr>
+          <tr><td>Skin</td><td>Skin around vertices</td><td>Quick character blockout</td></tr>
+          <tr><td>Weld</td><td>Merge vertices by distance</td><td>Cleaning overlapping verts</td></tr>
+          <tr><td>Triangulate</td><td>Convert to tris</td><td>Game export, rendering</td></tr>
+          <tr><td>Weighted Normal</td><td>Custom normal direction</td><td>Correct hard surface shading</td></tr>
+        </tbody>
+      </table>
+
+      <div>
+        <h3 style="margin-bottom:1rem">Modeling Tools Quick Reference</h3>
+        <div class="sc-columns" style="grid-template-columns:1fr">
+          <div>
+            <div class="sc-row"><kbd>Ctrl+R</kbd><span>Loop Cut — scroll wheel for more loops, slide to position</span></div>
+            <div class="sc-row"><kbd>Ctrl+B</kbd><span>Bevel — scroll for segments, P for profile shape</span></div>
+            <div class="sc-row"><kbd>K</kbd><span>Knife — Enter to confirm, Esc to cancel, C for 45° snap</span></div>
+            <div class="sc-row"><kbd>I</kbd><span>Inset — I again to offset inward, O for individual faces</span></div>
+            <div class="sc-row"><kbd>E</kbd><span>Extrude — right-click after E to cancel but leave extruded verts</span></div>
+            <div class="sc-row"><kbd>Alt+E</kbd><span>Extrude menu: Along Normals, Individual, Extrude & Dissolve</span></div>
+            <div class="sc-row"><kbd>Shift+Alt+S</kbd><span>To Sphere — select all and spherize selection</span></div>
+            <div class="sc-row"><kbd>W</kbd><span>Vertex/Edge/Face context menu (right-click also works)</span></div>
+            <div class="sc-row"><kbd>G G</kbd><span>Edge Slide — moves edge along connected edges</span></div>
+            <div class="sc-row"><kbd>Ctrl+T</kbd><span>Triangulate faces</span></div>
+            <div class="sc-row"><kbd>Alt+J</kbd><span>Tris to Quads</span></div>
+            <div class="sc-row"><kbd>U</kbd><span>UV Unwrap menu</span></div>
+            <div class="sc-row"><kbd>Ctrl+E → Mark Seam</kbd><span>Mark UV seam</span></div>
+            <div class="sc-row"><kbd>Ctrl+E → Mark Sharp</kbd><span>Mark sharp edge for flat shading</span></div>
+            <div class="sc-row"><kbd>Shift+E</kbd><span>Crease — sharpens edge in SubDiv modifier</span></div>
+          </div>
+        </div>
+        <div class="tip-box" style="margin-top:1rem">
+          <strong>Golden Rule:</strong> Work in quads (4-sided faces). Avoid triangles in areas that deform. Use triangles only for game-ready meshes or final non-deforming hard surface models.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCULPTING SECTION -->
+<section id="sculpting" class="alt-bg">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Module 05</span>
+      <h2 class="section-title">Sculpting</h2>
+      <p class="section-sub">Digital clay for organic shapes, characters, and detailed surfaces.</p>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h3 class="subsection-title">Sculpting Workflow — Start to Finish</h3>
+        <div class="workflow-card">
+          <ol class="step-list">
+            <li>Start with a sphere or base mesh (<kbd>Shift+A</kbd> → UV Sphere)</li>
+            <li>Switch to Sculpt Mode from the mode menu</li>
+            <li>Set Remesh Voxel Size (top header) — lower = more detail</li>
+            <li>Press <kbd>Ctrl+R</kbd> to remesh and get uniform topology</li>
+            <li>Block out major shapes with Clay Strips brush</li>
+            <li>Use Grab brush to push/pull large forms</li>
+            <li>Remesh again when adding detail (smaller voxel size)</li>
+            <li>Refine with Smooth (<kbd>Shift</kbd>), Flatten, Scrape</li>
+            <li>For fine detail: enable Multires modifier</li>
+            <li>Add detail with Crease, Pinch, Draw Sharp</li>
+            <li>Final polish: Smooth, Polish, Flatten</li>
+          </ol>
+        </div>
+
+        <h3 class="subsection-title">Brush Types Reference</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Brush</th><th>Effect</th><th>Tip</th></tr></thead>
+          <tbody>
+            <tr><td>Draw</td><td>Push surface out</td><td>Ctrl = push in</td></tr>
+            <tr><td>Draw Sharp</td><td>Sharp crisp lines</td><td>Great for wrinkles</td></tr>
+            <tr><td>Clay</td><td>Add clay-like material</td><td>Main blocking brush</td></tr>
+            <tr><td>Clay Strips</td><td>Rectangular clay patches</td><td>Best for organic forms</td></tr>
+            <tr><td>Inflate</td><td>Expand outward</td><td>Ctrl = deflate</td></tr>
+            <tr><td>Blob</td><td>Balloon-like inflate</td><td>Puffy forms</td></tr>
+            <tr><td>Crease</td><td>Pinch into valley</td><td>Wrinkles, folds</td></tr>
+            <tr><td>Smooth</td><td>Average vertices</td><td>Hold Shift anytime</td></tr>
+            <tr><td>Flatten</td><td>Push to average plane</td><td>Ctrl = contrast</td></tr>
+            <tr><td>Scrape</td><td>Remove high points</td><td>Flatten selectively</td></tr>
+            <tr><td>Fill</td><td>Fill concave areas</td><td>Opposite of scrape</td></tr>
+            <tr><td>Pinch</td><td>Pinch vertices together</td><td>Sharp ridges</td></tr>
+            <tr><td>Grab</td><td>Move surface region</td><td>Push large forms</td></tr>
+            <tr><td>Elastic Deform</td><td>Grab with elastic feel</td><td>Natural deformation</td></tr>
+            <tr><td>Snake Hook</td><td>Pull long strands</td><td>Hair, tentacles</td></tr>
+            <tr><td>Thumb</td><td>Smear surface</td><td>Blend shapes</td></tr>
+            <tr><td>Pose</td><td>Pose-like deformation</td><td>Adjust limbs</td></tr>
+            <tr><td>Boundary</td><td>Edit boundary edges</td><td>Hole edges</td></tr>
+            <tr><td>Cloth</td><td>Cloth simulation brush</td><td>Fabric folds</td></tr>
+            <tr><td>Simplify</td><td>Reduce geometry density</td><td>With Dynamic Topo</td></tr>
+            <tr><td>Mask</td><td>Protect areas from sculpting</td><td>M key</td></tr>
+            <tr><td>Face Sets</td><td>Isolate face regions</td><td>For complex models</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h3 class="subsection-title">Dynamic Topology vs Multires vs Remesh</h3>
+        <div class="accordion">
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              Dynamic Topology (Dyntopo) <span class="acc-arrow">›</span>
+            </div>
+            <div class="acc-body">
+              <p>Adds/removes geometry as you sculpt — perfect for early blocking.</p>
+              <ul>
+                <li>Enable: <kbd>D</kbd> key in Sculpt Mode header</li>
+                <li>Set detail size smaller for more geometry</li>
+                <li>Detail Type: Relative → follows zoom level</li>
+                <li>Constant → same density everywhere</li>
+                <li>Brush → density based on brush size</li>
+                <li>Con: no UV maps, random topology</li>
+                <li>Best for: early blocking, organic forms</li>
+              </ul>
+            </div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              Multires Modifier <span class="acc-arrow">›</span>
+            </div>
+            <div class="acc-body">
+              <p>Subdivides mesh while keeping low-res editable — best for final detailing.</p>
+              <ul>
+                <li>Add modifier → Multiresolution</li>
+                <li>Subdivide to add levels (each level 4× polygons)</li>
+                <li>Sculpt on high level, render on high, rig on low</li>
+                <li>Apply Base at low level to sculpt big forms</li>
+                <li>Reshape: pushes high-res detail to new low-res shape</li>
+                <li>Best for: characters with animation, final sculpts</li>
+              </ul>
+            </div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              Voxel Remesh <span class="acc-arrow">›</span>
+            </div>
+            <div class="acc-body">
+              <p>Rebuilds mesh topology uniformly — use between blocking stages.</p>
+              <ul>
+                <li>Set Voxel Size in header (smaller = more polys)</li>
+                <li>Ctrl+R to remesh (or click Remesh button)</li>
+                <li>Smooth Normals option for cleaner result</li>
+                <li>Fix Poles: helps reduce problematic topology</li>
+                <li>Warning: destroys UV maps and existing topology</li>
+                <li>Best for: cleanup after rough blocking</li>
+              </ul>
+            </div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">
+              Face Sets & Masking <span class="acc-arrow">›</span>
+            </div>
+            <div class="acc-body">
+              <p>Isolate and protect parts of your sculpt.</p>
+              <ul>
+                <li><kbd>Ctrl+Alt+LMB</kbd> — expand face set</li>
+                <li><kbd>H</kbd> — hide face set, <kbd>Alt+H</kbd> — show all</li>
+                <li><kbd>W</kbd> in mask mode — mask operations menu</li>
+                <li>Mask by normals: auto-masks flat surfaces</li>
+                <li>Auto-Masking: Topology / Face Sets / Cavity</li>
+                <li>Cavity mask: only sculpts high or low areas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Sculpt Mode Settings You Need</h3>
+        <div class="workflow-card">
+          <ul class="step-list" style="list-style:none;counter-reset:none">
+            <li style="counter-increment:none">
+              <div>
+                <strong>Symmetry:</strong> Enable X mirror in header toolbar — sculpt on one side, mirrors automatically
+              </div>
+            </li>
+          </ul>
+          <div class="sc-row"><kbd>X (header)</kbd><span>Toggle X symmetry</span></div>
+          <div class="sc-row"><kbd>Ctrl+M</kbd><span>Mirror mesh (object mode first)</span></div>
+          <div class="sc-row"><kbd>Shift+R</kbd><span>Set remesh voxel size interactively</span></div>
+          <div class="sc-row"><kbd>F</kbd><span>Resize brush radius</span></div>
+          <div class="sc-row"><kbd>Shift+F</kbd><span>Adjust brush strength</span></div>
+          <div class="sc-row"><kbd>Ctrl</kbd><span>Invert brush (draw in vs out)</span></div>
+          <div class="sc-row"><kbd>Shift</kbd><span>Temporarily use Smooth brush</span></div>
+          <div class="sc-row"><kbd>E (brush stroke)</kbd><span>Change stroke method (dots/airbrush/anchored)</span></div>
+          <div class="tip-box">
+            <strong>Performance tip:</strong> Keep viewport in Solid mode while sculpting — only switch to Material/Render preview when checking appearance. Set Multires viewport level lower for fluidity.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALS & SHADING -->
+<section id="materials">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Module 06</span>
+      <h2 class="section-title">Materials & Shading</h2>
+      <p class="section-sub">Node-based PBR materials — from simple to photorealistic.</p>
+    </div>
+
+    <div class="notice blue"><span class="notice-icon">💡</span><div>Switch viewport to <strong>Material Preview</strong> (Z → Material) or <strong>Rendered</strong> (Z → Rendered) to see materials as you work. Enable <strong>Node Wrangler</strong> addon (Preferences → Add-ons) for massively faster material setup.</div></div>
+
+    <h3 class="subsection-title">The Standard PBR Node Setup</h3>
+    <div class="node-diagram">
+      <div class="node-box"><strong>Image Texture</strong><small>Base Color</small></div>
+      <div class="node-arrow">→</div>
+      <div class="node-box"><strong>Image Texture</strong><small>Roughness</small></div>
+      <div class="node-arrow">→</div>
+      <div class="node-box"><strong>Image Texture</strong><small>Normal Map</small></div>
+      <div class="node-arrow">→</div>
+      <div class="node-box"><strong>Normal Map Node</strong><small>converts to normal</small></div>
+      <div class="node-arrow">→</div>
+      <div class="node-box output"><strong>Principled BSDF</strong><small>Main shader</small></div>
+      <div class="node-arrow">→</div>
+      <div class="node-box output"><strong>Material Output</strong><small>Surface</small></div>
+    </div>
+    <div class="tip-box"><strong>Node Wrangler shortcut:</strong> With Node Wrangler enabled, select Principled BSDF → <kbd>Ctrl+Shift+T</kbd> → select all your texture maps → it auto-connects everything correctly!</div>
+
+    <div class="two-col" style="margin-top:2rem">
+      <div>
+        <h3 class="subsection-title">Principled BSDF — All Inputs Explained</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Input</th><th>Range</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td>Base Color</td><td>RGB</td><td>The main color/albedo of surface</td></tr>
+            <tr><td>Metallic</td><td>0–1</td><td>0=dielectric, 1=metal. Most things are 0 or 1, rarely in between</td></tr>
+            <tr><td>Roughness</td><td>0–1</td><td>0=mirror, 1=fully matte/diffuse</td></tr>
+            <tr><td>IOR</td><td>1–3</td><td>Index of refraction. Glass=1.45, Water=1.33, Diamond=2.42</td></tr>
+            <tr><td>Alpha</td><td>0–1</td><td>Transparency. Set Blend Mode to Alpha Blend in material settings</td></tr>
+            <tr><td>Normal</td><td>Vector</td><td>Connect Normal Map node here for bump detail</td></tr>
+            <tr><td>Emission Color</td><td>RGB</td><td>Makes surface glow. Set Emission Strength &gt; 0</td></tr>
+            <tr><td>Emission Strength</td><td>0–∞</td><td>Intensity of emission light. Use with Bloom in EEVEE</td></tr>
+            <tr><td>Subsurface Weight</td><td>0–1</td><td>Light scattering under surface — for skin, wax, marble</td></tr>
+            <tr><td>Specular IOR Level</td><td>0–1</td><td>Specular highlight intensity for non-metals</td></tr>
+            <tr><td>Anisotropic</td><td>0–1</td><td>Directional specular for brushed metal, hair</td></tr>
+            <tr><td>Sheen Weight</td><td>0–1</td><td>Fabric-like edge glow</td></tr>
+            <tr><td>Coat Weight</td><td>0–1</td><td>Clear coat layer on top (car paint, varnish)</td></tr>
+            <tr><td>Transmission Weight</td><td>0–1</td><td>Glass-like light transmission</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h3 class="subsection-title">Essential Shader Nodes</h3>
+        <div class="accordion">
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">Texture Nodes <span class="acc-arrow">›</span></div>
+            <div class="acc-body">
+              <ul>
+                <li><strong>Image Texture:</strong> Load external image (PNG, JPG, EXR, TIFF)</li>
+                <li><strong>Noise Texture:</strong> Procedural noise — great for roughness variation</li>
+                <li><strong>Musgrave:</strong> Fractal noise for terrain, rock surfaces</li>
+                <li><strong>Voronoi:</strong> Cell pattern — stones, scales, organic</li>
+                <li><strong>Wave:</strong> Stripes/bands — wood, marble, fabric</li>
+                <li><strong>Gradient:</strong> Linear/radial gradient along object</li>
+                <li><strong>Magic:</strong> Colorful psychedelic pattern</li>
+                <li><strong>Checker:</strong> Black/white checker pattern</li>
+                <li><strong>Brick:</strong> Brick/tile procedural texture</li>
+              </ul>
+            </div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">Color & Vector Nodes <span class="acc-arrow">›</span></div>
+            <div class="acc-body">
+              <ul>
+                <li><strong>ColorRamp:</strong> Map values to colors — control contrast</li>
+                <li><strong>Hue Saturation Value:</strong> Adjust colors</li>
+                <li><strong>Mix Color:</strong> Blend two colors/textures</li>
+                <li><strong>RGB Curves:</strong> Fine-tune color channels</li>
+                <li><strong>Mapping:</strong> Control texture UV position/rotation/scale</li>
+                <li><strong>Texture Coordinate:</strong> UV / Generated / Object / Camera coord</li>
+                <li><strong>Normal Map:</strong> Convert image to normal vector</li>
+                <li><strong>Bump:</strong> Convert height map to normal</li>
+                <li><strong>Displacement:</strong> Actual geometry displacement</li>
+              </ul>
+            </div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">Shader Mix Nodes <span class="acc-arrow">›</span></div>
+            <div class="acc-body">
+              <ul>
+                <li><strong>Mix Shader:</strong> Blend two shaders with a factor</li>
+                <li><strong>Add Shader:</strong> Add two shaders together (emission over material)</li>
+                <li><strong>Emission:</strong> Pure emissive surface — glow, screens</li>
+                <li><strong>Transparent BSDF:</strong> Pure transparency</li>
+                <li><strong>Glass BSDF:</strong> Combined refraction + reflection</li>
+                <li><strong>Diffuse BSDF:</strong> Pure diffuse (no specular)</li>
+                <li><strong>Glossy BSDF:</strong> Pure reflective/specular</li>
+                <li><strong>Volume Scatter / Absorption:</strong> Volumetric fog and glass tint</li>
+                <li><strong>Holdout:</strong> Makes object a matte cutout</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Material Workflow Tips</h3>
+        <div class="sc-row"><kbd>Ctrl+Shift+T</kbd><span>Node Wrangler: auto-setup PBR textures</span></div>
+        <div class="sc-row"><kbd>Ctrl+Shift+Click node</kbd><span>Preview that node's output in viewport</span></div>
+        <div class="sc-row"><kbd>Ctrl+Click drag</kbd><span>Cut node connections</span></div>
+        <div class="sc-row"><kbd>Shift+A → Search</kbd><span>Search for any node by name</span></div>
+        <div class="sc-row"><kbd>M</kbd><span>Mute node (bypass)</span></div>
+        <div class="sc-row"><kbd>Ctrl+G</kbd><span>Group nodes into reusable node group</span></div>
+        <div class="tip-box">
+          <strong>For realistic materials:</strong> Never use pure white (1,1,1) or pure black (0,0,0) for base color in real materials. Real-world darkest diffuse is around 0.02, brightest around 0.9. This is called "PBR range compliance."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTING -->
+<section id="lighting" class="alt-bg">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Module 07</span>
+      <h2 class="section-title">Lighting</h2>
+      <p class="section-sub">Light makes or breaks your render. Master every light type and technique.</p>
+    </div>
+
+    <div class="workflow-grid">
+      <div class="workflow-card">
+        <h3>💡 Light Types</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Light</th><th>Use Case</th></tr></thead>
+          <tbody>
+            <tr><td>Point</td><td>Bulb, omnidirectional. Has radius for soft shadows.</td></tr>
+            <tr><td>Sun</td><td>Parallel rays, infinite distance. Outdoor scenes.</td></tr>
+            <tr><td>Spot</td><td>Cone of light. Flashlight, stage, car headlight.</td></tr>
+            <tr><td>Area</td><td>Rectangular/disk soft light. Studio, windows.</td></tr>
+          </tbody>
+        </table>
+        <div class="tip-box"><strong>Tip:</strong> Area lights with large size give beautiful soft shadows. Set Shape to Disk for round or Rectangle for window light.</div>
+      </div>
+
+      <div class="workflow-card">
+        <h3>🌅 Three-Point Lighting Setup</h3>
+        <ol class="step-list">
+          <li><strong>Key Light:</strong> Main light, 45° to side and above subject. Strongest.</li>
+          <li><strong>Fill Light:</strong> Opposite side, 50-75% strength of key. Fills shadows.</li>
+          <li><strong>Rim/Back Light:</strong> Behind subject, creates separation from background.</li>
+          <li>Optionally add bounce card: a plane with white emission material</li>
+          <li>Use HDRI for natural ambient fill (World settings → Environment Texture)</li>
+        </ol>
+        <div class="tip-box"><strong>Ratio:</strong> Key : Fill : Rim = 1 : 0.5 : 0.25 for natural look. Increase contrast for dramatic effect.</div>
+      </div>
+
+      <div class="workflow-card">
+        <h3>🌍 HDRI Lighting</h3>
+        <ol class="step-list">
+          <li>Go to World Properties (globe icon)</li>
+          <li>Click "Use Nodes" → Surface → Background</li>
+          <li>Add Environment Texture node</li>
+          <li>Load .hdr or .exr file (hdri-haven.com / Poly Haven for free HDRIs)</li>
+          <li>Use Mapping node to rotate HDRI</li>
+          <li>Adjust Strength for exposure control</li>
+          <li>For Cycles: enable "Multiple Importance Sampling" on world</li>
+        </ol>
+        <div class="tip-box"><strong>Pro:</strong> Use a Lightpath node to show a different background to camera vs reflections. Clean background, realistic reflections.</div>
+      </div>
+
+      <div class="workflow-card">
+        <h3>⚙️ Cycles vs EEVEE Lighting</h3>
+        <div class="sc-row"><span style="color:var(--accent);font-weight:700">Cycles (Path Tracing)</span></div>
+        <ul style="font-size:0.84rem;color:var(--text2);padding-left:1.2rem;margin-bottom:0.75rem">
+          <li>Physically accurate, global illumination</li>
+          <li>Slower — use GPU (CUDA/OptiX/Metal/HIP)</li>
+          <li>Great for still renders, product viz, films</li>
+          <li>Sample count controls noise vs quality</li>
+          <li>Enable Denoising (AI denoiser in render settings)</li>
+        </ul>
+        <div class="sc-row"><span style="color:var(--blue);font-weight:700">EEVEE Next (Blender 4.x)</span></div>
+        <ul style="font-size:0.84rem;color:var(--text2);padding-left:1.2rem">
+          <li>Real-time rasterization, extremely fast</li>
+          <li>Enable Screen Space Reflections for reflections</li>
+          <li>Enable Ambient Occlusion in render settings</li>
+          <li>Bloom → Post Processing</li>
+          <li>Shadow settings: increase Resolution for sharp shadows</li>
+          <li>EEVEE Next (4.2+) — much improved ray tracing options</li>
+        </ul>
+      </div>
+
+      <div class="workflow-card">
+        <h3>🎨 Light Color Tips</h3>
+        <ul class="step-list" style="list-style:none">
+          <li>Warm key light (slightly orange) + cool fill (slightly blue) = natural contrast</li>
+          <li>Complementary colors in key/fill create cinematic look</li>
+          <li>Use Kelvin temperature: 2700K=warm bulb, 5500K=daylight, 7000K=cloudy/blue</li>
+          <li>Never use pure white light in realism — slight warmth/coolness always</li>
+          <li>Emission materials as lights: set material to Emission, use as lamp</li>
+          <li>Light Linking (Blender 4.x): control which objects each light affects</li>
+        </ul>
+      </div>
+
+      <div class="workflow-card">
+        <h3>🌫️ Volumetrics &amp; Atmosphere</h3>
+        <ol class="step-list">
+          <li>Add a cube around scene: Material → Volume → Volume Scatter</li>
+          <li>Low density (0.01–0.05) for subtle atmosphere/haze</li>
+          <li>Spot light through volume = god rays</li>
+          <li>World volume for global fog: World → Volume → Volume Scatter</li>
+          <li>In EEVEE: enable Volumetrics in Render Properties</li>
+          <li>In Cycles: just add volume material — renders automatically</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANIMATION -->
+<section id="animation">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Module 08</span>
+      <h2 class="section-title">Animation</h2>
+      <p class="section-sub">Keyframes, curves, rigging, and making things move beautifully.</p>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h3 class="subsection-title">Keyframing Fundamentals</h3>
+        <div class="workflow-card">
+          <ol class="step-list">
+            <li>Set playhead to frame 1 in Timeline</li>
+            <li>Select object, press <kbd>I</kbd> → choose what to keyframe (Location, Rotation, Scale)</li>
+            <li>Move to frame 24, transform object</li>
+            <li>Press <kbd>I</kbd> again to set second keyframe</li>
+            <li>Press <kbd>Space</kbd> to play — object animates between keyframes</li>
+            <li>Open Graph Editor to adjust animation curves</li>
+            <li>Press <kbd>T</kbd> in Graph Editor to change interpolation</li>
+          </ol>
+          <div class="tip-box"><strong>Auto Keying:</strong> Enable the record button (circle) in the Timeline header. Every transform change automatically creates keyframes.</div>
+        </div>
+
+        <h3 class="subsection-title">Interpolation Types</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Type</th><th>Effect</th><th>Use for</th></tr></thead>
+          <tbody>
+            <tr><td>Linear</td><td>Constant speed</td><td>Mechanical, wheels</td></tr>
+            <tr><td>Bezier</td><td>Ease in/out (default)</td><td>Most natural motion</td></tr>
+            <tr><td>Constant</td><td>Instant jump</td><td>Blinking, switches</td></tr>
+            <tr><td>Elastic</td><td>Overshoot spring</td><td>Bouncy, playful</td></tr>
+            <tr><td>Bounce</td><td>Bounce at end</td><td>Ball drops, impacts</td></tr>
+            <tr><td>Back</td><td>Overshoot and return</td><td>Cartoon overshoots</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="subsection-title">Rigging Basics</h3>
+        <div class="accordion">
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">Create a Simple Rig <span class="acc-arrow">›</span></div>
+            <div class="acc-body">
+              <ol style="padding-left:1.2rem;font-size:0.85rem;color:var(--text2)">
+                <li>Add Armature: <kbd>Shift+A</kbd> → Armature</li>
+                <li>Enter Edit Mode on armature (<kbd>Tab</kbd>)</li>
+                <li>Extrude bones: <kbd>E</kbd> to add child bones</li>
+                <li>Name bones in Properties → Bone Properties</li>
+                <li>Exit armature edit mode, select mesh then armature</li>
+                <li>Parent: <kbd>Ctrl+P</kbd> → With Automatic Weights</li>
+                <li>Select armature, enter Pose Mode (<kbd>Ctrl+Tab</kbd>)</li>
+                <li>Now move bones to pose the mesh</li>
+              </ol>
+            </div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">Constraints — The Power of Rigging <span class="acc-arrow">›</span></div>
+            <div class="acc-body">
+              <ul>
+                <li><strong>IK (Inverse Kinematics):</strong> Move end bone, chain follows. Perfect for arms/legs.</li>
+                <li><strong>Copy Rotation:</strong> Bone mirrors rotation of another.</li>
+                <li><strong>Track To:</strong> Always point at a target object.</li>
+                <li><strong>Floor:</strong> Prevent bone going below a plane.</li>
+                <li><strong>Limit Rotation:</strong> Clamp rotation range for joints.</li>
+                <li><strong>Child Of:</strong> Dynamic parenting between objects.</li>
+                <li>Add via: Bone Properties → Bone Constraints tab (chain icon)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="acc-item">
+            <div class="acc-header" onclick="toggleAcc(this)">Shape Keys <span class="acc-arrow">›</span></div>
+            <div class="acc-body">
+              <ul>
+                <li>Object Properties → Shape Keys</li>
+                <li>Add "Basis" key first — this is rest state</li>
+                <li>Add new key, enter Edit Mode, deform mesh</li>
+                <li>Exit — that deformation is now the shape key</li>
+                <li>Keyframe the Value (0–1) slider for facial animation</li>
+                <li>Driver: Link value to bone rotation for automatic triggering</li>
+                <li>Great for: facial expressions, corrective shapes, morphs</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="subsection-title">NLA Editor — Non-Linear Animation</h3>
+        <div class="workflow-card">
+          <ol class="step-list">
+            <li>Animate a looping walk cycle on frames 1-24</li>
+            <li>Open NLA Editor</li>
+            <li>Click the push-down button (star icon) on the action</li>
+            <li>Action becomes an NLA strip</li>
+            <li>Drag strip length to repeat the loop</li>
+            <li>Blend multiple actions together with Blend In/Out</li>
+            <li>Scale strip to slow down or speed up animation</li>
+          </ol>
+          <div class="tip-box"><strong>Use case:</strong> Animate walk, run, idle cycles separately. Blend in NLA for game-ready character animation or complex scene choreography.</div>
+        </div>
+
+        <h3 class="subsection-title">Camera Animation</h3>
+        <div class="sc-row"><kbd>Numpad 0</kbd><span>Enter camera view</span></div>
+        <div class="sc-row"><kbd>G (in camera view)</kbd><span>Move camera in 2D plane</span></div>
+        <div class="sc-row"><kbd>Ctrl+Alt+Numpad 0</kbd><span>Set camera to current view</span></div>
+        <div class="tip-box">For smooth camera moves: add camera to an Empty object, animate the Empty. Camera follows. Or use a Camera Follow Path constraint with a Bezier curve.</div>
+
+        <h3 class="subsection-title">Physics Simulations</h3>
+        <table class="cheat-table" style="margin-top:0.75rem">
+          <thead><tr><th>Simulation</th><th>Panel</th><th>Quick Setup</th></tr></thead>
+          <tbody>
+            <tr><td>Rigid Body</td><td>Physics Properties</td><td>Active = falls/collides, Passive = static floor</td></tr>
+            <tr><td>Cloth</td><td>Physics Properties</td><td>Cloth preset → Pin Groups for anchoring</td></tr>
+            <tr><td>Fluid</td><td>Physics Properties</td><td>Domain cube + Fluid inflow + Fluid collision objects</td></tr>
+            <tr><td>Particles</td><td>Particles Properties</td><td>Emitter for debris, Hair for fur/grass</td></tr>
+            <tr><td>Soft Body</td><td>Physics Properties</td><td>Jelly-like deformation, great for organic squish</td></tr>
+          </tbody>
+        </table>
+        <div class="tip-box"><strong>Bake your sims!</strong> After tweaking, bake simulation data (Physics Properties → Cache → Bake All Dynamics). Never rely on real-time sim playback during final render.</div>
+
+        <h3 class="subsection-title">Animation Tips for Realism</h3>
+        <div class="tips-grid" style="grid-template-columns:1fr">
+          <div class="tip-card">
+            <div class="tip-number">01</div>
+            <h3>Squash & Stretch</h3>
+            <p>Objects squash on impact and stretch during fast movement. Even subtle squash/stretch on a bouncing ball makes it feel alive.</p>
+          </div>
+          <div class="tip-card">
+            <div class="tip-number">02</div>
+            <h3>Anticipation</h3>
+            <p>Before a big move, briefly move in the opposite direction. A character crouch before jumping. Pulls viewers attention.</p>
+          </div>
+          <div class="tip-card">
+            <div class="tip-number">03</div>
+            <h3>Follow Through & Overlap</h3>
+            <p>Secondary elements (hair, clothes, tail) should continue moving briefly after the main body stops — and not all at the same rate.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RENDERING -->
+<section id="rendering" class="alt-bg">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Module 09</span>
+      <h2 class="section-title">Rendering</h2>
+      <p class="section-sub">Get the most out of Cycles and EEVEE — settings, optimization, and output.</p>
+    </div>
+
+    <div class="workflow-grid">
+      <div class="workflow-card">
+        <h3>🎨 Cycles Render Settings</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Setting</th><th>Recommended</th></tr></thead>
+          <tbody>
+            <tr><td>Device</td><td>GPU Compute (must set up in Preferences → System)</td></tr>
+            <tr><td>Samples (Render)</td><td>128–512 for still, 64–256 for animation</td></tr>
+            <tr><td>Samples (Viewport)</td><td>16–32 for preview speed</td></tr>
+            <tr><td>Denoising</td><td>Enable — OptiX (Nvidia) or Open Image Denoise</td></tr>
+            <tr><td>Light Paths — Max Bounces</td><td>Diffuse:4, Glossy:4, Transmission:12, Volume:0</td></tr>
+            <tr><td>Caustics</td><td>Disable unless you specifically need them (slow)</td></tr>
+            <tr><td>Tile Size</td><td>Auto (Blender 3+ manages automatically)</td></tr>
+            <tr><td>Persistent Data</td><td>Enable for animation renders — big speed boost</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="workflow-card">
+        <h3>⚡ EEVEE Next Settings (4.x)</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Setting</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Samples (Render)</td><td>16–64 for clean result. Way faster than Cycles.</td></tr>
+            <tr><td>Ambient Occlusion</td><td>Enable — adds depth to shadows</td></tr>
+            <tr><td>Screen Space Reflections</td><td>Enable for reflective surfaces</td></tr>
+            <tr><td>Bloom</td><td>Post Processing tab — glow on bright/emissive</td></tr>
+            <tr><td>Depth of Field</td><td>Set in Camera properties → F-Stop</td></tr>
+            <tr><td>Shadow Resolution</td><td>Increase for sharper shadows on lights</td></tr>
+            <tr><td>Volumetrics</td><td>Enable for fog/atmosphere — tile size affects quality</td></tr>
+            <tr><td>Motion Blur</td><td>Post Processing → Motion Blur</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="workflow-card">
+        <h3>📤 Output Settings</h3>
+        <ol class="step-list">
+          <li>Output Properties → Resolution: 1920×1080 (or your target)</li>
+          <li>Frame Rate: 24fps (film), 30fps (video), 60fps (games/smooth)</li>
+          <li>Output Path: Set a folder to save frames to</li>
+          <li>File Format: PNG for still, OpenEXR for compositing</li>
+          <li>For animation: render as PNG sequence, not video directly</li>
+          <li>Combine PNG sequence with Video Sequencer or FFmpeg after</li>
+          <li>Color Management: Filmic (default) for natural; AgX (4.x) for modern look</li>
+          <li>Exposure/Gamma: adjust in Color Management section</li>
+        </ol>
+        <div class="tip-box"><strong>Always render PNG sequence!</strong> If Blender crashes on frame 847, you can resume from there. Rendering directly to video = start over.</div>
+      </div>
+
+      <div class="workflow-card">
+        <h3>🚀 Render Speed Optimization</h3>
+        <ul class="step-list">
+          <li>Enable GPU in Preferences → System → CUDA/OptiX/HIP/Metal</li>
+          <li>Use Denoising aggressively — lower samples + denoise = faster</li>
+          <li>Reduce Light Path bounces (diffuse to 2, volume to 0)</li>
+          <li>Simplify: Render Properties → Simplify → Reduce SubDiv for render</li>
+          <li>Use Render Regions (<kbd>Ctrl+B</kbd> in camera view) for test renders</li>
+          <li>Viewport: lower viewport samples (16-32) while working</li>
+          <li>Persistent Data in render settings = huge animation speedup</li>
+          <li>Use Collections to hide/show objects — exclude from render</li>
+          <li>Bake textures for complex procedural shaders</li>
+        </ul>
+      </div>
+
+      <div class="workflow-card">
+        <h3>🎭 Compositor</h3>
+        <ol class="step-list">
+          <li>Render Properties → check "Use Compositing"</li>
+          <li>Open Compositor editor (or add it as new area)</li>
+          <li>Enable "Use Nodes" in header</li>
+          <li>Render Layers → Composite = basic pass-through</li>
+          <li>Add effects between Render Layers and Composite</li>
+          <li>Glare node = bloom/streaks on bright areas</li>
+          <li>Color Balance = professional color grading</li>
+          <li>Vignette: use Ellipse Mask → Invert → Multiply</li>
+          <li>Lens Distortion for chromatic aberration</li>
+          <li>Use View Layer passes: Z-depth, Normal, AO for more control</li>
+        </ol>
+      </div>
+
+      <div class="workflow-card">
+        <h3>📷 Camera Settings</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Setting</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Focal Length</td><td>35mm = normal, 85mm = portrait, 24mm = wide, 135mm = telephoto</td></tr>
+            <tr><td>Sensor Size</td><td>36mm = full frame (default), match your real camera if needed</td></tr>
+            <tr><td>F-Stop (DOF)</td><td>Lower = more blur (f/1.4 = very blurry, f/11 = sharp)</td></tr>
+            <tr><td>Focus Object</td><td>Camera → Depth of Field → Focus Object — tracks an object</td></tr>
+            <tr><td>Clip Start/End</td><td>Adjust if objects disappear. Default 0.1m–1000m</td></tr>
+            <tr><td>Shift X/Y</td><td>Architectural camera shift — keeps verticals parallel</td></tr>
+            <tr><td>Passepartout</td><td>Dims outside camera frame in viewport for framing help</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRO TIPS -->
+<section id="tips">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Module 10</span>
+      <h2 class="section-title">Pro Tips & Hidden Gems</h2>
+      <p class="section-sub">Things that took years to discover — now you know them from day one.</p>
+    </div>
+
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-number">01</div><h3>F9 — The Most Underused Key</h3><p>After any operation, press <kbd>F9</kbd> to get a popup to adjust the last action's settings. Added 16 loop cuts but want 8? F9 and change it. Works for almost everything.</p></div>
+      <div class="tip-card"><div class="tip-number">02</div><h3>Right-Click Menus Have Everything</h3><p>Right-click in the viewport, on properties, on nodes — context menus appear. Many powerful options like "Set Origin," "Mark Sharp," "Subdivide" are only in right-click menus.</p></div>
+      <div class="tip-card"><div class="tip-number">03</div><h3>Render from Command Line</h3><p>Start background renders with: <code>blender -b file.blend -f 1</code> for frame 1. <code>-a</code> for full animation. Run overnight while using PC normally.</p></div>
+      <div class="tip-card"><div class="tip-number">04</div><h3>Link vs Append Libraries</h3><p>File → Link brings in assets from other .blend files as read-only references. File → Append makes a local copy. Link = always updated, great for team workflows and master material libraries.</p></div>
+      <div class="tip-card"><div class="tip-number">05</div><h3>Proportional Editing is Magic</h3><p>Press <kbd>O</kbd> in Edit Mode. Move one vertex and surrounding vertices follow smoothly. Scroll to adjust falloff radius. Use Connected-only mode for organic free-form modeling.</p></div>
+      <div class="tip-card"><div class="tip-number">06</div><h3>Quick Favorites (Q Menu)</h3><p>Right-click any tool or menu item → Add to Quick Favorites. Then press <kbd>Q</kbd> for instant access to your most-used tools. Build a custom toolkit per project.</p></div>
+      <div class="tip-card"><div class="tip-number">07</div><h3>Drivers = Automatic Everything</h3><p>Right-click any property → Add Driver. Link material color to an object's X position, control rig shape keys with bone rotation. Drivers turn manual animation into automatic relationships.</p></div>
+      <div class="tip-card"><div class="tip-number">08</div><h3>Asset Library for Reuse</h3><p>Edit → Preferences → File Paths → Asset Libraries. Mark objects/materials/poses as assets. Drag them into any project. Build your own library of materials, objects, node groups.</p></div>
+      <div class="tip-card"><div class="tip-number">09</div><h3>Overlay Toggle per Object</h3><p>In Properties → Object Properties → Visibility → hide from render, viewport, or both independently. Keep guides and reference objects visible in viewport but invisible in render.</p></div>
+      <div class="tip-card"><div class="tip-number">10</div><h3>Hold Alt to Edit All Selected</h3><p>Select multiple objects, hold <kbd>Alt</kbd> when changing a property — changes apply to all selected. Works for material settings, modifier values, and many properties.</p></div>
+      <div class="tip-card"><div class="tip-number">11</div><h3>Geometry Nodes — Procedural Power</h3><p>Add Geometry Nodes modifier. Build procedural geometry with nodes — scatter objects on surfaces, create patterns, generate complex arrays. No manual work, fully parametric and non-destructive.</p></div>
+      <div class="tip-card"><div class="tip-number">12</div><h3>Python Console for Bulk Operations</h3><p>Open Python Console, select all objects of a type, run a script to change all their materials, rename them, or apply modifiers. The Info Editor shows the Python code for every operation you do manually.</p></div>
+      <div class="tip-card"><div class="tip-number">13</div><h3>Custom Properties for Rigs</h3><p>Object Properties → Custom Properties → Add. These show up as sliders you can keyframe. Perfect for rig control parameters, IK/FK blend sliders, and studio production controls.</p></div>
+      <div class="tip-card"><div class="tip-number">14</div><h3>Backface Culling Trick</h3><p>In solid viewport: Overlays → enable Backface Culling to immediately see inside-out normals. Any dark patches are reversed normals. Fix with <kbd>Shift+N</kbd> (Recalculate Normals).</p></div>
+      <div class="tip-card"><div class="tip-number">15</div><h3>Render with Multiple Camera Views</h3><p>Add multiple cameras. In Outliner, right-click a camera → Set Active Camera. Or use Camera selector in Output Properties. Script batch renders from each camera angle automatically.</p></div>
+      <div class="tip-card"><div class="tip-number">16</div><h3>Snap Increment vs Absolute Grid</h3><p>Hold <kbd>Ctrl</kbd> while transforming to snap to grid. In header, change Snap to "Increment" for relative or "Grid" for absolute world grid. Critical for architectural/technical work.</p></div>
+      <div class="tip-card"><div class="tip-number">17</div><h3>Use Reference Images (Empty)</h3><p>Add → Image → Reference. Positions a reference image in 3D space. Set to "In Front" to always see it. Perfect for matching real-world shapes, concept art, or blueprints.</p></div>
+      <div class="tip-card"><div class="tip-number">18</div><h3>Collections = Organization Power</h3><p>Use Collections (M key) to group objects logically. You can link entire collections between files, hide/show groups with one click, exclude from render per View Layer. Game changer for complex scenes.</p></div>
+      <div class="tip-card"><div class="tip-number">19</div><h3>Modal Operators — Type While Active</h3><p>After pressing G, R, or S — type an axis (X/Y/Z) then a number (45, 2.5, etc). You can see your exact value and confirm with Enter. <kbd>G Z -2</kbd> moves exactly -2 units down.</p></div>
+      <div class="tip-card"><div class="tip-number">20</div><h3>The N Panel Has Scene Data</h3><p>Press <kbd>N</kbd> in any editor to open the sidebar. In 3D viewport: Item tab shows exact transforms, View tab has camera settings, Tool tab has active tool options. This is where precision lives.</p></div>
+      <div class="tip-card"><div class="tip-number">21</div><h3>Cavity in Viewport Shading</h3><p>In Solid mode, click the Viewport Shading dropdown → enable Cavity. This adds ambient occlusion to solid mode, making it much easier to see the mesh detail while modeling and sculpting.</p></div>
+      <div class="tip-card"><div class="tip-number">22</div><h3>Matcaps for Sculpting</h3><p>In Solid mode shading dropdown, switch from Material to MatCap. These are pre-baked shaders great for seeing surface detail while sculpting. Clay, wax, and metal matcaps are built-in.</p></div>
+      <div class="tip-card"><div class="tip-number">23</div><h3>Texture Paint Directly on Mesh</h3><p>Switch to Texture Paint mode. Create a new image in Image Editor. Add Image Texture node in material pointing to same image. Paint directly on mesh in 3D viewport.</p></div>
+      <div class="tip-card"><div class="tip-number">24</div><h3>Render Passes for Compositing Control</h3><p>View Layer Properties → Passes. Enable AO, Shadow, Diffuse, Specular, Z-depth. Each renders as separate layer. In compositor, mix them independently for maximum control over final look.</p></div>
+    </div>
+
+    <h3 class="subsection-title" style="margin-top:3rem">Must-Have Addons (Built-In — Just Enable Them)</h3>
+    <div class="workflow-grid">
+      <div class="workflow-card">
+        <h3>🔌 Activate in Preferences → Add-ons</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Addon</th><th>What it adds</th></tr></thead>
+          <tbody>
+            <tr><td>Node Wrangler</td><td>Ctrl+Shift+T for PBR setup, node preview, better node workflow</td></tr>
+            <tr><td>LoopTools</td><td>Circular selection, relax, space, gstretch for cleaner loops</td></tr>
+            <tr><td>Extra Objects</td><td>More mesh primitives: gear, diamond, torus knot, etc.</td></tr>
+            <tr><td>Bool Tool</td><td>Easier boolean operations with Ctrl+Numpad+/-</td></tr>
+            <tr><td>Rigify</td><td>One-click professional character rigs with IK/FK controls</td></tr>
+            <tr><td>Sapling Tree Gen</td><td>Procedural tree generator</td></tr>
+            <tr><td>A.N.T. Landscape</td><td>Procedural terrain generator</td></tr>
+            <tr><td>Archimesh</td><td>Architectural elements: rooms, windows, doors, stairs</td></tr>
+            <tr><td>Import-Export: FBX</td><td>FBX import/export for game engines</td></tr>
+            <tr><td>glTF 2.0</td><td>Export for web/AR/VR (usually enabled by default)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="workflow-card">
+        <h3>🌐 Popular Third-Party Addons</h3>
+        <table class="cheat-table">
+          <thead><tr><th>Addon</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Hard Ops + BoxCutter</td><td>Hard surface modeling powerhouse</td></tr>
+            <tr><td>Scatter / Geo-Scatter</td><td>Distribute objects on surfaces (forests, grass)</td></tr>
+            <tr><td>Quad Remesher</td><td>Best automatic retopology tool</td></tr>
+            <tr><td>Auto-Rig Pro</td><td>Character rigging made easy</td></tr>
+            <tr><td>RetopoFlow</td><td>Professional retopology tools</td></tr>
+            <tr><td>Substance to Blender</td><td>Auto-import Substance textures</td></tr>
+            <tr><td>HDRI Sun Aligner</td><td>Match sun direction to HDRI background</td></tr>
+            <tr><td>Simply Cloth</td><td>Better cloth simulation control</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 class="subsection-title" style="margin-top:2rem">Common Blender Problems & Fixes</h3>
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">Object looks dark/black in render <span class="acc-arrow">›</span></div>
+        <div class="acc-body"><ul><li>Check if normals are flipped: Overlay → Face Orientation (blue=correct, red=flipped). Fix: <kbd>Shift+N</kbd></li><li>No lights in scene — add a Sun or Area light</li><li>Material is missing or has Emission=0 and Roughness=1 with no light</li><li>Object is inside another object that blocks light</li></ul></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">Render has lots of noise/fireflies <span class="acc-arrow">›</span></div>
+        <div class="acc-body"><ul><li>Increase sample count</li><li>Enable Denoising in Render Properties</li><li>Clamp Indirect lighting (Render → Light Paths → Clamping → Indirect = 10)</li><li>Fireflies often come from very bright small lights — reduce light energy or increase size</li><li>Caustics cause fireflies — disable in Light Paths settings</li></ul></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">Object disappears in viewport <span class="acc-arrow">›</span></div>
+        <div class="acc-body"><ul><li>Might be hidden: press <kbd>Alt+H</kbd> to unhide all</li><li>Collection is hidden — check Outliner, look for eye icon</li><li>Clip End too short: Camera properties → Clip End → increase value</li><li>Local View active: press <kbd>/</kbd> to exit local view</li><li>Object is on a disabled View Layer</li></ul></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">Modifier not working as expected <span class="acc-arrow">›</span></div>
+        <div class="acc-body"><ul><li>Apply Scale first: <kbd>Ctrl+A</kbd> → Scale (especially for Mirror, Cloth, Physics)</li><li>Modifier order matters — drag modifiers to reorder</li><li>Mirror: make sure Mirror Object is set or origin is in correct place</li><li>Boolean: use "Exact" solver for complex meshes</li><li>SubDiv: mesh has n-gons that cause shading artifacts — triangulate or clean topology</li></ul></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">Animation stutters or looks wrong <span class="acc-arrow">›</span></div>
+        <div class="acc-body"><ul><li>Playback not real-time: Timeline → Playback → Sync → Frame Dropping or AV-sync</li><li>Check interpolation in Graph Editor — Linear vs Bezier makes huge difference</li><li>Missing keyframes: check Auto Keying is off when not wanted</li><li>Physics simulation needs to be baked: Properties → Cache → Bake</li></ul></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">Blender is slow / running out of memory <span class="acc-arrow">›</span></div>
+        <div class="acc-body"><ul><li>Enable GPU rendering: Preferences → System → CUDA/OptiX/HIP/Metal</li><li>Reduce poly count: use Decimate modifier or lower SubDiv levels</li><li>Linked duplicates instead of real copies: <kbd>Alt+D</kbd> instead of <kbd>Shift+D</kbd></li><li>Purge unused data: File → Clean Up → Purge All</li><li>Render in tiles if running out of VRAM (Render → Performance → Tiles)</li><li>Use Simplify in render settings to limit subdivision for preview</li></ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <h2>⬡ BlenderMastery</h2>
+  <p>Your complete reference for Blender 4.x. Bookmark it, share it, come back whenever you need it.</p>
+  <div class="footer-links">
+    <a href="https://blender.org" target="_blank">Blender Official</a>
+    <a href="https://docs.blender.org" target="_blank">Blender Manual</a>
+    <a href="https://blenderartists.org" target="_blank">Blender Artists Forum</a>
+    <a href="https://polyhaven.com" target="_blank">Poly Haven (Free Assets)</a>
+    <a href="https://www.youtube.com/@grabbitt" target="_blank">Grant Abbitt (YouTube)</a>
+    <a href="https://www.youtube.com/@blenderguru" target="_blank">Blender Guru (YouTube)</a>
+    <a href="https://www.youtube.com/@CGMatter" target="_blank">CG Matter (YouTube)</a>
+    <a href="https://www.youtube.com/@IanHubert2" target="_blank">Ian Hubert (YouTube)</a>
+  </div>
+  <div class="footer-credit">Built as a complete offline reference — Blender 4.x • All shortcuts verified</div>
+</footer>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="readProgress"></div>

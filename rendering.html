@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rendering — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">📷 Module 08</div>
+    <h1>Rendering <span class="gradient-text">Complete Guide</span></h1>
+    <p>Cycles & EEVEE settings, denoising strategies, output formats, the Compositor, camera setup, and render optimization.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="grid-2">
+      <div>
+        <div class="sec-title">⚡ Quick Render Checklist</div>
+        <div class="card reveal">
+          <ol class="steps">
+            <li>Set render engine: <strong>Render Properties → Engine</strong> (Cycles or EEVEE)</li>
+            <li>Set resolution: Output Properties → Resolution X/Y (1920×1080 for HD)</li>
+            <li>Set frame range: Start/End frame for animation</li>
+            <li>Choose output folder: Output Properties → Output path</li>
+            <li>Set file format: PNG (lossless), JPEG (small), EXR (compositing)</li>
+            <li>Enable denoising for Cycles (Render Properties → Denoising)</li>
+            <li>Check camera framing: <kbd>NumPad 0</kbd> → Camera view</li>
+            <li>Press <kbd>F12</kbd> to render current frame, <kbd>Ctrl+F12</kbd> for animation</li>
+            <li>Rendered images auto-save to output path if set</li>
+          </ol>
+          <div class="tip-box"><strong>Always set an output path before rendering animation.</strong> Otherwise frames are not saved — only displayed in the render window, then lost.</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-title">⌨️ Render Shortcuts</div>
+        <div class="card reveal stagger-2">
+          <div class="sc-cat">Rendering</div>
+          <div class="sc-row"><kbd>F12</kbd><span>Render current frame</span></div>
+          <div class="sc-row"><kbd>Ctrl+F12</kbd><span>Render animation sequence</span></div>
+          <div class="sc-row"><kbd>Esc</kbd><span>Cancel render in progress</span></div>
+          <div class="sc-row"><kbd>F11</kbd><span>Show last render result</span></div>
+          <div class="sc-cat">Camera</div>
+          <div class="sc-row"><kbd>NumPad 0</kbd><span>Camera view</span></div>
+          <div class="sc-row"><kbd>Ctrl+NumPad 0</kbd><span>Set active object as camera</span></div>
+          <div class="sc-row"><kbd>NumPad 0 → G/R</kbd><span>Fly camera while in camera view</span></div>
+          <div class="sc-row"><kbd>Ctrl+Alt+NumPad 0</kbd><span>Align camera to current viewport</span></div>
+          <div class="sc-cat">Viewport</div>
+          <div class="sc-row"><kbd>Z → Rendered</kbd><span>Preview render in viewport</span></div>
+          <div class="sc-row"><kbd>Shift+Z</kbd><span>Toggle rendered viewport shading</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE RENDER QUALITY SLIDER -->
+  <section class="section">
+    <div class="sec-title">🎛️ Interactive Render Quality Selector</div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">Drag the slider to see recommended settings for different render quality levels.</p>
+    <div class="card reveal">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap">
+        <span style="font-size:.8rem;color:var(--text3);min-width:60px">Fast 🏎️</span>
+        <input type="range" id="qualitySlider" min="1" max="4" value="2"
+          style="flex:1;min-width:200px;accent-color:var(--accent);cursor:pointer">
+        <span style="font-size:.8rem;color:var(--text3);min-width:80px;text-align:right">Final 🎬</span>
+        <div style="background:rgba(230,126,34,.15);border:1px solid rgba(230,126,34,.3);border-radius:7px;padding:.25rem .8rem">
+          <span id="qualityLabel" style="font-weight:800;color:var(--accent);font-size:.85rem">Preview</span>
+        </div>
+      </div>
+      <div id="qualitySettings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.65rem"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🔧 Cycles Settings Deep Dive</div>
+    <div class="grid-2">
+      <div class="card reveal">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Sampling</div>
+        <table class="data-table" style="margin:0">
+          <thead><tr><th>Setting</th><th>Recommended Value</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Render Samples</td><td>128–512</td><td>Higher = less noise, slower</td></tr>
+            <tr><td>Viewport Samples</td><td>32–64</td><td>Keep low for fast preview</td></tr>
+            <tr><td>Denoising</td><td>OptiX / OIDN</td><td>Enable with 64+ samples</td></tr>
+            <tr><td>Adaptive Sampling</td><td>Enabled (0.01)</td><td>Skips converged areas</td></tr>
+            <tr><td>Min Samples</td><td>0 (auto)</td><td>Adaptive threshold base</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card reveal stagger-2">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Light Paths</div>
+        <table class="data-table" style="margin:0">
+          <thead><tr><th>Bounce Type</th><th>Fast Setting</th><th>Quality Setting</th></tr></thead>
+          <tbody>
+            <tr><td>Total</td><td>4</td><td>8–12</td></tr>
+            <tr><td>Diffuse</td><td>2</td><td>4</td></tr>
+            <tr><td>Glossy</td><td>2</td><td>4</td></tr>
+            <tr><td>Transmission</td><td>2</td><td>8 (for glass)</td></tr>
+            <tr><td>Volume</td><td>0</td><td>2 (if using volumes)</td></tr>
+          </tbody>
+        </table>
+        <div class="tip-box" style="margin-top:.6rem">Reduce bounces to speed up renders. Most scenes look fine at Total=4. Only increase Transmission for glass-heavy scenes.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🎬 Output & File Formats</div>
+    <div class="grid-2">
+      <table class="data-table reveal">
+        <thead><tr><th>Format</th><th>Best For</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PNG</strong></td><td>Single frames, stills</td><td>Lossless, supports alpha</td></tr>
+          <tr><td><strong>JPEG</strong></td><td>Web sharing, previews</td><td>Lossy, small file size</td></tr>
+          <tr><td><strong>EXR (32-bit)</strong></td><td>Compositing, VFX</td><td>HDR data, multiple passes</td></tr>
+          <tr><td><strong>TIFF</strong></td><td>Print, high quality stills</td><td>Lossless, large files</td></tr>
+          <tr><td><strong>MP4 (H.264)</strong></td><td>Final video output</td><td>Compressed, widely compatible</td></tr>
+          <tr><td><strong>AVI Raw</strong></td><td>Intermediate video</td><td>Huge files, no compression</td></tr>
+          <tr><td><strong>WebP</strong></td><td>Web images with alpha</td><td>Modern web format</td></tr>
+        </tbody>
+      </table>
+      <div class="card reveal stagger-2">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Render Passes</div>
+        <p style="font-size:.83rem;color:var(--text2);margin-bottom:.8rem">Render Passes separate your render into individual components for compositing. Enable in <strong>View Layer Properties → Passes</strong>.</p>
+        <div class="sc-row"><span style="font-weight:600;min-width:130px">Combined</span><span>Final composited output (default)</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:130px">Diffuse Direct</span><span>Direct lighting on surfaces</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:130px">Diffuse Indirect</span><span>Bounce light / GI</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:130px">Glossy</span><span>Reflections isolated</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:130px">Shadow</span><span>Shadow mask for adjustment</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:130px">Z (Depth)</span><span>Distance from camera</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:130px">Cryptomatte</span><span>Object/material masks</span></div>
+        <div class="info-box" style="margin-top:.8rem">Save passes as EXR (Multi-Layer) to keep all passes in one file for compositing in Nuke, After Effects, or Blender's Compositor.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🎛️ The Compositor</div>
+    <div class="acc">
+      <div class="acc-item reveal"><div class="acc-head" onclick="toggleAcc(this)">Setting Up the Compositor <span class="acc-arrow">›</span></div><div class="acc-body"><ol class="steps" style="margin:0"><li>Change an editor to <strong>Compositor</strong> type</li><li>Check <strong>Use Nodes</strong> checkbox</li><li>You'll see Render Layers node → Composite output</li><li>Add nodes between them to apply effects</li><li>Enable <strong>Backdrop</strong> to see the result behind the nodes</li><li>Press <kbd>F12</kbd> — the Compositor processes after Cycles/EEVEE finishes</li></ol></div></div>
+      <div class="acc-item reveal stagger-2"><div class="acc-head" onclick="toggleAcc(this)">Essential Compositor Nodes <span class="acc-arrow">›</span></div><div class="acc-body">
+        <table class="data-table" style="margin:0"><thead><tr><th>Node</th><th>Effect</th></tr></thead><tbody>
+          <tr><td>Lens Distortion</td><td>Barrel/pincushion distortion, chromatic aberration</td></tr>
+          <tr><td>Glare</td><td>Bloom, streaks, fog glow on bright areas</td></tr>
+          <tr><td>Defocus</td><td>Depth of field blur using Z pass</td></tr>
+          <tr><td>Color Balance</td><td>Lift/Gamma/Gain color grading</td></tr>
+          <tr><td>Hue/Saturation</td><td>Overall color saturation adjustment</td></tr>
+          <tr><td>Vignette</td><td>Darken edges (Ellipse Mask + Mix)</td></tr>
+          <tr><td>Film Grain</td><td>Add noise for film-like texture</td></tr>
+          <tr><td>Cryptomatte</td><td>Create object masks without re-rendering</td></tr>
+        </tbody></table>
+      </div></div>
+      <div class="acc-item reveal stagger-3"><div class="acc-head" onclick="toggleAcc(this)">Color Grading Workflow <span class="acc-arrow">›</span></div><div class="acc-body"><ol class="steps" style="margin:0"><li>Add <strong>Color Balance</strong> node — LGG (Lift/Gamma/Gain) method</li><li>Lift: adjusts shadows (drag slightly blue/teal for cinematic look)</li><li>Gamma: adjusts midtones</li><li>Gain: adjusts highlights (slightly orange/warm for sunlit feel)</li><li>Add <strong>Hue Saturation Value</strong> — reduce saturation slightly (0.8–0.9) for realism</li><li>Add <strong>Glare → Fog Glow</strong> with small threshold for subtle bloom</li><li>Add <strong>Lens Distortion</strong> with small Dispersion (0.01) for chromatic aberration</li><li>Use <strong>Viewer node</strong> to preview intermediate stages</li></ol></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">📷 Camera Settings</div>
+    <div class="grid-2">
+      <div class="card reveal">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Key Camera Properties</div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Focal Length</span><span>35mm (standard), 50mm (natural), 85mm (portrait, flatters faces)</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Sensor Size</span><span>Full Frame 36mm = 35mm film reference</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Depth of Field</span><span>Enable → set F-Stop (lower = more blur)</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Focus Object</span><span>Auto-focuses on a specific object (great for animation)</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Clip Start/End</span><span>Set to match scene scale — bad values cause Z-fighting</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Passepartout</span><span>Darkens outside camera frame in viewport</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Camera Type</span><span>Perspective (normal), Orthographic (flat/blueprint), Panoramic (360°)</span></div>
+      </div>
+      <div class="card reveal stagger-2">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Composition Guides</div>
+        <p style="font-size:.83rem;color:var(--text2);margin-bottom:.6rem">Camera → Viewport Display → enable composition guides while framing shots.</p>
+        <div class="sc-row"><span>Rule of Thirds</span><span>Classic 3×3 grid — place subjects at intersections</span></div>
+        <div class="sc-row"><span>Golden Ratio</span><span>More organic composition guide</span></div>
+        <div class="sc-row"><span>Center</span><span>Symmetrical/formal compositions</span></div>
+        <div class="sc-row"><span>Diagonal</span><span>Dynamic, active compositions</span></div>
+        <div class="tip-box" style="margin-top:.8rem"><strong>Safe Areas:</strong> Enable for broadcast work — shows action safe and title safe zones that TV screens won't crop off.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🚀 Render Optimization</div>
+    <div class="grid-auto">
+      <div class="card reveal"><h3 style="font-size:.95rem;margin-bottom:.4rem">Use GPU Rendering</h3><p style="font-size:.83rem;color:var(--text2)">Preferences → System → Cycles Render Devices → enable your GPU (CUDA for NVIDIA, HIP for AMD, Metal for Apple Silicon). Can be 10–50× faster than CPU.</p></div>
+      <div class="card reveal stagger-2"><h3 style="font-size:.95rem;margin-bottom:.4rem">Denoising = Fewer Samples</h3><p style="font-size:.83rem;color:var(--text2)">With OIDN or OptiX denoiser enabled, 128 samples can look as clean as 2048 samples without denoising. Always use denoising in final renders.</p></div>
+      <div class="card reveal stagger-3"><h3 style="font-size:.95rem;margin-bottom:.4rem">Render Regions</h3><p style="font-size:.83rem;color:var(--text2)">In camera view, press <kbd>Ctrl+B</kbd> to drag a render region. Only that area will render — perfect for testing a small part of a complex scene without full renders.</p></div>
+      <div class="card reveal stagger-4"><h3 style="font-size:.95rem;margin-bottom:.4rem">Cryptomatte for Masking</h3><p style="font-size:.83rem;color:var(--text2)">Enable Cryptomatte passes instead of re-rendering with different materials to create masks. Save massive time in compositing — select objects by clicking them in the Compositor.</p></div>
+      <div class="card reveal stagger-5"><h3 style="font-size:.95rem;margin-bottom:.4rem">Render Image Sequences</h3><p style="font-size:.83rem;color:var(--text2)">Always render animations as PNG sequences, not video. If a render crashes at frame 432, you can resume from there. Combine to video in Video Sequence Editor afterward.</p></div>
+      <div class="card reveal stagger-6"><h3 style="font-size:.95rem;margin-bottom:.4rem">Simplify Scene</h3><p style="font-size:.83rem;color:var(--text2)">Render Properties → Simplify → set Max Subdivision to 2 for viewport, 6 for render. Reduces subdivision modifier complexity during interactive work without changing final quality.</p></div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="animation.html">← Animation</a><a href="tips.html">Pro Tips →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+const QUALITY_PRESETS = [
+  {
+    label:'Draft', emoji:'⚡',
+    settings:[
+      {name:'Render Samples',val:'32',note:'Very grainy, preview only'},
+      {name:'Denoising',val:'OIDN (Off)',note:'Skip for speed'},
+      {name:'Light Bounces Total',val:'2',note:'Minimum, flat lighting'},
+      {name:'Resolution %',val:'50%',note:'Half resolution'},
+      {name:'Viewport Samples',val:'8',note:'Fast viewport update'},
+      {name:'Tile Size',val:'256 (GPU)',note:'Fewer overhead calls'},
+    ]
+  },
+  {
+    label:'Preview', emoji:'👁️',
+    settings:[
+      {name:'Render Samples',val:'64–128',note:'Good enough to judge'},
+      {name:'Denoising',val:'OIDN On',note:'Cleans up noise well'},
+      {name:'Light Bounces Total',val:'4',note:'Decent indirect light'},
+      {name:'Resolution %',val:'75%',note:'Faster iterations'},
+      {name:'Viewport Samples',val:'32',note:'Smooth viewport'},
+      {name:'Adaptive Sampling',val:'Enabled',note:'Threshold 0.05'},
+    ]
+  },
+  {
+    label:'Production', emoji:'🎬',
+    settings:[
+      {name:'Render Samples',val:'256–512',note:'High quality'},
+      {name:'Denoising',val:'OptiX / OIDN',note:'Passes: Albedo + Normal'},
+      {name:'Light Bounces Total',val:'8',note:'Good GI quality'},
+      {name:'Resolution %',val:'100%',note:'Full resolution'},
+      {name:'Viewport Samples',val:'64',note:''},
+      {name:'Adaptive Sampling',val:'Threshold 0.01',note:'Very efficient'},
+    ]
+  },
+  {
+    label:'Archviz / Hero Shot', emoji:'🏆',
+    settings:[
+      {name:'Render Samples',val:'1024+',note:'Zero noise tolerance'},
+      {name:'Denoising',val:'OptiX Multi-Pass',note:'With albedo + normal'},
+      {name:'Light Bounces Total',val:'12',note:'Complex light bouncing'},
+      {name:'Resolution %',val:'100% + 200% crop',note:'Super sampled'},
+      {name:'Caustics',val:'Enabled',note:'Glass light effects'},
+      {name:'Clamp Direct/Indirect',val:'0 (off)',note:'No clamping for accuracy'},
+    ]
+  },
+];
+
+const slider = document.getElementById('qualitySlider');
+const labelEl = document.getElementById('qualityLabel');
+const container = document.getElementById('qualitySettings');
+
+function renderQuality(index) {
+  const preset = QUALITY_PRESETS[index - 1];
+  labelEl.textContent = preset.emoji + ' ' + preset.label;
+  container.innerHTML = preset.settings.map(s => `
+    <div style="background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:.7rem .9rem">
+      <div style="font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem">${s.name}</div>
+      <div style="font-size:.88rem;font-weight:700;color:var(--text)">${s.val}</div>
+      ${s.note ? `<div style="font-size:.73rem;color:var(--text3);margin-top:.1rem">${s.note}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+slider.addEventListener('input', () => renderQuality(parseInt(slider.value)));
+renderQuality(2); // Default to Preview
+</script>
+</body>
+</html>

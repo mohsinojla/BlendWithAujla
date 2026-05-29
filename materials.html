@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Materials — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">🎨 Module 05</div>
+    <h1>Materials & <span class="gradient-text">Shading</span></h1>
+    <p>PBR physically-based materials, the Shader Editor, Principled BSDF deep-dive, procedural textures, and Node Wrangler workflow.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="grid-2">
+      <div>
+        <div class="sec-title">🧱 PBR Workflow — Step by Step</div>
+        <div class="card reveal">
+          <ol class="steps">
+            <li>Select object → go to <strong>Properties → Material</strong> tab (sphere icon)</li>
+            <li>Click <strong>New</strong> to create a material slot</li>
+            <li>Switch editor to <strong>Shader Editor</strong> (top bar → Editor Type)</li>
+            <li>You'll see Principled BSDF → Material Output by default</li>
+            <li>Enable <strong>Node Wrangler</strong> add-on (<kbd>Edit → Preferences → Add-ons</kbd>)</li>
+            <li>Select Principled BSDF, press <kbd>Ctrl+Shift+T</kbd> → select texture files</li>
+            <li>Node Wrangler auto-creates Image Texture nodes and connects them</li>
+            <li>Set Base Color image to <strong>sRGB</strong>, all others to <strong>Non-Color</strong></li>
+            <li>Add UV Map node if object needs explicit UV control</li>
+            <li>Preview with <kbd>Z → Material Preview</kbd> or Rendered mode</li>
+          </ol>
+          <div class="tip-box"><strong>Color Space matters:</strong> Base Color / Emission → sRGB. Roughness, Metallic, Normal, AO maps → Non-Color (Linear). Wrong color space washes out or darkens your maps.</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-title">⌨️ Shader Editor Shortcuts</div>
+        <div class="card reveal stagger-2">
+          <div class="sc-cat">Node Operations</div>
+          <div class="sc-row"><kbd>Shift+A</kbd><span>Add node menu</span></div>
+          <div class="sc-row"><kbd>Ctrl+Shift+T</kbd><span>Node Wrangler: load PBR textures</span></div>
+          <div class="sc-row"><kbd>Shift+Ctrl+LMB</kbd><span>Node Wrangler: preview any node</span></div>
+          <div class="sc-row"><kbd>Ctrl+X</kbd><span>Delete node, keep connections</span></div>
+          <div class="sc-row"><kbd>M</kbd><span>Mute/unmute node</span></div>
+          <div class="sc-row"><kbd>H</kbd><span>Hide/show node sockets</span></div>
+          <div class="sc-row"><kbd>Ctrl+G</kbd><span>Group selected nodes</span></div>
+          <div class="sc-row"><kbd>Tab</kbd><span>Enter/exit node group</span></div>
+          <div class="sc-cat">View</div>
+          <div class="sc-row"><kbd>NumPad .</kbd><span>Frame all nodes / selected</span></div>
+          <div class="sc-row"><kbd>Home</kbd><span>View all nodes</span></div>
+          <div class="sc-row"><kbd>Ctrl+H</kbd><span>Hide unused sockets (NW)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🔬 Principled BSDF — Every Input Explained</div>
+    <div class="grid-2">
+      <table class="data-table reveal">
+        <thead><tr><th>Input</th><th>What It Controls</th><th>Typical Value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Base Color</strong></td><td>Diffuse/albedo color of the surface</td><td>Texture or solid color</td></tr>
+          <tr><td><strong>Metallic</strong></td><td>0 = dielectric, 1 = metal. Controls reflectivity model</td><td>0 or 1 (rarely in-between)</td></tr>
+          <tr><td><strong>Roughness</strong></td><td>0 = mirror, 1 = fully diffuse. Controls blur of reflections</td><td>0.1–0.9 range</td></tr>
+          <tr><td><strong>IOR</strong></td><td>Index of Refraction — affects Fresnel angle</td><td>1.45 (glass), 1.33 (water)</td></tr>
+          <tr><td><strong>Alpha</strong></td><td>Transparency (0 = fully transparent)</td><td>1.0 for opaque</td></tr>
+          <tr><td><strong>Normal</strong></td><td>Surface normal perturbation from normal map</td><td>Normal Map node output</td></tr>
+          <tr><td><strong>Emission Color</strong></td><td>Light emitted from surface</td><td>Color + Emission Strength</td></tr>
+          <tr><td><strong>Emission Strength</strong></td><td>Multiplier for emission intensity</td><td>0–10 (Cycles units)</td></tr>
+        </tbody>
+      </table>
+      <table class="data-table reveal stagger-2">
+        <thead><tr><th>Input</th><th>What It Controls</th><th>Typical Value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Subsurface Weight</strong></td><td>Light scatter under surface (skin, wax, marble)</td><td>0.05–0.2 for skin</td></tr>
+          <tr><td><strong>Subsurface Radius</strong></td><td>How far R/G/B channels scatter</td><td>[1.0, 0.2, 0.1] for skin</td></tr>
+          <tr><td><strong>Anisotropic</strong></td><td>Directional reflections (brushed metal, hair)</td><td>0–1</td></tr>
+          <tr><td><strong>Sheen Weight</strong></td><td>Fabric-like edge softness (velvet, cloth)</td><td>0.5–1 for fabric</td></tr>
+          <tr><td><strong>Coat Weight</strong></td><td>Clear-coat layer (car paint, lacquer)</td><td>1.0 for car paint</td></tr>
+          <tr><td><strong>Coat Roughness</strong></td><td>Roughness of the clear coat layer</td><td>0.0–0.1</td></tr>
+          <tr><td><strong>Transmission</strong></td><td>Glass-like refraction through the material</td><td>1.0 for glass</td></tr>
+          <tr><td><strong>Specular IOR Level</strong></td><td>Manual specular amount override</td><td>0.5 default</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🌊 Common Shader Setups</div>
+    <div class="acc">
+      <div class="acc-item reveal"><div class="acc-head" onclick="toggleAcc(this)">Glass / Transparent Material <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>Principled BSDF → set <strong>Transmission = 1.0</strong>, Roughness = 0.0, IOR = 1.45</li><li>In Material Properties → <strong>Blend Mode: Alpha Hashed</strong> (EEVEE) or use Cycles</li><li>Roughness > 0 makes frosted glass</li><li>Add Volume Absorption node for colored glass depth effect</li><li><strong>Cycles tip:</strong> Increase Light Path → Transmission bounces to 8+ for accurate glass</li></ul></div></div>
+      <div class="acc-item reveal stagger-2"><div class="acc-head" onclick="toggleAcc(this)">Procedural Metal — No Textures <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>Metallic = 1.0, Roughness driven by noise for variation</li><li>Add: Noise Texture → ColorRamp (remap to 0.1–0.4 range) → Roughness</li><li>Add: Bump node from Noise for surface micro-detail</li><li>Anisotropic 0.3–0.6 for brushed metal look</li><li>Anisotropic Rotation driven by a UV Map or object coordinates</li></ul></div></div>
+      <div class="acc-item reveal stagger-3"><div class="acc-head" onclick="toggleAcc(this)">Skin / Subsurface Scattering <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>Base Color = skin texture (sRGB)</li><li>Subsurface Weight: 0.1–0.3; Scale: ~0.01 for face-sized objects</li><li>Subsurface Radius: [1.0, 0.2, 0.1] (R scatters furthest)</li><li>Roughness: 0.4–0.6 (skin is not perfectly rough or smooth)</li><li>Specular IOR Level: 0.3–0.5 for realistic skin sheen</li><li>Use Cycles for accurate SSS — EEVEE SSS is approximated</li></ul></div></div>
+      <div class="acc-item reveal stagger-4"><div class="acc-head" onclick="toggleAcc(this)">Emission / Glowing Material <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>Set Emission Color to desired glow color</li><li>Emission Strength: 1–50 depending on desired bloom intensity</li><li>In Render Properties → enable <strong>Bloom</strong> (EEVEE) for soft glow</li><li>Mix Shader: combine Emission + Principled BSDF for glowing-but-also-reflective surfaces</li><li>Animate Emission Strength with keyframes for flickering effects</li></ul></div></div>
+      <div class="acc-item reveal stagger-5"><div class="acc-head" onclick="toggleAcc(this)">Displacement — Real Surface Detail <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>In Material → Settings → <strong>Displacement: Displacement Only</strong> (or Both)</li><li>Add: Displacement node → connect Height map → Displacement input of Material Output</li><li>Cycles only: enable <strong>Experimental</strong> render features for adaptive subdivision</li><li>Add Subdivision modifier set to Adaptive for real displaced geo</li><li>Midlevel = 0.5 (neutral), Scale = controls depth</li><li>Bump maps fake displacement (cheaper); Displacement creates real geometry</li></ul></div></div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE NODE VISUALIZER -->
+  <section class="section">
+    <div class="sec-title">🔌 Interactive Node Flow</div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">Click any node or socket to learn what it does. This is a typical PBR texture setup in the Shader Editor.</p>
+    <div class="card reveal" style="padding:0;overflow:hidden">
+      <div class="node-editor">
+        <div class="node-editor-grid" id="nodeGrid">
+
+          <!-- Texture Coordinate Node -->
+          <div class="shader-node" onclick="nodeClick('texcoord','Texture Coordinate','Provides UV, Object, World, and Camera coordinate outputs. Connect UV to the Image Texture Vector input for proper texture mapping.')">
+            <div class="sn-header tex">Texture Coordinate</div>
+            <div class="sn-socket output"><span>UV</span><div class="sn-dot dot-vector"></div></div>
+            <div class="sn-socket output"><span>Object</span><div class="sn-dot dot-vector"></div></div>
+            <div class="sn-socket output"><span>Camera</span><div class="sn-dot dot-vector"></div></div>
+          </div>
+
+          <div style="display:flex;align-items:center"><div class="node-wire"></div></div>
+
+          <!-- Image Texture Node -->
+          <div class="shader-node" onclick="nodeClick('imgtex','Image Texture','Loads an external image file. Set Color Space to sRGB for Base Color/Emission. Set to Non-Color for Roughness, Normal, AO, and Metallic maps.')">
+            <div class="sn-header tex">Image Texture</div>
+            <div class="sn-socket"><div class="sn-dot dot-vector"></div><span>Vector</span></div>
+            <div class="sn-socket" style="padding:.2rem .6rem;font-size:.7rem;color:var(--text3)">[ albedo.png ]</div>
+            <div class="sn-socket output"><span>Color</span><div class="sn-dot dot-color"></div></div>
+            <div class="sn-socket output"><span>Alpha</span><div class="sn-dot dot-value"></div></div>
+          </div>
+
+          <div style="display:flex;align-items:center"><div class="node-wire"></div></div>
+
+          <!-- Principled BSDF -->
+          <div class="shader-node" style="min-width:185px" onclick="nodeClick('principled','Principled BSDF','The main shader node for almost all materials. Combines diffuse, specular, metallic, transmission, subsurface scattering, emission, and more into one convenient node.')">
+            <div class="sn-header shader">Principled BSDF</div>
+            <div class="sn-socket" onclick="event.stopPropagation();nodeClick('basecolor','Base Color (sRGB)','The diffuse/albedo color of the surface. Connect your color texture here. Always set image Color Space to sRGB.')"><div class="sn-dot dot-color"></div><span style="color:#e88">Base Color</span></div>
+            <div class="sn-socket" onclick="event.stopPropagation();nodeClick('metallic','Metallic (0 or 1)','Controls whether the material behaves as a metal (1) or dielectric/non-metal (0). Rarely use values in-between — real materials are either metal or not.')"><div class="sn-dot dot-value"></div><span>Metallic</span></div>
+            <div class="sn-socket" onclick="event.stopPropagation();nodeClick('roughness','Roughness (Non-Color)','Controls reflection blur. 0 = mirror, 1 = fully diffuse. Connect a roughness map here. IMPORTANT: set image Color Space to Non-Color.')"><div class="sn-dot dot-value"></div><span>Roughness</span></div>
+            <div class="sn-socket" onclick="event.stopPropagation();nodeClick('normal','Normal Map Input','Connect a Normal Map node here (not directly the image). The Normal Map node converts the blue normal map image to proper normals.')"><div class="sn-dot dot-vector"></div><span>Normal</span></div>
+            <div class="sn-socket" onclick="event.stopPropagation();nodeClick('emission','Emission Color','Makes the surface emit light. Combine with Emission Strength for glowing effects. Enable Bloom in EEVEE for a glow halo effect.')"><div class="sn-dot dot-color"></div><span>Emission Color</span></div>
+            <div class="sn-socket output"><span>BSDF</span><div class="sn-dot dot-shader"></div></div>
+          </div>
+
+          <div style="display:flex;align-items:center"><div class="node-wire"></div></div>
+
+          <!-- Material Output -->
+          <div class="shader-node" onclick="nodeClick('matout','Material Output','The final output node. Surface = main shader, Volume = volumetric effect, Displacement = real geometric displacement. Always end your node tree here.')">
+            <div class="sn-header out">Material Output</div>
+            <div class="sn-socket"><div class="sn-dot dot-shader"></div><span>Surface</span></div>
+            <div class="sn-socket"><div class="sn-dot dot-shader"></div><span>Volume</span></div>
+            <div class="sn-socket"><div class="sn-dot dot-vector"></div><span>Displacement</span></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="node-detail-panel" id="nodeDetail">
+        <strong>Click any node or socket above</strong> to learn exactly what it does and how to use it correctly in your material setup.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🧩 Key Shader Nodes Reference</div>
+    <div class="grid-2">
+      <table class="data-table reveal">
+        <thead><tr><th>Node</th><th>Category</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>Image Texture</td><td>Texture</td><td>Load external image maps</td></tr>
+          <tr><td>Noise Texture</td><td>Texture</td><td>Procedural organic variation</td></tr>
+          <tr><td>Musgrave Texture</td><td>Texture</td><td>Fractal/mountain-like noise</td></tr>
+          <tr><td>Voronoi Texture</td><td>Texture</td><td>Cell patterns, cracks</td></tr>
+          <tr><td>Wave Texture</td><td>Texture</td><td>Wood rings, ripples</td></tr>
+          <tr><td>Gradient Texture</td><td>Texture</td><td>Linear/spherical gradients</td></tr>
+          <tr><td>ColorRamp</td><td>Converter</td><td>Remap and control value ranges</td></tr>
+          <tr><td>Math</td><td>Converter</td><td>Arithmetic on float values</td></tr>
+          <tr><td>Mix Color</td><td>Color</td><td>Blend two colors/textures</td></tr>
+          <tr><td>Hue/Saturation/Value</td><td>Color</td><td>Adjust color properties</td></tr>
+        </tbody>
+      </table>
+      <table class="data-table reveal stagger-2">
+        <thead><tr><th>Node</th><th>Category</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>Normal Map</td><td>Vector</td><td>Apply normal map texture</td></tr>
+          <tr><td>Bump</td><td>Vector</td><td>Height-to-normal conversion</td></tr>
+          <tr><td>Displacement</td><td>Vector</td><td>True surface displacement</td></tr>
+          <tr><td>Texture Coordinate</td><td>Input</td><td>UV, Object, World coords</td></tr>
+          <tr><td>Mapping</td><td>Vector</td><td>Scale/rotate/offset texture</td></tr>
+          <tr><td>Fresnel</td><td>Input</td><td>Angle-based reflectivity</td></tr>
+          <tr><td>Layer Weight</td><td>Input</td><td>Facing/backfacing blend</td></tr>
+          <tr><td>Mix Shader</td><td>Shader</td><td>Blend two shader inputs</td></tr>
+          <tr><td>Add Shader</td><td>Shader</td><td>Additive combine shaders</td></tr>
+          <tr><td>Volume Absorption</td><td>Volume</td><td>Colored glass fog density</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">💡 Materials Pro Tips</div>
+    <div class="grid-auto">
+      <div class="card reveal"><h3 style="font-size:.95rem;margin-bottom:.4rem">Non-Color is Critical</h3><p style="font-size:.83rem;color:var(--text2)">Every texture except Base Color and Emission must be set to <strong>Non-Color</strong>. Roughness in sRGB adds a gamma curve that makes rough surfaces look wrong.</p></div>
+      <div class="card reveal stagger-2"><h3 style="font-size:.95rem;margin-bottom:.4rem">Node Wrangler Preview</h3><p style="font-size:.83rem;color:var(--text2)">Hold <kbd>Ctrl+Shift</kbd> and click any node to preview just that node's output on the mesh. Invaluable for debugging complex node trees.</p></div>
+      <div class="card reveal stagger-3"><h3 style="font-size:.95rem;margin-bottom:.4rem">Reuse Materials</h3><p style="font-size:.83rem;color:var(--text2)">Click the material name and prepend with a dot (e.g. <em>.Gold</em>) to make it a "fake user" — it persists even if no object uses it. Share materials across files with Append.</p></div>
+      <div class="card reveal stagger-4"><h3 style="font-size:.95rem;margin-bottom:.4rem">Multiple Material Slots</h3><p style="font-size:.83rem;color:var(--text2)">In Edit Mode, select faces, assign different material slots. Good for car bodies (body paint + glass + chrome all on one mesh).</p></div>
+      <div class="card reveal stagger-5"><h3 style="font-size:.95rem;margin-bottom:.4rem">ColorRamp Power</h3><p style="font-size:.83rem;color:var(--text2)">ColorRamp is the most versatile node. Use it to clamp, posterize, invert, or create custom gradients from any grayscale input. Learn it deeply.</p></div>
+      <div class="card reveal stagger-6"><h3 style="font-size:.95rem;margin-bottom:.4rem">EEVEE vs Cycles</h3><p style="font-size:.83rem;color:var(--text2)">EEVEE is real-time and fast — great for previews and stylized renders. Cycles is path-traced and physically accurate. Some nodes (SSS, true refraction) only work well in Cycles.</p></div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="sculpting.html">← Sculpting</a><a href="lighting.html">Lighting →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+function nodeClick(id, name, desc) {
+  const panel = document.getElementById('nodeDetail');
+  panel.innerHTML = `<strong>${name}</strong> — ${desc}`;
+  document.querySelectorAll('.shader-node').forEach(n => n.classList.remove('active'));
+}
+</script>
+</body>
+</html>

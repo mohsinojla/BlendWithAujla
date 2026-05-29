@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sculpting — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">🫧 Module 04</div>
+    <h1>Sculpting <span class="gradient-text">Complete Guide</span></h1>
+    <p>Digital clay for organic shapes, characters, and detailed surfaces. Workflows, all brushes, topology methods, and pro techniques.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="grid-2">
+      <div>
+        <div class="sec-title">🔄 Full Sculpting Workflow</div>
+        <div class="card reveal">
+          <ol class="steps">
+            <li>Start with a UV Sphere or high-poly base mesh (<kbd>Shift+A</kbd> → UV Sphere)</li>
+            <li>Object Mode → switch to Sculpt Mode (top-left mode dropdown)</li>
+            <li>Set Voxel Size in the header (e.g. 0.05) — smaller = more detail</li>
+            <li>Press <kbd>Ctrl+R</kbd> to Voxel Remesh — uniform clean topology</li>
+            <li>Enable X Mirror symmetry in the header toolbar</li>
+            <li>Block out major masses with Clay Strips and Grab brush</li>
+            <li>Remesh again (smaller voxel) when you need more resolution for details</li>
+            <li>Refine with Smooth (<kbd>Shift</kbd>), Flatten, Scrape</li>
+            <li>For fine detail: switch to Multires modifier approach</li>
+            <li>Add wrinkles, pores, detail with Crease, Pinch, Draw Sharp</li>
+            <li>Final polish: Smooth, Flatten, Polish brushes</li>
+          </ol>
+          <div class="tip-box"><strong>Performance:</strong> Stay in Solid mode while sculpting. Switch to Rendered view only to check materials. Keep Multires viewport level low while working.</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-title">⌨️ Sculpt Shortcuts</div>
+        <div class="card reveal stagger-2">
+          <div class="sc-cat">Brush Controls</div>
+          <div class="sc-row"><kbd>F</kbd><span>Resize brush radius interactively</span></div>
+          <div class="sc-row"><kbd>Shift+F</kbd><span>Change brush strength</span></div>
+          <div class="sc-row"><kbd>[ / ]</kbd><span>Decrease / increase radius</span></div>
+          <div class="sc-row"><kbd>Ctrl (hold)</kbd><span>Invert brush direction</span></div>
+          <div class="sc-row"><kbd>Shift (hold)</kbd><span>Temporarily use Smooth brush</span></div>
+          <div class="sc-cat">Topology</div>
+          <div class="sc-row"><kbd>Ctrl+R</kbd><span>Voxel Remesh (rebuilds topology)</span></div>
+          <div class="sc-row"><kbd>Shift+R</kbd><span>Set voxel size interactively</span></div>
+          <div class="sc-row"><kbd>D</kbd><span>Toggle Dynamic Topology</span></div>
+          <div class="sc-cat">Masking</div>
+          <div class="sc-row"><kbd>M</kbd><span>Mask brush (protect areas)</span></div>
+          <div class="sc-row"><kbd>Alt+M</kbd><span>Clear all mask</span></div>
+          <div class="sc-row"><kbd>Ctrl+I</kbd><span>Invert mask</span></div>
+          <div class="sc-row"><kbd>H</kbd><span>Hide face set</span></div>
+          <div class="sc-row"><kbd>Alt+H</kbd><span>Show all face sets</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE BRUSH PICKER -->
+  <section class="section">
+    <div class="sec-title">🖌️ Interactive Brush Explorer</div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">Click any brush to see its effect, best use cases, and what Ctrl does to invert it.</p>
+    <div class="card reveal">
+      <div class="brush-gallery" id="brushGallery"></div>
+      <div class="brush-detail" id="brushDetail">
+        <div class="brush-detail-text">
+          <h4 id="brushName">Select a brush above</h4>
+          <p id="brushEffect" style="color:var(--text2);font-size:.83rem">Click any brush button to see a detailed description, best use cases, and what Ctrl does.</p>
+          <div class="ctrl-label">Ctrl inverts to: <span id="brushCtrl">—</span></div>
+        </div>
+        <div class="brush-visual" id="brushVisual"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🖌️ All Brushes Reference</div>
+    <div class="grid-2">
+      <table class="data-table reveal">
+        <thead><tr><th>Brush</th><th>Effect</th><th>Ctrl Inverts To</th></tr></thead>
+        <tbody>
+          <tr><td>Draw</td><td>Push surface outward</td><td>Push inward</td></tr>
+          <tr><td>Draw Sharp</td><td>Sharp defined lines</td><td>Sharp inward</td></tr>
+          <tr><td>Clay</td><td>Add clay-like material</td><td>Remove clay</td></tr>
+          <tr><td>Clay Strips</td><td>Rectangular clay patches</td><td>Remove strips</td></tr>
+          <tr><td>Clay Thumb</td><td>Push flat with thumb-like feel</td><td>Pull</td></tr>
+          <tr><td>Layer</td><td>Build up constant height layer</td><td>Remove layer</td></tr>
+          <tr><td>Inflate</td><td>Expand surface outward evenly</td><td>Deflate</td></tr>
+          <tr><td>Blob</td><td>Balloon-like inflate</td><td>Sink</td></tr>
+          <tr><td>Crease</td><td>Pinch valley/crease</td><td>Smooth ridge</td></tr>
+          <tr><td>Smooth</td><td>Average vertex positions</td><td>Enhance detail</td></tr>
+          <tr><td>Flatten</td><td>Push to average plane</td><td>Contrast/accentuate</td></tr>
+          <tr><td>Fill</td><td>Fill concave areas</td><td>Scrape convex</td></tr>
+          <tr><td>Scrape</td><td>Remove high points</td><td>Fill low points</td></tr>
+          <tr><td>Multiplane Scrape</td><td>Scrape with multiple planes</td><td>—</td></tr>
+          <tr><td>Pinch</td><td>Pull vertices together to point</td><td>Spread apart</td></tr>
+        </tbody>
+      </table>
+      <table class="data-table reveal stagger-2">
+        <thead><tr><th>Brush</th><th>Effect</th><th>Best For</th></tr></thead>
+        <tbody>
+          <tr><td>Grab</td><td>Move surface region like clay</td><td>Big form adjustments</td></tr>
+          <tr><td>Elastic Deform</td><td>Grab with elastic, organic feel</td><td>Character pose, organic shapes</td></tr>
+          <tr><td>Snake Hook</td><td>Pull out long strands</td><td>Hair, tentacles, horns</td></tr>
+          <tr><td>Thumb</td><td>Smear/drag surface material</td><td>Blending shapes</td></tr>
+          <tr><td>Pose</td><td>Pose-like deformation by segments</td><td>Adjusting limbs, bends</td></tr>
+          <tr><td>Nudge</td><td>Move vertices laterally</td><td>Subtle surface adjustment</td></tr>
+          <tr><td>Rotate</td><td>Rotate surface area</td><td>Twisting forms</td></tr>
+          <tr><td>Slide Relax</td><td>Slide topology without changing form</td><td>Improving flow</td></tr>
+          <tr><td>Boundary</td><td>Edit boundary/open edges</td><td>Open mesh edges</td></tr>
+          <tr><td>Cloth</td><td>Cloth-like simulation brush</td><td>Fabric folds, drapes</td></tr>
+          <tr><td>Simplify</td><td>Reduce geometry under brush</td><td>With Dyntopo only</td></tr>
+          <tr><td>Mask</td><td>Paint mask to protect regions</td><td>Protecting areas</td></tr>
+          <tr><td>Draw Face Sets</td><td>Paint face set regions</td><td>Isolating mesh parts</td></tr>
+          <tr><td>Multires Displacement Eraser</td><td>Remove displacement on Multires</td><td>Corrections on Multires</td></tr>
+          <tr><td>Paint</td><td>Vertex paint in sculpt mode</td><td>Color while sculpting</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">⚙️ Topology Methods — Which to Use When</div>
+    <div class="acc">
+      <div class="acc-item reveal"><div class="acc-head" onclick="toggleAcc(this)">Voxel Remesh — Best for Early Blocking <span class="acc-arrow">›</span></div><div class="acc-body"><p>Rebuilds the entire mesh with uniform voxel-based topology. Use between blocking stages.</p><ul><li>Set Voxel Size in header — smaller number = more polygons</li><li><kbd>Ctrl+R</kbd> to remesh, or click the Remesh button in header</li><li><strong>Pro:</strong> Clean uniform topology, no poles, fast</li><li><strong>Con:</strong> Destroys UV maps, existing edge loops, and rigging</li><li>Best for: after rough blocking, before final detailing</li></ul></div></div>
+      <div class="acc-item reveal stagger-2"><div class="acc-head" onclick="toggleAcc(this)">Dynamic Topology (Dyntopo) — Add Geometry on the Fly <span class="acc-arrow">›</span></div><div class="acc-body"><p>Adds and removes geometry automatically as you sculpt — perfect for free-form blocking.</p><ul><li>Enable: <kbd>D</kbd> key in Sculpt Mode, or toggle in header</li><li>Detail Type: <strong>Relative</strong> = follows zoom, <strong>Constant</strong> = same everywhere, <strong>Brush</strong> = follows brush size</li><li>Detail Size: smaller = more geometry</li><li><strong>Pro:</strong> No need to remesh, geometry appears where needed</li><li><strong>Con:</strong> Random topology, no UV maps, slower with very high detail</li><li>Best for: initial organic blocking</li></ul></div></div>
+      <div class="acc-item reveal stagger-3"><div class="acc-head" onclick="toggleAcc(this)">Multires Modifier — Best for Final Detailing <span class="acc-arrow">›</span></div><div class="acc-body"><p>Subdivides the mesh while keeping the low-res base editable separately.</p><ul><li>Add modifier → Multiresolution → click Subdivide to add levels</li><li>Each level = 4× more polygons</li><li>Sculpt on high level for fine detail; rig/animate on level 0</li><li>Apply Base: reshape base mesh while keeping high-res detail</li><li>Reshape: push high-res sculpt detail onto a new base shape</li><li><strong>Pro:</strong> Keeps UV maps, compatible with rigging</li><li><strong>Con:</strong> Uses more memory, slower for very high levels</li><li>Best for: characters that need UV maps and animation</li></ul></div></div>
+      <div class="acc-item reveal stagger-4"><div class="acc-head" onclick="toggleAcc(this)">Masking &amp; Face Sets — Protect and Isolate <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>Mask brush (<kbd>M</kbd>): paint regions to protect from sculpting</li><li><kbd>Alt+M</kbd> clear mask, <kbd>Ctrl+I</kbd> invert mask</li><li>Face Sets: colored regions you can hide/isolate</li><li><kbd>H</kbd> = hide face set, <kbd>Alt+H</kbd> = show all</li><li>Auto-Masking: enable Topology / Face Sets / Cavity in brush settings</li><li>Cavity masking: only sculpts on high or low areas of the surface</li></ul></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">💡 Sculpting Pro Tips</div>
+    <div class="grid-auto">
+      <div class="card reveal"><h3 style="font-size:.95rem;margin-bottom:.4rem">Build Form First</h3><p style="font-size:.83rem;color:var(--text2)">Work large to small. Big forms → medium details → fine details. Never start with wrinkles before the face shape is correct.</p></div>
+      <div class="card reveal stagger-2"><h3 style="font-size:.95rem;margin-bottom:.4rem">Smooth is Your Friend</h3><p style="font-size:.83rem;color:var(--text2)">Hold <kbd>Shift</kbd> anytime to temporarily use the Smooth brush. Use it constantly — perfect sculpting is always adding and smoothing.</p></div>
+      <div class="card reveal stagger-3"><h3 style="font-size:.95rem;margin-bottom:.4rem">Use References</h3><p style="font-size:.83rem;color:var(--text2)">Add → Image → Reference. Place anatomy/concept art in the viewport. Orbit around it constantly to check proportions from all angles.</p></div>
+      <div class="card reveal stagger-4"><h3 style="font-size:.95rem;margin-bottom:.4rem">Matcap Lighting</h3><p style="font-size:.83rem;color:var(--text2)">Switch Solid shading to MatCap (shading dropdown). Clay and wax matcaps reveal surface detail far better than default lighting.</p></div>
+      <div class="card reveal stagger-5"><h3 style="font-size:.95rem;margin-bottom:.4rem">Symmetry Always</h3><p style="font-size:.83rem;color:var(--text2)">Enable X symmetry in the header before you start. Sculpt one side — the other mirrors automatically. Disable symmetry only for asymmetric final details.</p></div>
+      <div class="card reveal stagger-6"><h3 style="font-size:.95rem;margin-bottom:.4rem">Remesh Timing</h3><p style="font-size:.83rem;color:var(--text2)">Remesh when you've blocked the shape and want to add detail. Start with large voxel (0.05–0.1), then get smaller (0.01–0.02) for final details. Don't go too fine too early.</p></div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="modeling.html">← Modeling</a><a href="materials.html">Materials →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+const BRUSHES = [
+  { name:'Draw',        effect:'Pushes the surface outward. The most basic sculpting brush.',       ctrl:'Pushes inward',          color:'#c86030' },
+  { name:'Clay',        effect:'Adds flat, layered clay strokes. Mimics real clay modeling.',       ctrl:'Removes clay',           color:'#a05030' },
+  { name:'Clay Strips', effect:'Adds rectangular clay patches. Best brush for initial blocking.',   ctrl:'Removes clay strips',    color:'#b06035' },
+  { name:'Crease',      effect:'Pinches a sharp valley into the surface. For wrinkles and joints.', ctrl:'Smooths to a ridge',     color:'#604488' },
+  { name:'Smooth',      effect:'Averages vertex positions to smooth. Also available with Shift.',   ctrl:'Enhances/sharpens detail',color:'#4488a0' },
+  { name:'Flatten',     effect:'Pushes vertices to the average plane. Removes bumps.',              ctrl:'Contrast/accentuate',    color:'#386898' },
+  { name:'Grab',        effect:'Moves a region of the mesh like grabbing clay. Best for big forms.',ctrl:'—',                      color:'#8040a0' },
+  { name:'Inflate',     effect:'Expands the surface outward evenly. Fatten lips, cheeks, nose.',   ctrl:'Deflates surface',       color:'#a04050' },
+  { name:'Pinch',       effect:'Pulls vertices together to a sharp point. Sharpen edges/folds.',   ctrl:'Spreads apart',          color:'#506088' },
+  { name:'Scrape',      effect:'Removes high points. Use to cut away large lumps and level areas.', ctrl:'Fills low points',       color:'#408058' },
+  { name:'Snake Hook',  effect:'Pulls out long organic strands. Use for hair, tentacles, horns.',  ctrl:'—',                      color:'#708040' },
+  { name:'Cloth',       effect:'Simulates cloth physics on the surface. Fabric folds and draping.',ctrl:'—',                      color:'#4870a0' },
+  { name:'Mask',        effect:'Paints a mask to protect regions. Critical for isolating areas.',  ctrl:'Unmasks the area',       color:'#888888' },
+  { name:'Draw Sharp',  effect:'Creates sharp defined lines. Panel lines, scars, hard surface.',   ctrl:'Sharp lines inward',     color:'#804840' },
+  { name:'Pose',        effect:'Pose-like deformation by segments. Bend limbs without a rig.',     ctrl:'—',                      color:'#6040a0' },
+];
+const gallery = document.getElementById('brushGallery');
+const nameEl  = document.getElementById('brushName');
+const effectEl= document.getElementById('brushEffect');
+const ctrlEl  = document.getElementById('brushCtrl');
+const visualEl= document.getElementById('brushVisual');
+BRUSHES.forEach(b => {
+  const btn = document.createElement('div');
+  btn.className = 'brush-btn';
+  btn.textContent = b.name;
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.brush-btn').forEach(x => x.classList.remove('active'));
+    btn.classList.add('active');
+    nameEl.textContent  = b.name;
+    effectEl.textContent = b.effect;
+    ctrlEl.textContent  = b.ctrl;
+    visualEl.style.background = `radial-gradient(circle at 35% 35%, ${b.color}, #1a1008)`;
+  });
+  gallery.appendChild(btn);
+});
+gallery.firstChild.click();
+</script>
+</body>
+</html>

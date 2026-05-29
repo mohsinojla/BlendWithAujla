@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Animation — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">🎬 Module 07</div>
+    <h1>Animation <span class="gradient-text">Complete Guide</span></h1>
+    <p>Keyframing, the Graph Editor, rigging with Armatures, Shape Keys, NLA Editor, and physics simulations.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="grid-2">
+      <div>
+        <div class="sec-title">🎯 Keyframing Basics</div>
+        <div class="card reveal">
+          <ol class="steps">
+            <li>Go to frame 1 on the timeline (<kbd>Shift+←</kbd> or type frame number)</li>
+            <li>Select object, position/rotate/scale it as desired</li>
+            <li>Press <kbd>I</kbd> to insert keyframe → choose Location, Rotation, Scale, or LocRotScale</li>
+            <li>Move to another frame, change the object's transform</li>
+            <li>Press <kbd>I</kbd> again to keyframe at this new state</li>
+            <li>Press <kbd>Space</kbd> to play — Blender interpolates between keyframes</li>
+            <li>Open <strong>Graph Editor</strong> to control interpolation curves</li>
+            <li>Right-click keyframe → Interpolation Mode to change easing</li>
+          </ol>
+          <div class="tip-box"><strong>Auto Keying:</strong> Enable the red circle button on the timeline to auto-insert keyframes whenever you transform an object. Great for rough animation passes.</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-title">⌨️ Animation Shortcuts</div>
+        <div class="card reveal stagger-2">
+          <div class="sc-cat">Timeline</div>
+          <div class="sc-row"><kbd>Space</kbd><span>Play / pause animation</span></div>
+          <div class="sc-row"><kbd>Shift+←/→</kbd><span>Jump to first / last frame</span></div>
+          <div class="sc-row"><kbd>← / →</kbd><span>Previous / next frame</span></div>
+          <div class="sc-row"><kbd>↑ / ↓</kbd><span>Jump 10 frames forward / back</span></div>
+          <div class="sc-cat">Keyframes</div>
+          <div class="sc-row"><kbd>I</kbd><span>Insert keyframe menu</span></div>
+          <div class="sc-row"><kbd>Alt+I</kbd><span>Delete keyframe at current frame</span></div>
+          <div class="sc-row"><kbd>Shift+E</kbd><span>Set keyframe extrapolation</span></div>
+          <div class="sc-row"><kbd>V</kbd><span>Set handle type in Graph Editor</span></div>
+          <div class="sc-cat">Graph Editor</div>
+          <div class="sc-row"><kbd>T</kbd><span>Set interpolation mode</span></div>
+          <div class="sc-row"><kbd>N</kbd><span>Toggle properties panel</span></div>
+          <div class="sc-row"><kbd>Home</kbd><span>View all keyframes</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE TIMELINE -->
+  <section class="section">
+    <div class="sec-title">🎞️ Interactive Timeline Demo</div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">Click the keyframe diamonds to see how interpolation works. Drag the playhead to scrub.</p>
+    <div class="card reveal" id="timelineDemo" style="padding:1.25rem">
+      <!-- Timeline ruler -->
+      <div style="position:relative;height:48px;background:#111118;border-radius:8px;overflow:hidden;margin-bottom:.75rem;cursor:col-resize;user-select:none" id="tlRuler">
+        <!-- ruler ticks -->
+        <div style="position:absolute;top:0;left:0;right:0;height:20px;display:flex">
+          <div style="flex:1;border-right:1px solid #333;text-align:center;font-size:.6rem;color:var(--text3);line-height:20px">1</div>
+          <div style="flex:1;border-right:1px solid #333;text-align:center;font-size:.6rem;color:var(--text3);line-height:20px">6</div>
+          <div style="flex:1;border-right:1px solid #333;text-align:center;font-size:.6rem;color:var(--text3);line-height:20px">12</div>
+          <div style="flex:1;border-right:1px solid #333;text-align:center;font-size:.6rem;color:var(--text3);line-height:20px">18</div>
+          <div style="flex:1;border-right:1px solid #333;text-align:center;font-size:.6rem;color:var(--text3);line-height:20px">24</div>
+          <div style="flex:1;text-align:center;font-size:.6rem;color:var(--text3);line-height:20px">30</div>
+        </div>
+        <!-- keyframe channel -->
+        <div style="position:absolute;bottom:6px;left:0;right:0;height:20px">
+          <!-- keyframe diamonds -->
+          <div class="tl-key" data-frame="1"  data-type="start"  style="left:0%"    title="Frame 1 — Start (Ease Out)"></div>
+          <div class="tl-key" data-frame="12" data-type="mid"    style="left:36.6%" title="Frame 12 — Midpoint (Ease In/Out)"></div>
+          <div class="tl-key" data-frame="24" data-type="peak"   style="left:76.6%" title="Frame 24 — Peak (Ease In)"></div>
+          <div class="tl-key" data-frame="30" data-type="end"    style="left:100%;transform:translateX(-14px)" title="Frame 30 — End"></div>
+        </div>
+        <!-- playhead -->
+        <div id="tlPlayhead" style="position:absolute;top:0;bottom:0;width:2px;background:var(--accent);pointer-events:none;left:0">
+          <div style="position:absolute;top:0;left:-4px;width:10px;height:10px;background:var(--accent);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)"></div>
+        </div>
+      </div>
+      <!-- Animated ball preview -->
+      <div style="background:#0d0d12;border-radius:8px;height:80px;position:relative;overflow:hidden;margin-bottom:.75rem;border:1px solid var(--border)">
+        <div id="animBall" style="position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;background:radial-gradient(circle at 35% 35%,var(--accent),var(--accent3));border-radius:50%;left:0;box-shadow:0 0 12px rgba(230,126,34,.5);transition:left .05s linear"></div>
+        <div style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:.65rem;color:var(--text3)">Object position preview</div>
+      </div>
+      <!-- Controls -->
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
+        <button onclick="tlPlay()" id="tlPlayBtn" style="padding:.35rem .9rem;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:700;font-size:.82rem">▶ Play</button>
+        <span style="font-size:.8rem;color:var(--text2)">Frame: <strong id="tlFrameNum" style="color:var(--accent)">1</strong></span>
+        <span style="font-size:.8rem;color:var(--text2)" id="tlKeyInfo">Click a ◆ keyframe to learn about it</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">📈 Graph Editor — Curve Mastery</div>
+    <div class="grid-2">
+      <div class="card reveal">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Interpolation Types</div>
+        <table class="data-table" style="margin:0">
+          <thead><tr><th>Mode</th><th>Effect</th><th>Use For</th></tr></thead>
+          <tbody>
+            <tr><td>Constant</td><td>No interpolation, instant jump</td><td>On/off states, blinking</td></tr>
+            <tr><td>Linear</td><td>Straight line between keys</td><td>Mechanical motion</td></tr>
+            <tr><td>Bezier</td><td>Smooth S-curve handles</td><td>Most natural motion</td></tr>
+            <tr><td>Ease In</td><td>Slow start, fast end</td><td>Objects launching</td></tr>
+            <tr><td>Ease Out</td><td>Fast start, slow end</td><td>Objects settling</td></tr>
+            <tr><td>Bounce</td><td>Bouncing rubber ball feel</td><td>Cartoon bouncing</td></tr>
+            <tr><td>Elastic</td><td>Overshoots with spring</td><td>UI animations</td></tr>
+            <tr><td>Back</td><td>Slight anticipation/overshoot</td><td>Character weight</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card reveal stagger-2">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Handle Types</div>
+        <div class="sc-row"><kbd>V → Free</kbd><span>Fully manual, independent handles</span></div>
+        <div class="sc-row"><kbd>V → Aligned</kbd><span>Both handles aligned, different lengths</span></div>
+        <div class="sc-row"><kbd>V → Vector</kbd><span>Straight line handles (linear-like)</span></div>
+        <div class="sc-row"><kbd>V → Auto</kbd><span>Automatically smooth handles</span></div>
+        <div class="sc-row"><kbd>V → Auto Clamped</kbd><span>Auto but prevents overshooting</span></div>
+        <div style="margin-top:.8rem">
+          <div class="tip-box"><strong>Pro move:</strong> Select all keys → <kbd>V → Auto Clamped</kbd> for smooth but controlled motion. Then manually adjust only the keyframes that need specific easing.</div>
+        </div>
+        <div style="margin-top:.8rem">
+          <div class="sc-cat">Modifiers (F-Curve Modifiers)</div>
+          <div class="sc-row"><span>Cycles</span><span>Loop the animation infinitely</span></div>
+          <div class="sc-row"><span>Noise</span><span>Procedural jitter/shake on any property</span></div>
+          <div class="sc-row"><span>Limits</span><span>Clamp values to min/max range</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🦴 Rigging with Armatures</div>
+    <div class="acc">
+      <div class="acc-item reveal"><div class="acc-head" onclick="toggleAcc(this)">Creating an Armature <span class="acc-arrow">›</span></div><div class="acc-body"><ol class="steps" style="margin:0"><li><kbd>Shift+A</kbd> → Armature → Single Bone</li><li>Switch to <strong>Edit Mode</strong> on the armature (<kbd>Tab</kbd>)</li><li>Select bone tip → <kbd>E</kbd> to extrude new bones</li><li>Name each bone clearly: "spine", "upper_arm_L", "thigh_R", etc.</li><li>Use <strong>X-Axis Mirror</strong> in Armature properties to create symmetric bones</li><li>Parent bones by selecting child → Shift-select parent → <kbd>Ctrl+P</kbd> → Keep Offset</li></ol></div></div>
+      <div class="acc-item reveal stagger-2"><div class="acc-head" onclick="toggleAcc(this)">Skinning — Binding Mesh to Armature <span class="acc-arrow">›</span></div><div class="acc-body"><ol class="steps" style="margin:0"><li>Select mesh first, then <kbd>Shift+click</kbd> armature</li><li><kbd>Ctrl+P</kbd> → <strong>With Automatic Weights</strong></li><li>Blender calculates vertex weights automatically</li><li>Test by going to Pose Mode on the armature and moving bones</li><li>Fix bad deformation: select mesh → <strong>Weight Paint Mode</strong></li><li>Paint red = full influence, blue = no influence for each bone</li><li>Use Smooth and Blur brushes to blend weight transitions</li></ol></div></div>
+      <div class="acc-item reveal stagger-3"><div class="acc-head" onclick="toggleAcc(this)">Inverse Kinematics (IK) <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>In Pose Mode: select a bone → <strong>Bone Constraints → Inverse Kinematics</strong></li><li>Set Chain Length = 2 for elbow/knee IK chains</li><li>Create an IK target bone (controller) and point the IK constraint at it</li><li>IK makes hands/feet plant while the upper body moves</li><li>Add Pole Target for elbow/knee directional control (prevents flipping)</li><li>FK (Forward Kinematics) = rotate each bone individually; IK = move end effector</li></ul></div></div>
+      <div class="acc-item reveal stagger-4"><div class="acc-head" onclick="toggleAcc(this)">Shape Keys — Facial Animation &amp; Morphs <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>Select mesh → Object Data Properties → <strong>Shape Keys</strong> panel</li><li>Click + to add <strong>Basis</strong> (rest pose) key first</li><li>Add another key, then go to Edit Mode and reshape the mesh</li><li>Each shape key stores a sculpted deformation (smile, blink, phoneme)</li><li>Value 0 = no effect; Value 1 = full deformation</li><li>Keyframe the <strong>Value</strong> slider to animate morphs over time</li><li>Driver shapes by bone rotation for automatic facial rig expressions</li></ul></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🎞️ NLA Editor — Non-Linear Animation</div>
+    <div class="grid-2">
+      <div class="card reveal">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">NLA Workflow</div>
+        <ol class="steps">
+          <li>Animate an action normally in the timeline (e.g. a walk cycle frames 1–24)</li>
+          <li>Open NLA Editor from the editor type dropdown</li>
+          <li>Click the <strong>Push Down</strong> button (down arrow) to push current action into NLA</li>
+          <li>The action becomes an NLA strip you can loop, scale, blend</li>
+          <li>Right-click strip → <strong>Repeat</strong> to loop the walk cycle</li>
+          <li>Create more actions (run, jump, idle) and push them down</li>
+          <li>Blend between strips using the <strong>Blend In/Out</strong> handles</li>
+          <li>Extrapolation: hold mode or nothing after strip ends</li>
+        </ol>
+      </div>
+      <div class="card reveal stagger-2">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">NLA Strip Controls</div>
+        <div class="sc-row"><kbd>N</kbd><span>Strip properties panel (scale, repeat, offset)</span></div>
+        <div class="sc-row"><kbd>G</kbd><span>Move strip in time</span></div>
+        <div class="sc-row"><kbd>S</kbd><span>Scale strip (changes speed)</span></div>
+        <div class="sc-row"><span>Blend Mode</span><span>Replace, Add, Multiply strips together</span></div>
+        <div class="sc-row"><span>Influence</span><span>How much the strip contributes (0–1)</span></div>
+        <div class="sc-row"><span>Mute</span><span>Toggle strip on/off for testing</span></div>
+        <div class="info-box" style="margin-top:.8rem">NLA is powerful for game-ready animations — author walk, run, idle, jump as separate actions, then combine them in the NLA. Export each action as its own animation to a game engine.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🌊 Physics Simulations</div>
+    <div class="grid-3">
+      <div class="card reveal" style="border-top:3px solid var(--accent)">
+        <h3 style="font-size:.95rem;margin-bottom:.5rem">Rigid Body</h3>
+        <p style="font-size:.83rem;color:var(--text2);margin-bottom:.6rem">Objects that fall, collide, and bounce with physical mass.</p>
+        <ul style="font-size:.82rem;color:var(--text2);padding-left:1.1rem">
+          <li>Physics Properties → Rigid Body → Active</li>
+          <li>Floor → Rigid Body → Passive</li>
+          <li>Set Shape: Convex Hull or Mesh for accuracy</li>
+          <li><kbd>Space</kbd> to simulate in viewport</li>
+          <li>Bake → Bake to save simulation as keyframes</li>
+        </ul>
+      </div>
+      <div class="card reveal stagger-2" style="border-top:3px solid #4a90e2">
+        <h3 style="font-size:.95rem;margin-bottom:.5rem">Cloth Simulation</h3>
+        <p style="font-size:.83rem;color:var(--text2);margin-bottom:.6rem">Realistic fabric draping, flags, and soft bodies.</p>
+        <ul style="font-size:.82rem;color:var(--text2);padding-left:1.1rem">
+          <li>Physics Properties → Cloth</li>
+          <li>Presets: Cotton, Silk, Denim, Leather</li>
+          <li>Pin Groups: select vertices → Group → pin in cloth settings</li>
+          <li>Self-Collision for detailed folds</li>
+          <li>Cache → Bake to lock simulation</li>
+        </ul>
+      </div>
+      <div class="card reveal stagger-3" style="border-top:3px solid #7ed321">
+        <h3 style="font-size:.95rem;margin-bottom:.5rem">Particle Systems</h3>
+        <p style="font-size:.83rem;color:var(--text2);margin-bottom:.6rem">Hair, fur, grass, and particle effects.</p>
+        <ul style="font-size:.82rem;color:var(--text2);padding-left:1.1rem">
+          <li>Particles Properties → + New</li>
+          <li>Type: Emitter (flying) or Hair (static)</li>
+          <li>Render As: Object to instance meshes</li>
+          <li>Use Geometry Nodes Hair in Blender 4.x</li>
+          <li>Children: Interpolated for dense realistic hair</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">✨ Animation Pro Tips</div>
+    <div class="grid-auto">
+      <div class="card reveal"><h3 style="font-size:.95rem;margin-bottom:.4rem">12 Principles of Animation</h3><p style="font-size:.83rem;color:var(--text2)">Squash & stretch, anticipation, follow-through, arcs, ease in/out, secondary action — these Disney principles apply to all 3D animation. Study them.</p></div>
+      <div class="card reveal stagger-2"><h3 style="font-size:.95rem;margin-bottom:.4rem">Pose to Pose First</h3><p style="font-size:.83rem;color:var(--text2)">Create the key extreme poses first (pose-to-pose method), then fill in breakdown poses. Don't animate every frame linearly from start to finish.</p></div>
+      <div class="card reveal stagger-3"><h3 style="font-size:.95rem;margin-bottom:.4rem">Arcs</h3><p style="font-size:.83rem;color:var(--text2)">Everything in nature moves in arcs, never straight lines. Check the motion path of hands and heads (<strong>Object Properties → Motion Paths</strong>) and curve any straight trajectories.</p></div>
+      <div class="card reveal stagger-4"><h3 style="font-size:.95rem;margin-bottom:.4rem">Overlap & Follow Through</h3><p style="font-size:.83rem;color:var(--text2)">Hair, clothing, and secondary elements should continue moving after the main body stops. Offset their keyframes by 2–4 frames and add slight overshooting.</p></div>
+      <div class="card reveal stagger-5"><h3 style="font-size:.95rem;margin-bottom:.4rem">24fps for Film</h3><p style="font-size:.83rem;color:var(--text2)">Set FPS in Output Properties. Film = 24fps, TV = 25fps (PAL) or 30fps (NTSC), Games = 60fps. Wrong FPS will make your animation feel wrong when played back.</p></div>
+      <div class="card reveal stagger-6"><h3 style="font-size:.95rem;margin-bottom:.4rem">Stepped Preview</h3><p style="font-size:.83rem;color:var(--text2)">In Graph Editor → View → Use Zero Tangent Handles for stepped/blocking preview. See your key poses without interpolation before committing to splines.</p></div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="lighting.html">← Lighting</a><a href="rendering.html">Rendering →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+// Timeline keyframe styles
+document.querySelectorAll('.tl-key').forEach(k => {
+  Object.assign(k.style, {
+    position:'absolute', width:'14px', height:'14px',
+    background:'var(--accent)', transform:'rotate(45deg) translateX(-7px)',
+    cursor:'pointer', top:'3px', borderRadius:'2px',
+    boxShadow:'0 0 8px rgba(230,126,34,.6)', transition:'transform .15s, box-shadow .15s'
+  });
+  k.addEventListener('mouseenter', () => k.style.transform = 'rotate(45deg) translateX(-7px) scale(1.3)');
+  k.addEventListener('mouseleave', () => k.style.transform = 'rotate(45deg) translateX(-7px) scale(1)');
+  const msgs = {
+    start:'Frame 1 — Start position. Ease Out: object accelerates from rest, slow start then fast.',
+    mid:  'Frame 12 — Midpoint. Ease In/Out (Bezier): smooth S-curve, natural deceleration and acceleration.',
+    peak: 'Frame 24 — Peak position. Ease In: object decelerates as it approaches, like braking.',
+    end:  'Frame 30 — End/rest position. Object has arrived and stopped.'
+  };
+  k.addEventListener('click', () => {
+    document.getElementById('tlKeyInfo').textContent = msgs[k.dataset.type] || '';
+    document.getElementById('tlFrameNum').textContent = k.dataset.frame;
+    const pct = parseFloat(k.style.left) || (k.dataset.frame - 1) / 29 * 100;
+    document.getElementById('tlPlayhead').style.left = Math.min(pct, 96) + '%';
+    updateBall(parseInt(k.dataset.frame));
+  });
+});
+
+// Ruler drag
+const ruler = document.getElementById('tlRuler');
+ruler.addEventListener('click', e => {
+  const rect = ruler.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  const frame = Math.round(pct * 29) + 1;
+  document.getElementById('tlPlayhead').style.left = (pct * 100) + '%';
+  document.getElementById('tlFrameNum').textContent = frame;
+  updateBall(frame);
+});
+
+function updateBall(frame) {
+  // Ease in/out: cubic bezier
+  const t = (frame - 1) / 29;
+  const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+  const ball = document.getElementById('animBall');
+  ball.style.left = (eased * (ruler.offsetWidth - 40)) + 'px';
+}
+
+let playing = false; let tlFrame = 1; let tlTimer;
+function tlPlay() {
+  playing = !playing;
+  document.getElementById('tlPlayBtn').textContent = playing ? '⏸ Pause' : '▶ Play';
+  if (playing) {
+    tlTimer = setInterval(() => {
+      tlFrame = tlFrame >= 30 ? 1 : tlFrame + 1;
+      const pct = (tlFrame - 1) / 29;
+      document.getElementById('tlPlayhead').style.left = (pct * 100) + '%';
+      document.getElementById('tlFrameNum').textContent = tlFrame;
+      updateBall(tlFrame);
+    }, 42); // ~24fps
+  } else {
+    clearInterval(tlTimer);
+  }
+}
+</script>
+</body>
+</html>

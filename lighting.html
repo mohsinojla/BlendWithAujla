@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lighting — Blend with Aujla</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="logo.ico">
+</head>
+<body>
+<nav id="navbar">
+  <a class="nav-brand" href="index.html"><img src="logo.png" style="height:26px;width:auto;border-radius:4px;margin-right:2px" alt="Logo">Blend <strong>with Aujla</strong></a>
+  <div class="nav-search"><input type="text" id="searchInput" placeholder="Search…" autocomplete="off"><div id="searchResults" class="search-dropdown"></div></div>
+  <ul class="nav-pages">
+    <li><a href="index.html">🏠</a></li><li><a href="basics.html">🌱 Basics</a></li><li><a href="shortcuts.html">⌨️ Shortcuts</a></li><li><a href="modeling.html">🔧 Modeling</a></li><li><a href="sculpting.html">🫧 Sculpting</a></li><li><a href="materials.html">🎨 Materials</a></li><li><a href="lighting.html">💡 Lighting</a></li><li><a href="animation.html">🎬 Animation</a></li><li><a href="rendering.html">📷 Rendering</a></li><li><a href="tips.html">⚡ Pro Tips</a></li>
+  </ul>
+  <div class="nav-right"><button class="icon-btn" id="themeToggle">🌙</button></div>
+</nav>
+<div id="readProgress"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">💡 Module 06</div>
+    <h1>Lighting <span class="gradient-text">Complete Guide</span></h1>
+    <p>Light types, 3-point lighting setup, HDRI environment lighting, Cycles vs EEVEE differences, and volumetric effects.</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <section class="section">
+    <div class="grid-2">
+      <div>
+        <div class="sec-title">🔦 Light Types</div>
+        <div class="card reveal">
+          <table class="data-table" style="margin:0">
+            <thead><tr><th>Type</th><th>Description</th><th>Best For</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Point</strong></td><td>Omni-directional, from single point</td><td>Bulbs, candles, fire</td></tr>
+              <tr><td><strong>Sun</strong></td><td>Parallel rays, only angle matters</td><td>Outdoor scenes, shadows</td></tr>
+              <tr><td><strong>Spot</strong></td><td>Cone-shaped, adjustable angle</td><td>Stage lights, headlamps</td></tr>
+              <tr><td><strong>Area</strong></td><td>Rectangle/disc, soft shadows</td><td>Studio lighting, fill lights</td></tr>
+            </tbody>
+          </table>
+          <div class="tip-box" style="margin-top:.8rem"><strong>Area lights</strong> give the softest, most realistic shadows. For product shots and characters, area lights almost always look better than point lights.</div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-title">⚙️ Light Properties</div>
+        <div class="card reveal stagger-2">
+          <div class="sc-cat">Key Settings</div>
+          <div class="sc-row"><span style="font-weight:600;min-width:140px">Power / Energy</span><span>Brightness in Watts (Cycles) or arbitrary (EEVEE)</span></div>
+          <div class="sc-row"><span style="font-weight:600;min-width:140px">Color</span><span>Light tint — warm (3200K) or cool (6500K)</span></div>
+          <div class="sc-row"><span style="font-weight:600;min-width:140px">Radius / Size</span><span>Larger = softer shadows; smaller = harder</span></div>
+          <div class="sc-row"><span style="font-weight:600;min-width:140px">Spot Angle</span><span>Cone width in degrees</span></div>
+          <div class="sc-row"><span style="font-weight:600;min-width:140px">Spot Blend</span><span>Edge softness of spot (0=hard, 1=soft)</span></div>
+          <div class="sc-row"><span style="font-weight:600;min-width:140px">Shadow</span><span>Toggle shadows per light</span></div>
+          <div class="sc-row"><span style="font-weight:600;min-width:140px">Use Nodes</span><span>Custom falloff, color textures, IES profiles</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE 3-POINT LIGHTING -->
+  <section class="section">
+    <div class="sec-title">🎬 Interactive 3-Point Lighting</div>
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem">Toggle each light on/off to see how it contributes to the scene. This is the foundation of professional lighting.</p>
+
+    <div class="grid-2">
+      <div class="reveal">
+        <div class="lighting-scene" id="lightingScene">
+          <!-- beams -->
+          <div class="light-beam key-beam on"  id="beamKey"></div>
+          <div class="light-beam fill-beam on" id="beamFill"></div>
+          <div class="light-beam rim-beam on"  id="beamRim"></div>
+          <!-- labels -->
+          <div class="light-label key">① Key</div>
+          <div class="light-label fill">② Fill</div>
+          <div class="light-label rim">③ Rim</div>
+          <!-- subject -->
+          <div class="light-subject" id="lightSubject"></div>
+          <!-- light sources (clickable) -->
+          <div class="light-source key" id="srcKey" onclick="toggleLight('key')" title="Click to toggle Key Light">K</div>
+          <div class="light-source fill" id="srcFill" onclick="toggleLight('fill')" title="Click to toggle Fill Light">F</div>
+          <div class="light-source rim" id="srcRim" onclick="toggleLight('rim')" title="Click to toggle Rim Light">R</div>
+          <!-- camera indicator -->
+          <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:.65rem;color:var(--text3);font-weight:700;">📷 Camera</div>
+        </div>
+        <div class="lighting-controls">
+          <label class="light-toggle key" id="toggleKey" onclick="toggleLight('key')">
+            <span>🟡 Key Light</span> <span id="keyStatus">ON</span>
+          </label>
+          <label class="light-toggle fill" id="toggleFill" onclick="toggleLight('fill')">
+            <span>🔵 Fill Light</span> <span id="fillStatus">ON</span>
+          </label>
+          <label class="light-toggle rim" id="toggleRim" onclick="toggleLight('rim')">
+            <span>🟢 Rim Light</span> <span id="rimStatus">ON</span>
+          </label>
+        </div>
+        <div class="tip-box" style="margin-top:.8rem" id="lightingTip">All three lights active — this is the classic 3-point setup. Notice the depth and dimension.</div>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="grid-3" style="gap:.65rem;margin-bottom:.75rem">
+          <div class="card" style="border-top:3px solid #f5a623;padding:1rem">
+            <h3 style="color:#f5a623;font-size:.9rem;margin-bottom:.4rem">① Key Light</h3>
+            <ul style="font-size:.79rem;color:var(--text2);padding-left:1rem">
+              <li>45° side + 45° above</li>
+              <li>Brightest of the three</li>
+              <li>Sets main direction/mood</li>
+              <li>Area light recommended</li>
+              <li>Warm tint (3200–4500K)</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top:3px solid #4a90e2;padding:1rem">
+            <h3 style="color:#4a90e2;font-size:.9rem;margin-bottom:.4rem">② Fill Light</h3>
+            <ul style="font-size:.79rem;color:var(--text2);padding-left:1rem">
+              <li>Opposite side of key</li>
+              <li>30–50% of key power</li>
+              <li>Softens harsh shadows</li>
+              <li>Cooler tint (6500K)</li>
+              <li>Shadows optional</li>
+            </ul>
+          </div>
+          <div class="card" style="border-top:3px solid #7ed321;padding:1rem">
+            <h3 style="color:#7ed321;font-size:.9rem;margin-bottom:.4rem">③ Rim Light</h3>
+            <ul style="font-size:.79rem;color:var(--text2);padding-left:1rem">
+              <li>Behind the subject</li>
+              <li>Creates depth/separation</li>
+              <li>Similar power to key</li>
+              <li>Can be colorful</li>
+              <li>Spot or area works</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="padding:1rem">
+          <div class="sc-cat">Quick Light Setup</div>
+          <div class="sc-row"><kbd>Shift+A → Light → Area</kbd><span>Add an area light</span></div>
+          <div class="sc-row"><kbd>G → R</kbd><span>Position and rotate light</span></div>
+          <div class="sc-row"><kbd>Properties → Light</kbd><span>Adjust power, color, size</span></div>
+          <div class="sc-row"><kbd>Shift+D</kbd><span>Duplicate to make fill/rim</span></div>
+          <div class="sc-row"><kbd>Z → Rendered</kbd><span>Preview with real lighting</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">🌍 HDRI Environment Lighting</div>
+    <div class="grid-2">
+      <div class="card reveal">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">Setting Up HDRI</div>
+        <ol class="steps">
+          <li>Switch to <strong>World Properties</strong> (globe icon)</li>
+          <li>Click <strong>Use Nodes</strong> if not already enabled</li>
+          <li>Click the dot beside Color → <strong>Environment Texture</strong></li>
+          <li>Click Open → select your .hdr or .exr file</li>
+          <li>In viewport, press <kbd>Z</kbd> → Rendered to preview</li>
+          <li>Add <strong>Texture Coordinate + Mapping</strong> nodes to rotate HDRI</li>
+          <li>Adjust World Strength to increase/decrease influence</li>
+        </ol>
+        <div class="tip-box">HDRI simultaneously provides lighting AND reflections. One HDRI can replace an entire light rig for product shots. Use <strong>Polyhaven.com</strong> for free 4K–16K HDRIs.</div>
+      </div>
+      <div class="card reveal stagger-2">
+        <div class="sec-title" style="font-size:.9rem;margin-bottom:.6rem">HDRI Power Tips</div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Background Visible</span><span>World → Surface → Light Path → Is Camera Ray</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Rotation</span><span>Mapping node Z rotation to spin the HDRI</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Strength Ramp</span><span>ColorRamp before Strength for tonal control</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Mix HDRI + Lights</span><span>Combine HDRI and manual lights freely</span></div>
+        <div class="sc-row"><span style="font-weight:600;min-width:160px">Color Temp</span><span>Blackbody node → Emission for physical colors</span></div>
+        <div class="info-box">HDRIs are panoramic equirectangular images (360°×180°) that encode real-world high dynamic range light data — they capture everything from the sun to shadows.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">⚡ Cycles vs EEVEE Lighting</div>
+    <div class="acc">
+      <div class="acc-item reveal"><div class="acc-head" onclick="toggleAcc(this)">Cycles — Path Tracing (Physically Accurate) <span class="acc-arrow">›</span></div><div class="acc-body"><p>Simulates real light transport — rays bounce around the scene. Slow but physically correct.</p><ul><li><strong>Caustics:</strong> light focusing through glass (enable in Render → Caustics)</li><li><strong>Indirect lighting:</strong> automatic — light bounces off surfaces and illuminates others</li><li><strong>Light Paths:</strong> control bounce count (8 default, lower = faster)</li><li><strong>Denoising:</strong> OptiX (NVIDIA GPU) or OpenImageDenoise (CPU)</li><li><strong>Samples:</strong> 64–256 for final render</li><li>Best for: photorealism, glass, SSS, hair, complex lighting</li></ul></div></div>
+      <div class="acc-item reveal stagger-2"><div class="acc-head" onclick="toggleAcc(this)">EEVEE — Real-Time Rasterizer (Fast) <span class="acc-arrow">›</span></div><div class="acc-body"><p>Renders in real-time using GPU rasterization. Fast but requires manual setup for advanced effects.</p><ul><li><strong>Ambient Occlusion:</strong> enable in Render Properties for contact shadows</li><li><strong>Screen Space Reflections:</strong> enable for reflections (only what's on screen)</li><li><strong>Shadows:</strong> set Shadow Map resolution per light for quality</li><li><strong>Bloom:</strong> glow effect on bright/emissive objects</li><li><strong>Volumetrics:</strong> enable for fog/atmospheric effects</li><li>Best for: animation previews, stylized renders, real-time</li></ul></div></div>
+      <div class="acc-item reveal stagger-3"><div class="acc-head" onclick="toggleAcc(this)">Volumetric Lighting — Fog, God Rays, Atmosphere <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>In World Properties → enable <strong>Volumetric</strong> (EEVEE)</li><li>For Cycles: add a cube object, apply <strong>Volume Scatter</strong> material</li><li>Density controls thickness; Anisotropy controls light direction</li><li>Spot lights through volumetrics create "god rays"</li><li>In EEVEE → Volumetrics → smaller Tile Size = higher quality</li><li>Use Volume Absorption for colored fog/smoke</li></ul></div></div>
+      <div class="acc-item reveal stagger-4"><div class="acc-head" onclick="toggleAcc(this)">Light Linking (Blender 4.x) <span class="acc-arrow">›</span></div><div class="acc-body"><ul><li>Blender 4.x supports Light Linking natively</li><li>Specify exactly which objects each light illuminates</li><li>Object Properties → Visibility → Light Linking panel</li><li>Revolutionary for VFX and character lighting without affecting environment</li><li>Create per-object shadow catchers and light exclusion zones</li></ul></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-title">✨ Lighting Pro Tips</div>
+    <div class="grid-auto">
+      <div class="card reveal"><h3 style="font-size:.95rem;margin-bottom:.4rem">Color Temperature</h3><p style="font-size:.83rem;color:var(--text2)">Warm key + cool fill = natural outdoor look. Cool key + warm fill = sci-fi/surreal. Matching temperatures looks flat — contrast creates depth.</p></div>
+      <div class="card reveal stagger-2"><h3 style="font-size:.95rem;margin-bottom:.4rem">Light Exclusion</h3><p style="font-size:.83rem;color:var(--text2)">Object Properties → Visibility → uncheck collections a light affects. Use this so a light only illuminates the character, not the background.</p></div>
+      <div class="card reveal stagger-3"><h3 style="font-size:.95rem;margin-bottom:.4rem">Shadow Bias</h3><p style="font-size:.83rem;color:var(--text2)">See "shadow acne" (dark spots)? Increase Shadow Bias in light settings. Too high = floating shadows. Find the sweet spot for your scene scale.</p></div>
+      <div class="card reveal stagger-4"><h3 style="font-size:.95rem;margin-bottom:.4rem">Fake Bounce Light</h3><p style="font-size:.83rem;color:var(--text2)">In EEVEE, indirect bounce is limited. Add invisible emission planes near floor/walls to simulate bounce light. Set them to not cast shadows.</p></div>
+      <div class="card reveal stagger-5"><h3 style="font-size:.95rem;margin-bottom:.4rem">Study Photography</h3><p style="font-size:.83rem;color:var(--text2)">The fastest way to improve 3D lighting is to study real photography. BTS photos from film sets are gold. Learn the vocabulary: rembrandt, butterfly, split lighting.</p></div>
+      <div class="card reveal stagger-6"><h3 style="font-size:.95rem;margin-bottom:.4rem">Use MatCap to Check</h3><p style="font-size:.83rem;color:var(--text2)">Switch to Solid mode → Matcap to see your mesh's form clearly before committing to lights. A good form should read well even without complex lighting.</p></div>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><span>⬡</span> Blend with Aujla</div><div class="footer-links"><a href="materials.html">← Materials</a><a href="animation.html">Animation →</a></div><div class="footer-copy">Blender 4.x</div></div></footer>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="shared.js"></script>
+<script>
+// 3-point lighting interactive
+const lights = { key: true, fill: true, rim: true };
+const tips = {
+  all:    'All three lights active — classic 3-point setup. Notice the depth and dimension.',
+  key:    'Key light only — strong directional shadow, dramatic but flat on the unlit side.',
+  fill:   'Fill light only — very flat, no shadow direction. Useful as ambient/soft fill.',
+  rim:    'Rim light only — pure edge highlight, subject barely visible. Creates silhouette.',
+  keyFill:'Key + Fill — shadows are softened but there\'s no edge separation from background.',
+  keyRim: 'Key + Rim — cinematic look. Edge detail + main direction. Fill adds warmth.',
+  fillRim:'Fill + Rim — very flat key with edge highlight. Unusual but works for soft portraits.',
+  none:   'No lights — complete darkness. All light comes from the environment/HDRI only.',
+};
+function updateScene() {
+  const k = lights.key, f = lights.fill, r = lights.rim;
+  document.getElementById('beamKey').classList.toggle('on', k);
+  document.getElementById('beamFill').classList.toggle('on', f);
+  document.getElementById('beamRim').classList.toggle('on', r);
+  document.getElementById('srcKey').classList.toggle('off', !k);
+  document.getElementById('srcFill').classList.toggle('off', !f);
+  document.getElementById('srcRim').classList.toggle('off', !r);
+  document.getElementById('toggleKey').classList.toggle('off', !k);
+  document.getElementById('toggleFill').classList.toggle('off', !f);
+  document.getElementById('toggleRim').classList.toggle('off', !r);
+  document.getElementById('keyStatus').textContent  = k ? 'ON' : 'OFF';
+  document.getElementById('fillStatus').textContent = f ? 'ON' : 'OFF';
+  document.getElementById('rimStatus').textContent  = r ? 'ON' : 'OFF';
+  // Determine tip
+  let tip;
+  if (k&&f&&r) tip=tips.all;
+  else if (k&&f) tip=tips.keyFill;
+  else if (k&&r) tip=tips.keyRim;
+  else if (f&&r) tip=tips.fillRim;
+  else if (k)    tip=tips.key;
+  else if (f)    tip=tips.fill;
+  else if (r)    tip=tips.rim;
+  else           tip=tips.none;
+  document.getElementById('lightingTip').textContent = tip;
+  // Update subject shading
+  const subj = document.getElementById('lightSubject');
+  let grad = 'radial-gradient(circle at ';
+  if (k&&f&&r) grad += '35% 30%, #777, #2a2a2a)';
+  else if (k&&f) grad += '40% 35%, #666, #222)';
+  else if (k&&r) grad += '35% 30%, #666, #1a1a1a)';
+  else if (k)    grad += '30% 25%, #665, #111)';
+  else if (f)    grad += '55% 55%, #444, #222)';
+  else if (r)    grad += '70% 30%, #333, #111)';
+  else           grad += '50% 50%, #111, #000)';
+  subj.style.background = grad;
+}
+function toggleLight(which) {
+  lights[which] = !lights[which];
+  updateScene();
+}
+</script>
+</body>
+</html>
